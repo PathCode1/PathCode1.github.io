@@ -1,0 +1,1086 @@
+<title>PathCode</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Сайты, Telegram-боты, парсеры и интеграции под ключ. Python, Java, FastAPI, aiogram, React.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Cormorant:wght@500;700&family=Manrope:wght@400;600;800&display=swap">
+<style>
+/* Layout: "рабочий стол разработчика" — слева текст, справа живые инструменты (код, бот, превью); всё выровнено по левому краю, секции разделены тонкими линиями */
+:root{
+  --bg:#F1F3F7; --surface:#FFFFFF; --sunk:#E6E9F0;
+  --ink:#121826; --muted:#586174; --line:#D8DDE7;
+  --accent:#2B4CF0; --accent-soft:#E3E8FE; --on-accent:#FFFFFF;
+  --mark:#FFD24A; --mark-ink:#121826; --ok:#1E9E62;
+  --code-bg:#141A2A; --code-fg:#D8DEEC; --code-dim:#6E7891; --code-kw:#8FA6FF; --code-str:#FFD27A; --code-fn:#7FE0B8; --code-dec:#FF9FB7;
+  --tg-wall:#D5E2CB; --tg-head:#FFFFFF; --tg-bot:#FFFFFF; --tg-me:#E2F7CC; --tg-ink:#111A22; --tg-dim:#7B8794; --tg-link:#2A7FC9; --tg-btn:rgba(255,255,255,.72); --tg-btn-ink:#1F6FB8; --tg-kb:#EEF1F4; --tg-kbbtn:#FFFFFF; --bezel:#121826;
+  --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --r:14px; --wrap:1180px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1220; --surface:#151C2D; --sunk:#1B2337;
+  --ink:#E7EBF4; --muted:#99A3B9; --line:#273149;
+  --accent:#8299FF; --accent-soft:#1F2950; --on-accent:#0D1220;
+  --mark:#FFD24A; --mark-ink:#121826; --ok:#3CCB86;
+  --code-bg:#080B14; --code-fg:#D8DEEC; --code-dim:#5F6981;
+  --tg-wall:#0E1621; --tg-head:#17212B; --tg-bot:#182533; --tg-me:#2B5278; --tg-ink:#F2F5F8; --tg-dim:#7D8E9E; --tg-link:#6AB3F3; --tg-btn:rgba(40,60,80,.85); --tg-btn-ink:#E9F1F8; --tg-kb:#17212B; --tg-kbbtn:#24323F; --bezel:#2A3450;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1220; --surface:#151C2D; --sunk:#1B2337;
+  --ink:#E7EBF4; --muted:#99A3B9; --line:#273149;
+  --accent:#8299FF; --accent-soft:#1F2950; --on-accent:#0D1220;
+  --mark:#FFD24A; --mark-ink:#121826; --ok:#3CCB86;
+  --code-bg:#080B14; --code-fg:#D8DEEC; --code-dim:#5F6981;
+  --tg-wall:#0E1621; --tg-head:#17212B; --tg-bot:#182533; --tg-me:#2B5278; --tg-ink:#F2F5F8; --tg-dim:#7D8E9E; --tg-link:#6AB3F3; --tg-btn:rgba(40,60,80,.85); --tg-btn-ink:#E9F1F8; --tg-kb:#17212B; --tg-kbbtn:#24323F; --bezel:#2A3450;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 12.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border-radius:999px;border:1px solid var(--line);background:var(--surface);text-decoration:none;font-weight:600;font-size:15px;transition:transform .15s,background .15s,border-color .15s}
+.btn:hover{transform:translateY(-1px);border-color:var(--ink)}
+.btn--main{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn--main:hover{border-color:var(--accent);filter:brightness(1.07)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 17px/1 var(--f-display);letter-spacing:-.01em}
+.logo-mark{width:30px;height:30px;border-radius:9px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:600 13px/1 var(--f-mono)}
+.logo b{color:var(--accent);font-weight:700}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{padding:8px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-size:15px;font-weight:500}
+.nav a:hover{color:var(--ink);background:var(--sunk)}
+.top .btn{padding:9px 16px;font-size:14px}
+@media (max-width:820px){.nav{display:none}.top .btn{margin-left:auto}}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:56px;align-items:center;padding-block:72px 64px}
+.status{display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px;color:var(--muted)}
+.status i{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+.hero h1{font:800 clamp(32px,4.3vw,56px)/1.1 var(--f-display);letter-spacing:-.03em;margin:22px 0 22px}
+.hl{text-decoration:underline;text-decoration-color:var(--mark);text-decoration-thickness:.16em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:34em}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line)}
+.facts b{display:block;font:700 22px/1.1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.facts span{display:block;font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.35}
+@media (max-width:980px){.hero .wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:48px}}
+@media (max-width:560px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* code window */
+.code{background:var(--code-bg);color:var(--code-fg);border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(18,24,38,.45);min-width:0}
+.code-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto}
+.code-tab{border:0;background:transparent;color:var(--code-dim);font:500 13px/1 var(--f-mono);padding:8px 12px;border-radius:8px;white-space:nowrap}
+.code-tab[aria-selected="true"]{background:rgba(255,255,255,.08);color:var(--code-fg)}
+.code pre{margin:0;padding:20px 22px 8px;font:400 13.5px/1.75 var(--f-mono);overflow-x:auto;min-height:250px}
+.code .k{color:var(--code-kw)}.code .s{color:var(--code-str)}.code .f{color:var(--code-fn)}.code .d{color:var(--code-dec)}.code .c{color:var(--code-dim)}
+.code-out{display:flex;gap:10px;align-items:center;padding:12px 22px 18px;font:400 12.5px/1.4 var(--f-mono);color:var(--code-dim)}
+.code-out i{width:7px;height:7px;border-radius:50%;background:#3CCB86;flex:none}
+
+/* sections */
+.sec{border-top:1px solid var(--line)}
+.sec>.wrap{padding-block:80px}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;align-items:end;margin-bottom:40px}
+.sec-head h2{font:700 clamp(28px,3.6vw,44px)/1.08 var(--f-display);letter-spacing:-.025em;margin-top:14px}
+.sec-head p{color:var(--muted);max-width:36em}
+@media (max-width:820px){.sec>.wrap{padding-block:56px}.sec-head{grid-template-columns:minmax(0,1fr)}}
+
+/* stack */
+.dirs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.dir{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);padding:9px 14px;border-radius:999px;font-size:14.5px;font-weight:500}
+.dir small{font:500 12px/1 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.dir[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.dir[aria-pressed="true"] small{color:inherit;opacity:.65}
+.groups{display:grid;gap:36px}
+.group h3{display:flex;align-items:baseline;gap:12px;font:700 18px/1.2 var(--f-display);letter-spacing:-.01em;margin-bottom:14px}
+.group h3 span{font:400 14px/1.3 var(--f-body);color:var(--muted)}
+.techs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.tech{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.tech b{display:flex;align-items:center;gap:8px;font:600 15.5px/1.3 var(--f-mono);letter-spacing:-.01em}
+.tech b::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--accent));flex:none}
+.tech p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.45}
+.tech.core{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.tech.core b::after{content:"основное";margin-left:auto;font:500 10.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 6px;border-radius:5px}
+
+/* works */
+.switch{display:inline-flex;padding:4px;background:var(--sunk);border-radius:999px;gap:4px;margin-bottom:28px}
+.switch button{border:0;background:transparent;padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted)}
+.switch button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(18,24,38,.12)}
+.bots{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"list phone" "info phone";grid-template-rows:auto 1fr;gap:0 40px;align-items:start}
+.bot-list{grid-area:list}.bot-info{grid-area:info}.bots .phone{grid-area:phone}
+.bot-list{display:grid;gap:8px}
+.bot-item{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);padding:12px 16px 12px 12px;border-radius:14px;transition:border-color .15s}
+.bot-item:hover{border-color:var(--muted)}
+.bot-item[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ava{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 62%,#fff),var(--c) 70%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.12)}
+.ava svg{width:56%;height:56%;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bot-item b{display:block;font-size:16px}
+.bot-item span span{display:block;font-size:13.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+.bot-item em{font:500 12px/1 var(--f-mono);font-style:normal;color:var(--muted)}
+.bot-note{margin-top:18px;font-size:14px;color:var(--muted);max-width:36em}
+.bot-what{margin-top:22px;padding:18px 20px;border-radius:14px;background:var(--sunk)}
+.bot-what h4{margin:0 0 8px;font:600 12.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bot-what ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px}
+@media (max-width:960px){.bots{grid-template-columns:minmax(0,1fr);grid-template-areas:"list" "phone" "info";grid-template-rows:auto;gap:18px}.bots .phone{margin:0 auto}
+  .bot-list{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 8px;margin:-4px -4px 0}
+  .bot-item{flex:0 0 250px;scroll-snap-align:start}.bot-item em{display:none}.bot-item{grid-template-columns:40px minmax(0,1fr)}}
+@media (max-width:420px){.phone{height:580px}}
+
+/* telegram phone */
+.phone{width:100%;max-width:380px;height:640px;border-radius:34px;padding:10px;background:var(--bezel);box-shadow:0 40px 70px -35px rgba(18,24,38,.55)}
+.tg{height:100%;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;background:var(--tg-wall);color:var(--tg-ink);font:400 14.5px/1.42 var(--f-body);position:relative}
+.tg::before{content:"";position:absolute;inset:0;opacity:.35;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 0 2px,transparent 3px),radial-gradient(circle at 70% 70%,rgba(255,255,255,.25) 0 2px,transparent 3px);background-size:38px 38px,52px 52px;pointer-events:none}
+.tg-head{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--tg-head);position:relative;z-index:1}
+.tg-head .ava{width:38px;height:38px;font-size:13px}
+.tg-head b{display:block;font-size:15px;line-height:1.2}
+.tg-head span{display:block;font-size:12.5px;color:var(--tg-dim)}
+.tg-reset{margin-left:auto;border:0;background:transparent;color:var(--tg-dim);font-size:12px;padding:6px 8px;border-radius:8px}
+.tg-reset:hover{background:rgba(127,127,127,.15);color:var(--tg-ink)}
+.tg-feed{flex:1;overflow-y:auto;padding:12px 10px 8px;display:flex;flex-direction:column;gap:6px;position:relative;z-index:1;overscroll-behavior:contain}
+.m{max-width:86%;display:flex;flex-direction:column;gap:4px;animation:pop .22s ease-out}
+.m.me{align-self:flex-end}
+.bub{background:var(--tg-bot);padding:7px 10px 6px;border-radius:14px 14px 14px 4px;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
+.me .bub{background:var(--tg-me);border-radius:14px 14px 4px 14px}
+.bub time{float:right;margin:6px 0 -4px 10px;font-size:11px;color:var(--tg-dim)}
+.me .bub time::after{content:" ✓✓";color:var(--tg-link)}
+.ikb{display:grid;gap:4px}
+.ikb div{display:flex;gap:4px}
+.ikb button{flex:1;border:0;background:var(--tg-btn);color:var(--tg-btn-ink);border-radius:10px;padding:8px 6px;font-size:13.5px;font-weight:600;backdrop-filter:blur(6px);transition:filter .12s}
+.ikb button:hover{filter:brightness(.95)}
+.ikb button:disabled{opacity:.55;cursor:default}
+.typing .bub{display:flex;gap:4px;padding:12px 14px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--tg-dim);animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+.tg-kb{display:grid;gap:5px;padding:6px;background:var(--tg-kb);position:relative;z-index:1}
+.tg-kb:empty{display:none}
+.tg-kb div{display:flex;gap:5px}
+.tg-kb button{flex:1;border:0;background:var(--tg-kbbtn);color:var(--tg-ink);border-radius:8px;padding:9px 6px;font-size:13.5px;box-shadow:0 1px 0 rgba(0,0,0,.1)}
+.tg-input{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--tg-head);color:var(--tg-dim);font-size:14px;position:relative;z-index:1;border-top:1px solid rgba(127,127,127,.15)}
+.tg-input span{flex:1}
+.tg-input i{width:28px;height:28px;border-radius:50%;background:var(--tg-link);opacity:.9;flex:none;display:grid;place-items:center;color:#fff;font-style:normal;font-size:14px}
+/* rich bubbles */
+.ph{height:150px;border-radius:10px;margin:-1px -4px 6px;position:relative;overflow:hidden;background:var(--g) center/cover}
+.ph small{position:absolute;left:8px;bottom:7px;font:500 11px/1 var(--f-mono);color:#fff;background:rgba(0,0,0,.35);padding:4px 6px;border-radius:5px}
+.doc{display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.doc i{width:42px;height:42px;border-radius:50%;background:var(--tg-link);color:#fff;display:grid;place-items:center;font:600 11px/1 var(--f-mono);font-style:normal;flex:none}
+.doc b{display:block;font-size:14px}.doc span{font-size:12px;color:var(--tg-dim)}
+.inv{border-left:3px solid var(--tg-link);padding-left:9px;margin:2px 0 4px}
+.inv b{display:block}.inv span{font-size:13px;color:var(--tg-dim)}
+.steps{list-style:none;margin:6px 0 2px;padding:0;display:grid;gap:5px;font-size:13.5px}
+.steps li{display:flex;gap:8px;align-items:center}
+.steps li::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid var(--tg-dim);flex:none}
+.steps li.ok::before{background:#3CCB86;border-color:#3CCB86}
+.steps li.now::before{border-color:var(--tg-link);background:radial-gradient(var(--tg-link) 35%,transparent 40%)}
+.steps li.now{font-weight:600}
+.sheet{margin-top:6px;border-radius:8px;overflow:hidden;border:1px solid rgba(127,127,127,.3);font:400 11px/1.3 var(--f-mono)}
+.sheet-t{background:#1E8E4E;color:#fff;padding:5px 8px;font-weight:600}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet td{padding:4px 5px;border-top:1px solid rgba(127,127,127,.25);white-space:nowrap}
+.sheet tr.new td{background:rgba(255,210,74,.35)}
+.sys{align-self:center;font-size:12px;background:rgba(0,0,0,.22);color:#fff;padding:4px 10px;border-radius:999px;animation:pop .22s ease-out}
+@keyframes pop{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* sites */
+.site-tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.site-tab{border:1px solid var(--line);background:var(--surface);padding:9px 14px;border-radius:999px;font-size:14.5px;font-weight:500;display:inline-flex;gap:8px;align-items:center}
+.site-tab i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.site-tab[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.dev{margin-left:auto;display:inline-flex;background:var(--sunk);border-radius:10px;padding:3px}
+.dev button{border:0;background:transparent;padding:7px 12px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.dev button[aria-pressed="true"]{background:var(--surface);color:var(--ink)}
+.stage{background:var(--sunk);border-radius:20px;padding:22px;display:flex;justify-content:center}
+.browser{width:100%;max-width:100%;border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:0 30px 60px -36px rgba(18,24,38,.5);transition:max-width .35s ease}
+.browser.mob{max-width:390px}
+.b-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.b-bar i{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.b-url{flex:1;min-width:0;background:var(--sunk);border-radius:8px;padding:6px 12px;font:400 13px/1.2 var(--f-mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-open{font-size:13px;font-weight:600;text-decoration:none;color:var(--accent);white-space:nowrap}
+.b-view{height:540px;overflow-y:auto;container-type:inline-size;overscroll-behavior:contain;position:relative}
+.b-view.live{overflow:hidden;height:620px}
+.b-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+.site-cap{margin-top:14px;font-size:14px;color:var(--muted)}
+.credits{margin-top:28px;font-size:13px;color:var(--muted)}
+.credits summary{cursor:pointer;font-weight:600;color:var(--ink);width:max-content;max-width:100%}
+.credits ul{margin:10px 0 0;padding-left:18px;display:grid;gap:3px;columns:2}
+.credits a{color:var(--accent)}
+@media (max-width:700px){.credits ul{columns:1}}
+@media (max-width:640px){.stage{padding:10px;border-radius:16px}.dev{margin-left:0}.b-view{height:500px}.b-view.live{height:560px}}
+
+/* mock sites */
+.mk{--pad:clamp(18px,5cqi,60px);min-height:100%;background:var(--mb);color:var(--mf);font:400 14px/1.55 var(--mfont-b);overflow:hidden}
+.mk *{box-sizing:border-box}
+.mk h3,.mk h4,.mk h5{margin:0;font-family:var(--mfont-h);font-weight:700;text-wrap:balance}
+.mk p{margin:0}
+.mk-nav{display:flex;align-items:center;gap:20px;padding:18px var(--pad)}
+.mk-logo{font:700 21px/1 var(--mfont-h);letter-spacing:-.01em}
+.mk-links{display:flex;gap:20px;margin-left:auto;font-size:13px;opacity:.75}
+.mk-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ma);color:var(--mai);padding:12px 20px;border-radius:var(--mr);font-weight:700;font-size:13.5px;white-space:nowrap}
+.mk-btn.gh{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.mk-btn.sm{padding:8px 14px;font-size:12.5px}
+.mk-btn.full{width:100%}
+.mk-eb{display:inline-block;font:700 11px/1 var(--mfont-b);letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.mk-chip{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;font-size:12.5px;font-weight:600;box-shadow:inset 0 0 0 1px var(--mline);white-space:nowrap}
+.mk-chip.on{background:var(--ma);color:var(--mai);box-shadow:none}
+.mk-chip.off{opacity:.35;text-decoration:line-through}
+.mk-row{display:flex;flex-wrap:wrap;gap:6px}
+.mk-wid{background:var(--mcard);color:var(--mwf,var(--mf));border-radius:var(--mr2);padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45);display:grid;gap:14px;align-self:center}
+.mk-wid h5{font-size:18px;line-height:1.2}
+.mk-wid .lbl{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.55;margin-bottom:-6px}
+.mk-wid .note{font-size:11.5px;opacity:.6;text-align:center}
+.mk-field{display:flex;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:var(--mr);box-shadow:inset 0 0 0 1px var(--mline);font-size:13px}
+.mk-field span:first-child{opacity:.6}
+.mk-field span:last-child{font-weight:700}
+.mk-sec{padding:clamp(30px,6cqi,64px) var(--pad)}
+.mk-sh{display:flex;align-items:end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin-bottom:24px}
+.mk-h{font-size:clamp(24px,3.6cqi,38px);line-height:1.08}
+.mk-g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 40px}
+.mk-g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.mk-g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.mk-card{background:var(--mcard);border-radius:var(--mr2);padding:18px;display:grid;gap:6px;align-content:start}
+.mk-card b{font-size:15px}
+.mk-card small{font-size:12.5px;opacity:.65;line-height:1.45}
+.mk-card .pr{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-weight:800;font-size:15px}
+.mk-lead{display:flex;align-items:baseline;gap:10px;padding:13px 0;border-bottom:1px solid var(--mline);font-size:14px}
+.mk-lead i{flex:1;border-bottom:1.5px dotted currentColor;opacity:.3;min-width:16px}
+.mk-lead small{display:block;opacity:.6;font-size:12px}
+.mk-lead .p{font-weight:800;white-space:nowrap}
+.mk-stats{display:flex;gap:clamp(18px,4cqi,44px);flex-wrap:wrap;margin-top:30px}
+.mk-stat b{display:block;font:700 clamp(22px,3cqi,32px)/1 var(--mfont-h)}
+.mk-stat span{display:block;font-size:12px;opacity:.65;margin-top:6px}
+.mk-ava{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;background:var(--g);flex:none}
+.mk-stars{color:#F2B33D;letter-spacing:1px;font-size:13px}
+.mk-foot{padding:24px var(--pad);font-size:12px;opacity:.65;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--mline)}
+.mk-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,5cqi,64px);align-items:center;padding:clamp(20px,4cqi,48px) var(--pad) clamp(36px,7cqi,80px)}
+.mk-hero h3{font-size:clamp(34px,6.2cqi,68px);line-height:1;letter-spacing:-.02em;margin:16px 0}
+.mk-hero p.l{font-size:clamp(14px,1.5cqi,17px);opacity:.8;max-width:30em}
+.mk-hero .mk-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.mk-check{display:flex;gap:8px 20px;flex-wrap:wrap;margin-top:26px;font-size:13px;font-weight:600}
+.mk-check span::before{content:"✓";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--ma);color:var(--mai);font-size:11px;margin-right:7px}
+
+.mk-img{display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:calc(var(--mr2) - 4px);margin:-4px -4px 10px;width:calc(100% + 8px);max-width:none}
+.mk-photo{display:block;width:100%;max-width:100%;object-fit:cover;border-radius:var(--mr2)}
+/* cafe: тёмный зал с огнём камина */
+.mk.cafe .mk-top{color:#F7EBDD;background:linear-gradient(90deg,rgba(20,12,8,.94) 0%,rgba(20,12,8,.82) 45%,rgba(20,12,8,.45) 100%),url(img/cafe-hero.jpg) center/cover,radial-gradient(ellipse 60% 70% at 85% 105%,rgba(255,128,36,.55),transparent 60%),radial-gradient(ellipse 30% 35% at 82% 100%,rgba(255,196,92,.55),transparent 70%),radial-gradient(ellipse 50% 60% at 10% 0%,rgba(120,70,40,.5),transparent 70%),linear-gradient(170deg,#2B1B12,#140C08)}
+.mk.cafe .mk-top .mk-eb{color:#F0B46A;opacity:1}
+.mk.cafe .mk-top .mk-btn.gh{color:#F7EBDD}
+.mk.cafe .mk-wid{--mcard:#FBF6EE;--mwf:#2A2118}
+.dish{border-radius:var(--mr2);background:#3B2A1E radial-gradient(circle at 30% 20%,rgba(255,255,255,.06),transparent 60%);aspect-ratio:4/3;display:grid;place-items:center;margin:-4px -4px 10px}
+.plate{width:68%;aspect-ratio:1;border-radius:50%;box-shadow:0 14px 24px rgba(0,0,0,.45);background:var(--food),radial-gradient(circle,#FBF8F2 0 60%,#E3DACB 61% 64%,#F5EFE5 65%)}
+.f-khinkali{--food:radial-gradient(circle at 36% 36%,#F4E4C6 0 11%,#D4BA90 12%,transparent 13.5%),radial-gradient(circle at 63% 34%,#F2E0BF 0 11%,#D1B58A 12%,transparent 13.5%),radial-gradient(circle at 30% 62%,#F5E6CA 0 11%,#D6BD94 12%,transparent 13.5%),radial-gradient(circle at 56% 62%,#F1DEBC 0 11%,#CFB386 12%,transparent 13.5%),radial-gradient(circle at 72% 54%,#3E7A3A 0 3%,transparent 3.5%),radial-gradient(circle at 46% 49%,#F3E2C3 0 9%,#D3B88E 10%,transparent 11.5%)}
+.f-shashlik{--food:radial-gradient(circle at 34% 40%,#7B3B19 0 7%,transparent 7.5%),radial-gradient(circle at 46% 48%,#8E4A22 0 7%,transparent 7.5%),radial-gradient(circle at 58% 56%,#74361A 0 7%,transparent 7.5%),radial-gradient(circle at 40% 64%,transparent 0 4%,#F3D3DC 4.5% 6%,transparent 6.5%),radial-gradient(circle at 66% 36%,transparent 0 4%,#F3D3DC 4.5% 6%,transparent 6.5%),linear-gradient(135deg,transparent 44%,#A0703F 44.5% 46.5%,transparent 47%),radial-gradient(circle at 70% 66%,#C8322B 0 6%,transparent 6.5%)}
+.f-khach{--food:radial-gradient(circle at 50% 50%,#F6A11B 0 7%,#FFE9A8 7.5% 9%,transparent 9.5%),radial-gradient(ellipse 30% 15% at 50% 50%,#FFF3D2 0 55%,#E4A85E 58% 88%,#C9843D 92%,transparent 100%)}
+.mk.cafe .rev{background:var(--mcard);border-radius:var(--mr2);padding:20px;display:grid;gap:10px;font-size:13.5px}
+.mk.cafe .rev b{font-size:13px}
+
+/* dent */
+.mk.dent .mk-top{background:linear-gradient(180deg,#F2FAF9,#FFFFFF)}
+.mk.dent .media{display:grid;align-self:center}
+.mk.dent .media .mk-photo{aspect-ratio:4/3}
+.mk.dent .media .mk-wid{margin:-110px 0 0 -48px;max-width:330px;position:relative}
+.mk.dent .badge{display:inline-flex;gap:8px;align-items:center;background:#DDF1EF;color:#0E6B6B;padding:7px 12px;border-radius:999px;font-size:12.5px;font-weight:700}
+.mk.dent .slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.mk.dent .slots .mk-chip{justify-content:center;border-radius:10px}
+.mk.dent .mk-doc{display:flex;gap:12px;align-items:center}
+.mk.dent .mk-doc small{display:block;font-size:12px;opacity:.65}
+.mk.dent .band{background:#178C8C;color:#fff;border-radius:var(--mr2);padding:clamp(22px,4cqi,40px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.mk.dent .band .mk-btn{background:#fff;color:#0F4F4F}
+.mk.dent .ic{width:40px;height:40px;border-radius:12px;background:#E3F3F2;color:#178C8C;display:grid;place-items:center;font-weight:800;margin-bottom:8px}
+.mk.dent .dr{text-align:center;justify-items:center}
+
+/* salon */
+.mk.dent .mk-hero h3,.mk.auto .mk-hero h3{font-size:clamp(30px,4.8cqi,54px);line-height:1.04}
+.mk.salon .mk-hero h3{font-size:clamp(40px,8.4cqi,92px);line-height:.95;letter-spacing:-.04em}
+.mk.salon .art{position:relative;aspect-ratio:1;max-width:100%}
+.mk.salon .blob{position:absolute;border-radius:58% 42% 50% 50%/45% 55% 45% 55%}
+.mk.salon .b1{inset:4% 10% 14% 6%;width:84%;height:82%;object-fit:cover;max-width:none}
+.mk.salon .b2{inset:58% 0 0 62%;background:linear-gradient(200deg,#E9D3F0,#9C7AC0);border-radius:45% 55% 60% 40%/50% 40% 60% 50%;mix-blend-mode:multiply;opacity:.9}
+.mk.salon .b3{width:16%;aspect-ratio:1;left:4%;bottom:6%;background:#3A1F2D;border-radius:50%}
+.mk.salon .float{position:absolute;left:-4%;top:12%;background:#FFF8FA;color:#3A1F2D;border-radius:16px;padding:12px 14px;font-size:12.5px;box-shadow:0 20px 40px -20px rgba(58,31,45,.5);display:grid;gap:2px}
+.mk.salon .float b{font-size:15px}
+.mk.salon .master{text-align:center;justify-items:center;gap:8px;padding:22px 16px}
+.mk.salon .master .mk-ava{width:84px;height:84px;font-size:22px}
+.mk.salon .mk-step{display:grid;gap:10px;align-content:start}
+.mk.salon .mk-step em{font-style:normal;font:800 12px/1 var(--mfont-b);opacity:.55}
+
+/* auto */
+.mk.auto .mk-top{background:linear-gradient(90deg,rgba(28,31,36,.97) 30%,rgba(28,31,36,.72) 65%,rgba(28,31,36,.55)),url(img/auto.jpg) center/cover,#1C1F24}
+.mk.auto .mk-wid{--mcard:#262B33;border:1px solid #3A404A}
+.mk.auto .bar{height:8px;border-radius:99px;background:#3A404A;overflow:hidden}
+.mk.auto .bar i{display:block;height:100%;width:72%;background:linear-gradient(90deg,#F07A2B,#FFB35C)}
+.mk.auto .st{display:grid;gap:8px;font-size:13px}
+.mk.auto .st div{display:flex;gap:10px;align-items:center}
+.mk.auto .st div::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid #5A616C;flex:none}
+.mk.auto .st .is-ok::before{background:#3CCB86;border-color:#3CCB86}
+.mk.auto .st .is-now{font-weight:700}
+.mk.auto .st .is-now::before{border-color:#F07A2B;background:radial-gradient(#F07A2B 35%,transparent 40%)}
+.mk.auto .calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start}
+.mk.auto .ck{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--mline);font-size:14px}
+.mk.auto .ck::before{content:"";width:18px;height:18px;border-radius:5px;box-shadow:inset 0 0 0 1.5px #5A616C;flex:none}
+.mk.auto .ck.on::before{background:#F07A2B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.3l2.5 2.4L12 5.2' fill='none' stroke='%231C1F24' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center/100%;box-shadow:none}
+.mk.auto .ck span:last-child{margin-left:auto;font-weight:700}
+.mk.auto .total{background:#F07A2B;color:#1C1F24;border-radius:var(--mr2);padding:22px;display:grid;gap:6px}
+.mk.auto .total b{font:700 34px/1 var(--mfont-h)}
+.mk.auto .total .mk-btn{background:#1C1F24;color:#F07A2B;margin-top:10px}
+.mk.auto .ic{font:800 12px/1 var(--mfont-h);color:#F07A2B;margin-bottom:10px}
+.ring{width:72px;aspect-ratio:1;border-radius:50%;flex:none;display:grid;place-items:center;background:radial-gradient(closest-side,#262B33 78%,transparent 80%),conic-gradient(#F07A2B 0 72%,#3A404A 72% 100%);font:700 16px/1 var(--mfont-h);color:#EEF0F2}
+
+/* flow */
+.mk.flow .promo{background:#33262A;color:#FBF6F2;text-align:center;font-size:12px;font-weight:600;padding:8px 16px;letter-spacing:.02em}
+.mk.flow .mk-hero h3{font-size:clamp(38px,7cqi,76px);font-weight:500;line-height:.98}
+.mk.flow .mk-hero h3 em{font-style:italic;color:#C2456B}
+.bq{position:relative;aspect-ratio:1;border-radius:var(--mr2);background:var(--bqbg,#F3E7E1);overflow:hidden}
+.bq::before{content:"";position:absolute;inset:4% 8% 34%;background:var(--bloom),radial-gradient(ellipse 13% 26% at 10% 58%,#7FA370 0 95%,transparent),radial-gradient(ellipse 13% 26% at 90% 58%,#6E9A62 0 95%,transparent),radial-gradient(ellipse 11% 20% at 26% 16%,#8DB27E 0 95%,transparent),radial-gradient(ellipse 11% 20% at 76% 14%,#7FA370 0 95%,transparent),radial-gradient(ellipse 40% 34% at 50% 60%,#86AA77 0 90%,transparent)}
+.bq::after{content:"";position:absolute;inset:56% 0 0;background:linear-gradient(100deg,#D9BC92,#B8946A 55%,#CDAE84);clip-path:polygon(16% 0,84% 0,59% 100%,41% 100%)}
+.bq .mk-tag{position:absolute;right:10px;top:10px;z-index:1;background:#fff;color:#33262A;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+.bl-roses{--bloom:radial-gradient(circle at 20% 52%,#F7BCCB 0 11%,#E28CA3 12% 13%,transparent 14%),radial-gradient(circle at 82% 50%,#EE8FA6 0 11%,#D86A88 12% 13%,transparent 14%),radial-gradient(circle at 40% 22%,#F4A7B9 0 11%,#E07D97 12% 13%,transparent 14%),radial-gradient(circle at 64% 20%,#F7BCCB 0 10%,transparent 11%),radial-gradient(circle at 30% 45%,#F4A7B9 0 15%,#E07D97 16% 17%,transparent 18%),radial-gradient(circle at 52% 35%,#EE8FA6 0 15%,#D86A88 16% 17%,transparent 18%),radial-gradient(circle at 72% 48%,#F7BCCB 0 14%,#E28CA3 15% 16%,transparent 17%),radial-gradient(circle at 45% 66%,#E7809B 0 14%,#C9607E 15% 16%,transparent 17%),radial-gradient(circle at 66% 72%,#F4A7B9 0 12%,transparent 13%),radial-gradient(ellipse 40% 30% at 50% 80%,#6E9A62,transparent 70%)}
+.bl-sept{--bloom:radial-gradient(circle at 32% 44%,#F2B34A 0 15%,transparent 16%),radial-gradient(circle at 56% 34%,#E46A3B 0 13%,transparent 14%),radial-gradient(circle at 72% 54%,#F6D27A 0 13%,transparent 14%),radial-gradient(circle at 46% 66%,#C9482B 0 12%,transparent 13%),radial-gradient(circle at 24% 70%,#9C7A3C 0 7%,transparent 8%),radial-gradient(ellipse 45% 30% at 50% 82%,#7C8B4E,transparent 70%)}
+.bl-tulips{--bloom:radial-gradient(ellipse 9% 15% at 30% 45%,#FF6B7D 0 98%,transparent),radial-gradient(ellipse 9% 15% at 44% 36%,#FFD04D 0 98%,transparent),radial-gradient(ellipse 9% 15% at 58% 44%,#FF8FB1 0 98%,transparent),radial-gradient(ellipse 9% 15% at 72% 36%,#FF6B7D 0 98%,transparent),radial-gradient(ellipse 9% 15% at 50% 62%,#FFD04D 0 98%,transparent),radial-gradient(ellipse 9% 15% at 66% 64%,#FF8FB1 0 98%,transparent),radial-gradient(ellipse 50% 22% at 50% 92%,#5F9157,transparent 75%)}
+.bl-eust{--bloom:radial-gradient(circle at 34% 44%,#C9B6F2 0 14%,transparent 15%),radial-gradient(circle at 58% 36%,#A98AE6 0 13%,transparent 14%),radial-gradient(circle at 70% 58%,#E2D6FA 0 13%,transparent 14%),radial-gradient(circle at 44% 66%,#FFFFFF 0 12%,transparent 13%),radial-gradient(ellipse 45% 30% at 50% 82%,#7FA370,transparent 70%)}
+.mk.flow .prod{background:transparent;padding:0;gap:4px}
+.mk.flow .prod .mk-img{aspect-ratio:1;margin:0 0 8px;width:100%}
+.mk.flow .hero-ph{position:relative}.mk.flow .hero-ph .mk-photo{aspect-ratio:1}.mk.flow .hero-ph .mk-tag{position:absolute;right:12px;top:12px;background:#fff;color:#33262A;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+.mk.flow .hero-bq{max-width:100%}
+
+@container (max-width:640px){
+  .mk-links{display:none}
+  .mk-nav .mk-btn{margin-left:auto;padding:9px 12px;font-size:12px}
+  .mk-hero{grid-template-columns:minmax(0,1fr)}
+  .mk-g2,.mk.auto .calc{grid-template-columns:minmax(0,1fr)}
+  .mk-g3{grid-template-columns:minmax(0,1fr)}
+  .mk-g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mk.salon .art{max-width:300px;margin:0 auto}
+  .mk.salon .float{left:0}
+  .mk.dent .media .mk-wid{margin:-40px 12px 0;max-width:none}
+}
+
+/* services */
+.svc{display:grid;border-top:1px solid var(--line)}
+.svc-row{display:grid;grid-template-columns:80px minmax(0,1.1fr) minmax(0,1.6fr) 150px 110px;gap:24px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line)}
+.svc-row .tag{font:500 13px/1 var(--f-mono);color:var(--accent)}
+.svc-row h3{font:700 20px/1.2 var(--f-display);letter-spacing:-.015em}
+.svc-row p{color:var(--muted);font-size:15px}
+.svc-row .price{font:700 18px/1.2 var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.svc-row .time{font:400 14px/1.2 var(--f-mono);color:var(--muted);white-space:nowrap}
+.svc-foot{margin-top:18px;font-size:14px;color:var(--muted)}
+@media (max-width:860px){.svc-row{grid-template-columns:minmax(0,1fr) auto;gap:8px 16px}.svc-row .tag{grid-column:1/-1}.svc-row h3{grid-column:1/-1}.svc-row p{grid-column:1/-1}}
+
+/* process */
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:s}
+.step{position:relative;padding:22px 20px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);font:700 14px/1 var(--f-display);margin-bottom:18px}
+.step h3{font:700 18px/1.2 var(--f-display);margin-bottom:8px}
+.step p{font-size:15px;color:var(--muted)}
+.guar{margin-top:20px;display:flex;gap:12px 24px;flex-wrap:wrap;font-size:15px}
+.guar span{display:inline-flex;gap:8px;align-items:center}
+.guar span::before{content:"";width:16px;height:16px;border-radius:50%;background:var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-5' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;flex:none}
+@media (max-width:900px){.steps4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.steps4{grid-template-columns:minmax(0,1fr)}}
+
+/* contact */
+.contact{background:var(--ink);color:var(--bg)}
+.contact>.wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;padding-block:88px}
+.contact h2{font:800 clamp(32px,4.6vw,56px)/1.04 var(--f-display);letter-spacing:-.03em;margin-top:14px}
+.contact .eyebrow{color:color-mix(in srgb,var(--bg) 60%,var(--ink))}
+.contact .sub{margin-top:18px;color:color-mix(in srgb,var(--bg) 72%,var(--ink));max-width:30em}
+.links{display:grid;gap:10px;margin-top:30px}
+.lnk{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--bg) 18%,var(--ink));text-decoration:none;transition:background .15s}
+.lnk:hover{background:color-mix(in srgb,var(--bg) 8%,var(--ink))}
+.lnk.tg{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.lnk.tg:hover{filter:brightness(1.06);background:var(--accent)}
+.lnk small{display:block;font:500 12px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.lnk b{font:600 17px/1.2 var(--f-mono);overflow-wrap:anywhere}
+.lnk em{font-style:normal;font-size:20px}
+.copy-row{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:14px;color:color-mix(in srgb,var(--bg) 70%,var(--ink));flex-wrap:wrap}
+.copy{border:1px solid color-mix(in srgb,var(--bg) 25%,var(--ink));background:transparent;color:var(--bg);padding:6px 12px;border-radius:999px;font-size:13px}
+.brief{background:var(--surface);color:var(--ink);border-radius:20px;padding:26px;min-width:0}
+.brief h3{font:700 20px/1.2 var(--f-display)}
+.brief>p{color:var(--muted);font-size:14.5px;margin-top:6px}
+.fld{display:grid;gap:6px;margin-top:16px}
+.fld label{font-size:13.5px;font-weight:600}
+.fld select,.fld input,.fld textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.fld textarea{min-height:84px;resize:vertical}
+.fld2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);padding:8px 12px;border-radius:999px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.out{margin-top:18px;background:var(--sunk);border-radius:12px;padding:14px;font:400 13.5px/1.55 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px}
+.brief .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.brief .btn{padding:11px 16px;font-size:14.5px}
+.toast{font-size:13.5px;color:var(--ok);align-self:center}
+@media (max-width:900px){.contact>.wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:60px}}
+@media (max-width:480px){.fld2{grid-template-columns:1fr}.brief{padding:20px}}
+
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:26px;font-size:14px;color:var(--muted)}
+footer span:last-child{font-family:var(--f-mono);font-size:13px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="PathCode, наверх"><span class="logo-mark">&lt;/&gt;</span><span>Path<b>Code</b></span></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#stack">Стек</a><a href="#works">Работы</a><a href="#services">Услуги и цены</a><a href="#process">Как работаю</a><a href="#contact">Контакты</a>
+    </nav>
+    <a class="btn btn--main" href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Написать</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="status"><i></i>Принимаю заказы · отвечаю в течение часа</span>
+      <h1>Сайты и Telegram-боты, на которых <span class="hl">держится бизнес</span></h1>
+      <p class="lead">Делаю под ключ: от первого сообщения до запуска на сервере. Лендинги, онлайн-запись, приём заказов и оплаты, парсеры, интеграции с CRM и ИИ-ассистенты.</p>
+      <div class="cta">
+        <a class="btn btn--main" href="#contact">Обсудить проект <span aria-hidden="true">→</span></a>
+        <a class="btn" href="#works">Потрогать демо</a>
+      </div>
+      <div class="facts">
+        <div><b>10+</b><span>демо-проектов: сайты и боты</span></div>
+        <div><b>от 1 дня</b><span>на небольшие задачи и доработки</span></div>
+        <div><b>Python · Java</b><span>FastAPI, aiogram, Spring, React</span></div>
+        <div><b>0 ₽</b><span>за исправление недочётов после сдачи</span></div>
+      </div>
+    </div>
+    <div class="code" aria-label="Пример кода">
+      <div class="code-bar" role="tablist" aria-label="Файлы">
+        <button class="code-tab" role="tab" aria-selected="true" data-code="bot">bot.py</button>
+        <button class="code-tab" role="tab" aria-selected="false" data-code="api">api.py</button>
+        <button class="code-tab" role="tab" aria-selected="false" data-code="java">OrderController.java</button>
+      </div>
+      <pre id="codeView"></pre>
+      <div class="code-out"><i></i><span id="codeOut"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Направления и стек</span><h2>Чем пишу и что умею</h2></div>
+      <p>Каждая технология ниже с пометкой, для чего я её беру. Выберите направление, чтобы оставить только нужное.</p>
+    </div>
+    <div class="dirs" id="dirs" role="group" aria-label="Фильтр по направлению"></div>
+    <div class="groups" id="groups"></div>
+  </div>
+</section>
+
+<section class="sec" id="works">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Демо-работы</span><h2>Можно потрогать прямо здесь</h2></div>
+      <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью.</p>
+    </div>
+    <div class="switch" role="tablist" aria-label="Тип работ">
+      <button role="tab" aria-selected="true" aria-controls="pBots" id="tBots">Telegram-боты</button>
+      <button role="tab" aria-selected="false" aria-controls="pSites" id="tSites">Сайты</button>
+    </div>
+
+    <div id="pBots" role="tabpanel" aria-labelledby="tBots">
+      <div class="bots">
+        <div class="bot-list" id="botList" role="group" aria-label="Выбор бота"></div>
+        <div class="bot-info">
+          <div class="bot-what"><h4>Что внутри этого бота</h4><ul id="botWhat"></ul></div>
+          <p class="bot-note">Названия заведений вымышленные. Это демо, чтобы показать подход к сценариям и функциям: оплату, запись, статусы, выгрузку в таблицы.</p>
+        </div>
+        <div class="phone">
+          <div class="tg">
+            <div class="tg-head"><div class="ava" id="tgAva"></div><div><b id="tgName"></b><span>бот</span></div><button class="tg-reset" id="tgReset" type="button">↺ заново</button></div>
+            <div class="tg-feed" id="tgFeed" aria-live="polite"></div>
+            <div class="tg-kb" id="tgKb"></div>
+            <div class="tg-input"><span>Сообщение</span><i aria-hidden="true">➤</i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pSites" role="tabpanel" aria-labelledby="tSites" hidden>
+      <div class="site-tabs">
+        <div id="siteTabs" style="display:contents"></div>
+        <div class="dev" role="group" aria-label="Устройство">
+          <button aria-pressed="true" data-dev="pc">ПК</button><button aria-pressed="false" data-dev="mob">Телефон</button>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="browser" id="browser">
+          <div class="b-bar"><i></i><i></i><i></i><div class="b-url" id="bUrl"></div><a class="b-open" id="bOpen" target="_blank" rel="noopener">открыть сайт ↗</a></div>
+          <div class="b-view" id="bView"></div>
+        </div>
+      </div>
+      <p class="site-cap" id="siteCap"></p>
+    </div>
+    <details class="credits"><summary>Фото в демо: авторы и лицензии</summary><ul><li><a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0</li><li><a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Another Georgian favourite, the Khinkali</a>, shankar s., CC BY 2.0</li><li><a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Free grilling meat skewers photo</a>, автор не указан, CC0</li><li><a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0</li><li><a href="https://www.flickr.com/photos/39976636@N03/11070828595" target="_blank" rel="noopener">Chipped tooth repair today. #dentist</a>, AFresh1, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0</li><li><a href="https://commons.wikimedia.org/w/index.php?curid=113443523" target="_blank" rel="noopener">Car repair shop</a>, Martin Vorel, CC BY-SA 4.0</li><li><a href="https://www.flickr.com/photos/42982698@N00/9163072760" target="_blank" rel="noopener">That is a sad brake rotor.</a>, cjmartin, CC BY 2.0</li><li><a href="https://www.rawpixel.com/image/5905295/photo-image-flower-public-domain-plant" target="_blank" rel="noopener">Free pink rose bouquet image</a>, автор не указан, CC0</li><li><a href="https://www.flickr.com/photos/45880014@N03/7099106625" target="_blank" rel="noopener">Pink Rose Bouquet</a>, Kurozumi, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/24742305@N00/3065229481" target="_blank" rel="noopener">Thanksgiving Bouquet - Orange</a>, John-Morgan, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/53133240@N00/112651128" target="_blank" rel="noopener">tulips dark background</a>, Muffet, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/62938898@N00/6918197938" target="_blank" rel="noopener">Lisianthus (sorting out)</a>, Tatters ✾, CC BY-SA 2.0</li></ul></details>
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Услуги и цены</span><h2>Что делаю</h2></div>
+      <p>Цены ориентировочные. Точную назову после короткого разговора о задаче, до начала работы.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-row"><span class="tag">// сайт</span><h3>Лендинг и сайт-визитка</h3><p>Адаптивный сайт с формой заявок в Telegram, картой, отзывами и базовым SEO.</p><span class="price">от 2 500 ₽</span><span class="time">2–5 дней</span></div>
+      <div class="svc-row"><span class="tag">// бот</span><h3>Telegram-бот для бизнеса</h3><p>Приём заказов, онлайн-запись, каталог с оплатой, уведомления администратору.</p><span class="price">от 1 500 ₽</span><span class="time">2–7 дней</span></div>
+      <div class="svc-row"><span class="tag">// данные</span><h3>Парсеры и автоматизация</h3><p>Сбор данных с сайтов и по API, выгрузка в таблицы, интеграции между сервисами.</p><span class="price">от 2 000 ₽</span><span class="time">1–3 дня</span></div>
+      <div class="svc-row"><span class="tag">// ии</span><h3>ИИ-ассистент</h3><p>Бот-консультант на GPT или Claude, который отвечает по вашей базе знаний и передаёт сложные вопросы человеку.</p><span class="price">по задаче</span><span class="time">от 3 дней</span></div>
+      <div class="svc-row"><span class="tag">// api</span><h3>Бэкенд и интеграции</h3><p>API на FastAPI или Spring Boot, связка сайта и бота с CRM, Google Таблицами и оплатой.</p><span class="price">по задаче</span><span class="time">от 2 дней</span></div>
+      <div class="svc-row"><span class="tag">// правки</span><h3>Доработка сайта</h3><p>WordPress, Tilda, Битрикс, HTML: исправить, добавить блок, ускорить, настроить формы.</p><span class="price">от 1 000 ₽</span><span class="time">от 1 дня</span></div>
+    </div>
+    <p class="svc-foot">Сервер, домен и SSL настрою в любом из вариантов. Можно заказать отдельную часть или весь проект целиком.</p>
+  </div>
+</section>
+
+<section class="sec" id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Как работаю</span><h2>Четыре шага до запуска</h2></div>
+      <p>Без предоплаты на старте через биржу: вы платите за результат, который уже видели.</p>
+    </div>
+    <div class="steps4">
+      <div class="step"><h3>Обсуждаем</h3><p>Вы описываете задачу, я задаю вопросы и предлагаю решение.</p></div>
+      <div class="step"><h3>Фиксируем</h3><p>Цена, сроки и что входит в работу. Всё до старта.</p></div>
+      <div class="step"><h3>Делаю</h3><p>Показываю промежуточный результат и вношу правки по ходу.</p></div>
+      <div class="step"><h3>Запускаю</h3><p>Размещаю на сервере, передаю код и оставляю инструкцию.</p></div>
+    </div>
+    <div class="guar"><span>Код и доступы остаются у вас</span><span>Правки недочётов после сдачи бесплатно</span><span>Безопасная сделка на бирже</span></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Контакты</span>
+      <h2>Есть задача? Напишите.</h2>
+      <p class="sub">Отвечаю в течение часа с 9:00 до 22:00 по Москве. Если удобнее работать через биржу с безопасной сделкой, я есть на Kwork.</p>
+      <div class="links">
+        <a class="lnk tg" href="https://t.me/BeauG0sse" target="_blank" rel="noopener"><span><small>Telegram · быстрее всего</small><b>@BeauG0sse</b></span><em aria-hidden="true">→</em></a>
+        <a class="lnk" href="https://kwork.ru/user/pathcode" target="_blank" rel="noopener"><span><small>Kwork · безопасная сделка</small><b>kwork.ru/user/pathcode</b></span><em aria-hidden="true">↗</em></a>
+      </div>
+      <div class="copy-row"><button class="copy" type="button" id="copyTg">Скопировать @BeauG0sse</button><span id="copyTgMsg" aria-live="polite"></span></div>
+    </div>
+    <form class="brief" id="brief" novalidate>
+      <h3>Соберите заявку за минуту</h3>
+      <p>Отметьте, что нужно, скопируйте готовый текст и отправьте мне в Telegram.</p>
+      <div class="fld"><label id="lNeed">Что нужно</label>
+        <div class="chips" id="needChips" role="group" aria-labelledby="lNeed"></div>
+      </div>
+      <div class="fld2">
+        <div class="fld"><label for="bTime">Срок</label>
+          <select id="bTime"><option>Не горит</option><option>В течение недели</option><option>Срочно, за 1–2 дня</option></select></div>
+        <div class="fld"><label for="bBudget">Бюджет</label>
+          <input id="bBudget" type="text" inputmode="numeric" placeholder="например, 5 000 ₽"></div>
+      </div>
+      <div class="fld"><label for="bText">Коротко о задаче</label>
+        <textarea id="bText" placeholder="Например: бот для записи в барбершоп, 3 мастера, напоминания клиентам за 2 часа"></textarea></div>
+      <div class="out" id="bOut" aria-live="polite"></div>
+      <div class="acts">
+        <button class="btn btn--main" type="submit">Скопировать текст</button>
+        <a class="btn" href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Открыть Telegram ↗</a>
+        <span class="toast" id="bToast" aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 PathCode</span><span>сайты · боты · автоматизация</span></div></footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- code window ---------- */
+const CODE={
+ bot:{out:"бот ответил клиенту за 0,2 с · заявка ушла администратору",src:
+`<span class="k">from</span> aiogram <span class="k">import</span> Router, F
+<span class="k">from</span> aiogram.types <span class="k">import</span> Message
+
+router = Router()
+
+<span class="d">@router.message</span>(F.text == <span class="s">"Записаться"</span>)
+<span class="k">async def</span> <span class="f">book</span>(msg: Message):
+    slots = <span class="k">await</span> db.<span class="f">free_slots</span>(day=<span class="s">"сб"</span>)
+    <span class="k">await</span> msg.<span class="f">answer</span>(
+        <span class="s">"Свободно в субботу:"</span>,
+        reply_markup=<span class="f">slots_kb</span>(slots),
+    )
+    <span class="k">await</span> <span class="f">notify_admin</span>(msg.from_user)  <span class="c"># уведомить владельца</span>`},
+ api:{out:"POST /lead → 200 OK · строка добавлена в Google Таблицу",src:
+`<span class="k">from</span> fastapi <span class="k">import</span> FastAPI
+<span class="k">from</span> pydantic <span class="k">import</span> BaseModel
+
+app = FastAPI()
+
+<span class="k">class</span> <span class="f">Lead</span>(BaseModel):
+    name: str
+    phone: str
+    service: str
+
+<span class="d">@app.post</span>(<span class="s">"/lead"</span>)
+<span class="k">async def</span> <span class="f">new_lead</span>(lead: Lead):
+    <span class="k">await</span> sheets.<span class="f">append</span>(lead)     <span class="c"># Google Sheets</span>
+    <span class="k">await</span> bot.<span class="f">notify</span>(lead)        <span class="c"># сообщение в Telegram</span>
+    <span class="k">return</span> {<span class="s">"ok"</span>: <span class="k">True</span>}`},
+ java:{out:"Spring Boot · заказ сохранён в PostgreSQL, id=1042",src:
+`<span class="d">@RestController</span>
+<span class="d">@RequestMapping</span>(<span class="s">"/orders"</span>)
+<span class="k">class</span> <span class="f">OrderController</span> {
+
+    <span class="k">private final</span> OrderRepository repo;
+
+    <span class="d">@PostMapping</span>
+    Order <span class="f">create</span>(<span class="d">@Valid @RequestBody</span> Order order) {
+        order.<span class="f">setStatus</span>(Status.NEW);
+        <span class="k">return</span> repo.<span class="f">save</span>(order);   <span class="c">// JPA → PostgreSQL</span>
+    }
+}`}
+};
+function showCode(k){
+  $("#codeView").innerHTML=CODE[k].src; $("#codeOut").textContent=CODE[k].out;
+  document.querySelectorAll(".code-tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.code===k));
+}
+document.querySelectorAll(".code-tab").forEach(b=>b.onclick=()=>showCode(b.dataset.code));
+showCode("bot");
+
+/* ---------- stack ---------- */
+const DIRS=[
+ {id:"lang",name:"Языки",note:"на чём пишу",c:"#2B4CF0"},
+ {id:"bots",name:"Telegram-боты",note:"от простого меню до магазина с оплатой",c:"#2A9FD8"},
+ {id:"web",name:"Сайты и фронтенд",note:"вёрстка, интерфейсы, CMS",c:"#E0662F"},
+ {id:"back",name:"Бэкенд и API",note:"серверная логика",c:"#7A4CE0"},
+ {id:"data",name:"Данные и парсинг",note:"базы, сбор и обработка данных",c:"#1E9E62"},
+ {id:"ai",name:"ИИ и интеграции",note:"нейросети, CRM, таблицы, оплата",c:"#D2457A"},
+ {id:"ops",name:"Сервер и деплой",note:"чтобы всё работало 24/7",c:"#8A7A2F"}
+];
+const TECH=[
+ ["lang","Python","Основной язык: боты, API, парсеры, автоматизация.",1],
+ ["lang","Java","Бэкенд-сервисы и REST API на Spring Boot.",1],
+ ["lang","JavaScript","Интерактив на сайтах, Telegram Mini Apps."],
+ ["lang","TypeScript","Типизированный фронтенд и React-приложения."],
+ ["lang","SQL","Запросы, отчёты, проектирование таблиц."],
+ ["lang","HTML и CSS","Семантическая адаптивная вёрстка без шаблонов."],
+ ["bots","aiogram 3","Основной фреймворк: FSM-сценарии, роутеры, middleware.",1],
+ ["bots","python-telegram-bot","Когда проект уже написан на нём и нужна доработка."],
+ ["bots","Telegram Mini Apps","Каталог, корзина и формы прямо внутри Telegram."],
+ ["bots","Telegram Payments","Оплата в боте: ЮKassa, Telegram Stars, счета."],
+ ["bots","Telethon","Чтение публичных каналов и чатов через API для мониторинга."],
+ ["bots","Рассылки и напоминания","Уведомления клиентам и админу по расписанию."],
+ ["back","FastAPI","Быстрые REST API, вебхуки ботов, админ-панели.",1],
+ ["back","Spring Boot","Java-бэкенд: REST, валидация, JPA, безопасность."],
+ ["back","Django","Сайты с админкой и личным кабинетом."],
+ ["back","Flask","Небольшие сервисы и прототипы за день."],
+ ["back","aiohttp","Асинхронные запросы к API и вебхуки."],
+ ["back","Celery","Фоновые задачи и отложенные операции."],
+ ["back","REST и WebSocket","API для сайтов, ботов и мобильных приложений."],
+ ["web","React","Интерфейсы, личные кабинеты, Mini Apps."],
+ ["web","Tailwind CSS","Быстрая аккуратная вёрстка по единой сетке."],
+ ["web","Vite","Сборка фронтенда и быстрый dev-сервер."],
+ ["web","Адаптивная вёрстка","Сайт одинаково удобен с телефона и с ПК.",1],
+ ["web","WordPress","Правки тем и плагинов, ускорение, формы."],
+ ["web","Tilda","Доработка блоков, свой код, интеграция форм."],
+ ["web","1С-Битрикс","Правки шаблонов, компонентов и форм."],
+ ["web","SEO-основа","Мета-теги, скорость, микроразметка, sitemap."],
+ ["data","PostgreSQL","Основная база для ботов и сервисов.",1],
+ ["data","SQLite","Лёгкие проекты без отдельного сервера БД."],
+ ["data","Redis","Кэш, очереди, хранение состояний бота."],
+ ["data","SQLAlchemy и Alembic","ORM и миграции структуры базы."],
+ ["data","httpx и BeautifulSoup","Парсинг обычных сайтов и API."],
+ ["data","Playwright","Парсинг сайтов на JavaScript и с авторизацией."],
+ ["data","pandas","Чистка данных и выгрузка в Excel и CSV."],
+ ["ai","OpenAI API","GPT-ассистенты, разбор заявок, ответы клиентам."],
+ ["ai","Claude API","Работа с длинными документами и аккуратными текстами."],
+ ["ai","RAG и pgvector","Бот отвечает по вашей базе знаний, а не выдумывает."],
+ ["ai","Google Sheets API","Заявки и отчёты сразу в таблицу.",1],
+ ["ai","amoCRM и Битрикс24","Лиды с сайта и из бота сразу в CRM."],
+ ["ai","ЮKassa и Robokassa","Приём платежей на сайте и в боте."],
+ ["ops","Linux VPS","Настройка Ubuntu-сервера с нуля.",1],
+ ["ops","Docker","Одинаковый запуск везде, docker compose."],
+ ["ops","Nginx","Прокси, статика, несколько сайтов на одном сервере."],
+ ["ops","Домен и SSL","Let's Encrypt, DNS, перенос домена."],
+ ["ops","Git и GitHub","История изменений и передача кода вам."],
+ ["ops","GitHub Actions","Автодеплой после каждого изменения."],
+ ["ops","systemd","Бот сам перезапускается после сбоя."]
+];
+let dirSel="all";
+function renderStack(){
+  const dirs=$("#dirs");
+  const mk=(id,name,n)=>`<button class="dir" aria-pressed="${dirSel===id}" data-dir="${id}">${esc(name)} <small>${n}</small></button>`;
+  dirs.innerHTML=mk("all","Все",TECH.length)+DIRS.map(d=>mk(d.id,d.name,TECH.filter(t=>t[0]===d.id).length)).join("");
+  dirs.querySelectorAll(".dir").forEach(b=>b.onclick=()=>{dirSel=b.dataset.dir;renderStack()});
+  $("#groups").innerHTML=DIRS.filter(d=>dirSel==="all"||d.id===dirSel).map(d=>
+    `<div class="group" style="--dot:${d.c}"><h3>${esc(d.name)} <span>${esc(d.note)}</span></h3><div class="techs">`+
+    TECH.filter(t=>t[0]===d.id).map(t=>`<div class="tech${t[3]?" core":""}"><b>${esc(t[1])}</b><p>${esc(t[2])}</p></div>`).join("")+
+    `</div></div>`).join("");
+}
+renderStack();
+
+/* ---------- works tabs ---------- */
+const tabs=[[$("#tBots"),$("#pBots")],[$("#tSites"),$("#pSites")]];
+tabs.forEach(([t,p])=>t.onclick=()=>tabs.forEach(([t2,p2])=>{const on=t2===t;t2.setAttribute("aria-selected",on);p2.hidden=!on;}));
+
+/* ---------- telegram bots ---------- */
+const PH={
+ khinkali:"url(img/khinkali.jpg)",disc:"url(img/brake.jpg)",roses:"url(img/roses.jpg)",
+ sept:"url(img/autumn.jpg)",tulips:"url(img/tulips.jpg)",eustoma:"url(img/eustoma.jpg)"
+};
+const FLOWERS=[["Пионовидные розы, 15 шт",4900,"roses"],["Букет «Сентябрь»",3200,"sept"],["Тюльпаны в коробке",2700,"tulips"],["Монобукет эустомы",3800,"eustoma"]];
+const rub=n=>n.toLocaleString("ru-RU").replace(/ /g," ")+" ₽";
+
+const BOTS=[
+{id:"cafe",name:"Горный очаг",title:"Заказ еды",tags:"корзина · оплата · админ",c:"#2F6B4F",ava:"ГО",
+ what:["Меню по разделам с редактированием сообщения","Корзина и подсчёт суммы","Оплата внутри Telegram (ЮKassa)","Уведомление администратору о новом заказе"],
+ menu:[["Меню","Корзина"],["Мои заказы","Контакты"]],
+ init:()=>({cart:[],orders:0}),
+ nodes:{
+  start:{text:"Здравствуйте! Я бот кафе «Горный очаг».\nСоберу заказ, приму оплату и передам его на кухню.",kb:[[["Открыть меню","menu"]]]},
+  "Меню":{go:"menu"},
+  menu:{text:"Меню. Выберите раздел:",kb:[[["Горячее","hot","e"],["Супы","soup","e"]],[["Напитки","drinks","e"]]]},
+  hot:{text:"Горячее:\n• Хинкали с бараниной, 5 шт — 390 ₽\n• Шашлык из свинины — 520 ₽",photo:["khinkali","хинкали"],kb:[[["+ Хинкали","add|Хинкали|390"],["+ Шашлык","add|Шашлык|520"]],[["‹ Разделы","menu","e"]]]},
+  soup:{text:"Супы:\n• Харчо — 340 ₽\n• Чихиртма — 310 ₽",kb:[[["+ Харчо","add|Харчо|340"],["+ Чихиртма","add|Чихиртма|310"]],[["‹ Разделы","menu","e"]]]},
+  drinks:{text:"Напитки:\n• Тархун домашний — 180 ₽\n• Чай с чабрецом — 150 ₽",kb:[[["+ Тархун","add|Тархун|180"],["+ Чай","add|Чай с чабрецом|150"]],[["‹ Разделы","menu","e"]]]},
+  added:{text:s=>`Добавил: ${s.last}.\nВ корзине ${s.cart.length} поз. на ${rub(sum(s.cart))}`,kb:[[["Оформить","checkout"],["Добавить ещё","menu"]]]},
+  "Корзина":{text:s=>s.cart.length?"Ваша корзина:\n"+s.cart.map(i=>`• ${i[0]} — ${rub(i[1])}`).join("\n")+`\n\nИтого: ${rub(sum(s.cart))}`:"Корзина пока пуста. Загляните в меню.",kb:s=>s.cart.length?[[["Оформить","checkout"],["Очистить","clear","e"]]]:[[["Открыть меню","menu"]]]},
+  clear:{text:"Корзина очищена.",kb:[[["Открыть меню","menu"]]]},
+  checkout:{text:s=>s.cart.length?"Как получить заказ?":"Сначала добавьте что-нибудь из меню.",kb:s=>s.cart.length?[[["Доставка","invoice|d","e"],["Самовывоз","invoice|p","e"]]]:[[["Открыть меню","menu"]]]},
+  invoice:{inv:s=>["Заказ в «Горном очаге»",`${s.cart.map(i=>i[0]).join(", ")} · ${s.mode==="d"?"доставка 40–60 мин":"самовывоз через 25 мин"}`],text:s=>`К оплате: ${rub(sum(s.cart))}`,kb:s=>[[[`Оплатить ${rub(sum(s.cart))}`,"paid"]]]},
+  paid:{sys:"Оплата прошла",text:s=>`Заказ №${1041+s.orders} принят, кухня уже готовит.\nСтатус пришлю сюда же.`,after:"admin",kb:[[["В начало","start"]]]},
+  admin:{sys:"Администратору ушло уведомление о новом заказе"},
+  "Мои заказы":{text:s=>s.orders?`Заказ №${1041+s.orders}: готовится, ориентир 40 минут.\nЗаказ №1040: доставлен 12 октября.`:"Заказ №1040: харчо, тархун. Доставлен 12 октября.",kb:[[["Повторить заказ","menu"]]]},
+  "Контакты":{text:"ул. Горная, 12\nЕжедневно 11:00–23:00\nДоставка по городу 40–60 минут"}
+ },
+ act(s,a,arg){if(a==="add"){s.cart.push([arg[0],+arg[1]]);s.last=arg[0];return "added"}
+  if(a==="clear"){s.cart=[];return "clear"}
+  if(a==="invoice"){s.mode=arg[0];return "invoice"}
+  if(a==="paid"){s.orders++;s.cart=[];return "paid"}}
+},
+{id:"salon",name:"Aura",title:"Онлайн-запись",tags:"мастера · слоты · напоминания",c:"#9B4D7A",ava:"A",
+ what:["Пошаговая запись: услуга, мастер, день, время","Свободные окна берутся из расписания","Напоминание клиенту за 2 часа","Отмена записи освобождает слот"],
+ menu:[["Записаться","Мои записи"],["Прайс","Адрес"]],
+ init:()=>({}),
+ nodes:{
+  start:{text:"Привет! Это бот студии красоты Aura.\nЗапишу к мастеру за пару нажатий и напомню о визите.",kb:[[["Записаться","svc"]]]},
+  "Записаться":{go:"svc"},
+  svc:{text:"Выберите услугу:",kb:[[["Стрижка","set|svc|Стрижка|master","e"],["Маникюр","set|svc|Маникюр|master","e"]],[["Окрашивание","set|svc|Окрашивание|master","e"]]]},
+  master:{text:s=>`${s.svc}. К какому мастеру?`,kb:[[["Анна","set|master|Анна|day","e"],["Мария","set|master|Мария|day","e"]],[["Любой свободный","set|master|любой мастер|day","e"]]]},
+  day:{text:s=>`${s.svc} · ${s.master}\nВыберите день:`,kb:[[["Пт, 17 окт","set|day|пт, 17 окт|time","e"],["Сб, 18 окт","set|day|сб, 18 окт|time","e"]],[["Вс, 19 окт","set|day|вс, 19 окт|time","e"]]]},
+  time:{text:s=>`${s.svc} · ${s.master} · ${s.day}\nСвободное время:`,kb:[[["11:00","set|time|11:00|confirm","e"],["14:30","set|time|14:30|confirm","e"],["18:00","set|time|18:00|confirm","e"]]]},
+  confirm:{text:s=>`Проверьте запись:\n${s.svc}, ${s.master}\n${s.day}, ${s.time}`,kb:[[["Подтвердить","booked"]],[["Изменить","svc","e"]]]},
+  booked:{text:s=>`Готово, вы записаны на ${s.day}, ${s.time}.\nНапомню за 2 часа до визита.`,after:"remind",kb:[[["Отменить запись","cancel"]]]},
+  remind:{sys:"Напоминание поставлено в очередь"},
+  cancel:{text:"Запись отменена, время снова свободно для других клиентов.",kb:[[["Записаться снова","svc"]]]},
+  "Мои записи":{text:s=>s.booked?`${s.svc}, ${s.master}\n${s.day}, ${s.time}`:"Активных записей нет.",kb:s=>s.booked?[[["Отменить","cancel"]]]:[[["Записаться","svc"]]]},
+  "Прайс":{text:"Стрижка — от 1 500 ₽\nМаникюр с покрытием — 1 800 ₽\nОкрашивание — от 3 500 ₽"},
+  "Адрес":{text:"ул. Садовая, 5, 2 этаж\nЕжедневно 10:00–21:00"}
+ },
+ act(s,a,arg){if(a==="set"){s[arg[0]]=arg[1];return arg[2]} if(a==="booked"){s.booked=1;return "booked"} if(a==="cancel"){s.booked=0;return "cancel"}}
+},
+{id:"auto",name:"ПроМотор",title:"Статус ремонта",tags:"этапы · фото · PDF",c:"#D2611C",ava:"ПМ",
+ what:["Клиент видит этап ремонта без звонков","Фото с участка прямо в чат","Акт работ в PDF","Вызов мастера одной кнопкой"],
+ menu:[["Статус ремонта","Записаться на ТО"],["Связаться с мастером"]],
+ init:()=>({}),
+ nodes:{
+  start:{text:"Здравствуйте! Это бот автосервиса «ПроМотор».\nПокажу, на каком этапе ремонт вашей машины.",kb:[[["Проверить статус","ask"]]]},
+  "Статус ремонта":{go:"ask"},
+  ask:{text:"Введите номер заказ-наряда.\nДля демо есть готовый номер:",kb:[[["А-2187","status","u"]]]},
+  status:{text:"Заказ-наряд А-2187 · Kia Rio",steps:[["Приёмка, 13 окт","ok"],["Диагностика, 13 окт","ok"],["Замена колодок и дисков","now"],["Готов к выдаче",""]],after2:"Ориентир: сегодня до 18:00",kb:[[["Фото этапа","photo"],["Акт PDF","pdf"]],[["Позвать мастера","call"]]]},
+  photo:{photo:["disc","снятый диск, 14:12"],text:"Износ диска за пределом нормы, поэтому меняем вместе с колодками.",kb:[[["Акт PDF","pdf"],["Позвать мастера","call"]]]},
+  pdf:{doc:["Акт_А-2187.pdf","86 КБ · предварительный акт работ"],kb:[[["Позвать мастера","call"]]]},
+  call:{text:"Мастер Сергей получил уведомление и напишет вам в течение 15 минут."},
+  "Связаться с мастером":{go:"call"},
+  "Записаться на ТО":{text:"Ближайшие окна на ТО:",kb:[[["Чт 10:00","to|чт, 10:00","e"],["Пт 15:00","to|пт, 15:00","e"]]]},
+  to:{text:s=>`Записал на ТО: ${s.to}.\nВозьмите с собой СТС.`}
+ },
+ act(s,a,arg){if(a==="to"){s.to=arg[0];return "to"}}
+},
+{id:"dent",name:"Белая линия",title:"Запись в клинику",tags:"Google Таблицы · напоминания",c:"#178C8C",ava:"БЛ",
+ what:["Выбор врача и свободного окна","Контакт клиента одной кнопкой","Запись сразу появляется в Google Таблице","Напоминание накануне визита"],
+ menu:[["Записаться","Мои записи"],["Врачи и цены"]],
+ init:()=>({}),
+ nodes:{
+  start:{text:"Здравствуйте! Это бот стоматологии «Белая линия».\nЗапишу на приём, а запись сразу появится в таблице клиники.",kb:[[["Записаться","spec"]]]},
+  "Записаться":{go:"spec"},
+  spec:{text:"К какому врачу?",kb:[[["Терапевт","set|spec|Терапевт|slot","e"],["Хирург","set|spec|Хирург|slot","e"]],[["Гигиена и чистка","set|spec|Гигиенист|slot","e"]]]},
+  slot:{text:s=>`${s.spec}. Ближайшие окна:`,kb:[[["Чт 16.10, 10:00","set|slot|16.10 10:00|phone","e"]],[["Пт 17.10, 15:30","set|slot|17.10 15:30|phone","e"]],[["Сб 18.10, 12:00","set|slot|18.10 12:00|phone","e"]]]},
+  phone:{text:"Отправьте контакт, чтобы администратор мог подтвердить запись.",kb:[[["Отправить контакт","done","u","Контакт: Иван"]]]},
+  done:{text:s=>`Вы записаны: ${s.spec}, ${s.slot.replace(" "," в ")}.\nНапомню накануне вечером.`,sheet:1},
+  "Мои записи":{text:s=>s.slot?`${s.spec}, ${s.slot}`:"Записей пока нет.",kb:s=>s.slot?null:[[["Записаться","spec"]]]},
+  "Врачи и цены":{text:"Консультация терапевта — бесплатно\nЛечение кариеса — от 3 900 ₽\nПрофгигиена — 4 500 ₽"}
+ },
+ act(s,a,arg){if(a==="set"){s[arg[0]]=arg[1];return arg[2]}}
+},
+{id:"flow",name:"Флёр",title:"Магазин цветов",tags:"каталог · оплата в TG",c:"#C2456B",ava:"Ф",
+ what:["Каталог-карусель в одном сообщении","Выбор времени доставки","Оплата в Telegram","Фото готового букета перед отправкой"],
+ menu:[["Каталог","Доставка"]],
+ init:()=>({i:0}),
+ nodes:{
+  start:{text:"Добро пожаловать в мастерскую «Флёр».\nСоберём букет и привезём за 2 часа.",kb:[[["Открыть каталог","cat"]]]},
+  "Каталог":{go:"cat"},
+  cat:{photo:s=>[FLOWERS[s.i][2],"фото букета"],text:s=>`${FLOWERS[s.i][0]}\n${rub(FLOWERS[s.i][1])}`,kb:s=>[[["‹","prev","e"],[`${s.i+1} / ${FLOWERS.length}`,"noop","e"],["›","next","e"]],[["В корзину","buy"]]]},
+  when:{text:s=>`Добавил «${FLOWERS[s.i][0]}».\nКогда доставить?`,kb:[[["Сегодня до 20:00","pay|сегодня до 20:00","e"]],[["Завтра утром","pay|завтра 9:00–12:00","e"]]]},
+  pay:{inv:s=>[FLOWERS[s.i][0],`доставка: ${s.when}`],text:s=>`К оплате: ${rub(FLOWERS[s.i][1])}`,kb:s=>[[[`Оплатить ${rub(FLOWERS[s.i][1])}`,"paid"]]]},
+  paid:{sys:"Оплата прошла",text:"Спасибо! Флорист уже собирает букет.\nФото пришлю перед отправкой.",after:"ready"},
+  ready:{photo:s=>[FLOWERS[s.i][2],"ваш букет"],text:"Букет готов и передан курьеру."},
+  "Доставка":{text:"Доставка по городу — 2 часа, бесплатно от 3 000 ₽.\nМожно анонимно и с открыткой."}
+ },
+ act(s,a,arg){const n=FLOWERS.length;
+  if(a==="prev"){s.i=(s.i+n-1)%n;return "cat"} if(a==="next"){s.i=(s.i+1)%n;return "cat"} if(a==="noop")return "cat";
+  if(a==="buy")return "when"; if(a==="pay"){s.when=arg[0];return "pay"}}
+}
+];
+const ICON={
+ cafe:'<path d="M3 17.5h18"/><path d="M5 17.5a7 7 0 0 1 14 0"/><path d="M12 10.5V8.5"/><path d="M10 8.5h4"/><path d="M8.5 14a3.8 3.8 0 0 1 2-1.8"/>',
+ salon:'<circle cx="6.5" cy="6.5" r="2.7"/><circle cx="6.5" cy="17.5" r="2.7"/><path d="M8.6 8.3 20 18.5"/><path d="M8.6 15.7 20 5.5"/>',
+ auto:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/>',
+ dent:'<path d="M7.5 3.5C5 3.5 3.5 5.4 3.5 7.6c0 2 1 3.4 1.5 5.4.6 2.3.8 4.6 1.6 6.6.4 1.1 1.8 1 2.1-.1l1-4.1c.3-1.1 2.3-1.1 2.6 0l1 4.1c.3 1.1 1.7 1.2 2.1.1.8-2 1-4.3 1.6-6.6.5-2 1.5-3.4 1.5-5.4 0-2.2-1.5-4.1-4-4.1-1.7 0-2.6.9-4.5.9s-2.8-.9-4.5-.9z"/>',
+ flow:'<circle cx="12" cy="8" r="2"/><path d="M12 6a2.6 2.6 0 1 1 3.4 1.6"/><path d="M14 8a2.6 2.6 0 1 1-1.2 3.6"/><path d="M12 10a2.6 2.6 0 1 1-3.4-1.6"/><path d="M10 8a2.6 2.6 0 1 1 1.2-3.6"/><path d="M12 12v9"/><path d="M12 18c-2.5 0-4.5-1.6-4.5-3.8 2.5 0 4.5 1.6 4.5 3.8zM12 16.5c2.2 0 4-1.4 4-3.3-2.2 0-4 1.4-4 3.3z"/>'
+};
+const ICON_SHIFT={cafe:"0 -1",auto:"-.54 .54",dent:"1 0"};
+const avaSVG=id=>`<svg viewBox="0 0 24 24" aria-hidden="true"><g transform="translate(${ICON_SHIFT[id]||"0 0"})">${ICON[id]}</g></svg>`;
+const sum=c=>c.reduce((a,i)=>a+i[1],0);
+const feed=$("#tgFeed"),kbEl=$("#tgKb");
+let bot,st,timer=[],busy=false;
+const clock=(()=>{let m=12*60+40;return()=>{m++;return `${Math.floor(m/60)%24}:${String(m%60).padStart(2,"0")}`}})();
+const val=(v,s)=>typeof v==="function"?v(s):v;
+function nl(t){return esc(t).replace(/\n/g,"<br>")}
+function bubbleHTML(n){
+  let h="";const p=val(n.photo,st);
+  if(p)h+=`<div class="ph" style="--g:${PH[p[0]]}"><small>${esc(p[1])}</small></div>`;
+  const inv=val(n.inv,st); if(inv)h+=`<div class="inv"><b>${esc(inv[0])}</b><span>${esc(inv[1])}</span></div>`;
+  if(n.doc)h+=`<div class="doc"><i>PDF</i><div><b>${esc(n.doc[0])}</b><span>${esc(n.doc[1])}</span></div></div>`;
+  const t=val(n.text,st); if(t)h+=nl(t);
+  if(n.steps)h+=`<ul class="steps">${n.steps.map(x=>`<li class="${x[1]}">${esc(x[0])}</li>`).join("")}</ul>${n.after2?nl(n.after2):""}`;
+  if(n.sheet)h+=`<div class="sheet"><div class="sheet-t">Google Таблица · Записи, октябрь</div><table>
+    <tr><td>16.10</td><td>09:00</td><td>Гигиенист</td><td>Ольга</td></tr>
+    <tr class="new"><td>${esc(st.slot.split(" ")[0])}</td><td>${esc(st.slot.split(" ")[1])}</td><td>${esc(st.spec)}</td><td>Иван · новая</td></tr></table></div>`;
+  return h+`<time>${clock()}</time>`;
+}
+function kbHTML(n){const kb=val(n.kb,st);if(!kb)return"";
+  return `<div class="ikb">${kb.map(r=>`<div>${r.map(b=>`<button type="button" data-t="${esc(b[1])}" data-f="${b[2]||""}" data-u="${esc(b[3]||"")}">${esc(b[0])}</button>`).join("")}</div>`).join("")}</div>`}
+function scroll(){feed.scrollTop=feed.scrollHeight}
+function addMe(text){const m=document.createElement("div");m.className="m me";m.innerHTML=`<div class="bub">${nl(text)}<time>${clock()}</time></div>`;feed.append(m);scroll()}
+function addSys(t){const m=document.createElement("div");m.className="sys";m.textContent=t;feed.append(m);scroll()}
+function renderNode(key,el){
+  let n=bot.nodes[key]; if(n.go)n=bot.nodes[key=n.go];
+  if(n.sys)addSys(n.sys);
+  if(!n.text&&!n.photo&&!n.doc&&!n.inv)return finishAfter(n);
+  const m=el||document.createElement("div");m.className="m";
+  m.innerHTML=`<div class="bub">${bubbleHTML(n)}</div>${kbHTML(n)}`;
+  if(!el)feed.append(m);
+  bindKb(m);scroll();finishAfter(n);
+}
+function finishAfter(n){if(n.after){busy=true;timer.push(setTimeout(()=>{busy=false;renderNode(n.after)},1100))}}
+function typing(cb,ms){busy=true;const m=document.createElement("div");m.className="m typing";m.innerHTML='<div class="bub"><i></i><i></i><i></i></div>';feed.append(m);scroll();
+  timer.push(setTimeout(()=>{m.remove();busy=false;cb()},ms))}
+function route(target){
+  const [a,...arg]=target.split("|");
+  if(bot.act){const r=bot.act(st,a,arg);if(r)return r}
+  return a;
+}
+function bindKb(m){m.querySelectorAll(".ikb button").forEach(b=>b.onclick=()=>{
+  if(busy)return;
+  const next=route(b.dataset.t);
+  if(next==="start"){return startBot(bot.id,true)}
+  if(b.dataset.f==="e"){renderNode(next,m);return}
+  m.querySelectorAll(".ikb button").forEach(x=>x.disabled=true);
+  if(b.dataset.f==="u")addMe(b.dataset.u||b.textContent);
+  typing(()=>renderNode(next),550);
+})}
+function renderMenu(){
+  kbEl.innerHTML=bot.menu.map(r=>`<div>${r.map(l=>`<button type="button">${esc(l)}</button>`).join("")}</div>`).join("");
+  kbEl.querySelectorAll("button").forEach(b=>b.onclick=()=>{if(busy)return;addMe(b.textContent);typing(()=>renderNode(b.textContent),500)});
+}
+function startBot(id,animate){
+  timer.forEach(clearTimeout);timer=[];busy=false;
+  bot=BOTS.find(b=>b.id===id);st=bot.init();
+  $("#tgAva").innerHTML=avaSVG(bot.id);$("#tgAva").style.setProperty("--c",bot.c);$("#tgName").textContent=bot.name;
+  $("#botWhat").innerHTML=bot.what.map(w=>`<li>${esc(w)}</li>`).join("");
+  document.querySelectorAll(".bot-item").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===id));
+  feed.innerHTML="";renderMenu();addMe("/start");
+  if(animate)typing(()=>renderNode("start"),450);else renderNode("start");
+}
+$("#botList").innerHTML=BOTS.map(b=>`<button class="bot-item" type="button" data-id="${b.id}" aria-pressed="false"><span class="ava" style="--c:${b.c}">${avaSVG(b.id)}</span><span><b>${esc(b.title)}</b><span>${esc(b.name)} · ${esc(b.tags)}</span></span><em>демо</em></button>`).join("");
+document.querySelectorAll(".bot-item").forEach(b=>b.onclick=()=>startBot(b.dataset.id,true));
+$("#tgReset").onclick=()=>startBot(bot.id,true);
+startBot("cafe",false);
+
+/* ---------- site previews ---------- */
+const nav=(logo,links,btn)=>`<div class="mk-nav"><span class="mk-logo">${logo}</span><span class="mk-links">${links.map(l=>`<span>${l}</span>`).join("")}</span><span class="mk-btn sm">${btn}</span></div>`;
+const lead=(n,d,p)=>`<div class="mk-lead"><span><b>${n}</b>${d?`<small>${d}</small>`:""}</span><i></i><span class="p">${p}</span></div>`;
+const SITES=[
+{id:"cafe",tab:"Кафе",name:"Горный очаг",url:"gorny-ochag.ru",c:"#2F6B4F",
+ cap:"Лендинг кафе с бронью стола и меню. Тёмный зал с отсветом камина, антиква в заголовках, блюда нарисованы сверху на тарелках.",
+ vars:"--mb:#F6F0E6;--mf:#2A2118;--ma:#2F6B4F;--mai:#fff;--mcard:#FFFDF8;--mline:#E2D5BF;--mr:8px;--mr2:14px;--mfont-h:'Cormorant',Georgia,serif;--mfont-b:'Manrope',system-ui,sans-serif",
+ html:()=>`<div class="mk-top">${nav("Горный очаг",["Меню","Бронь","Доставка","Контакты"],"Заказать доставку")}
+  <div class="mk-hero"><div><span class="mk-eb">Кавказская кухня · ул. Горная, 12</span><h3>Хинкали, угли и&nbsp;камин</h3>
+   <p class="l">Лепим хинкали руками каждое утро, мясо готовим на углях из виноградной лозы. Приходите ужинать у огня или закажите домой.</p>
+   <div class="mk-acts"><span class="mk-btn">Забронировать стол</span><span class="mk-btn gh">Смотреть меню</span></div>
+   <div class="mk-stats"><div class="mk-stat"><b>4,8</b><span>рейтинг на картах</span></div><div class="mk-stat"><b>40</b><span>мест у камина</span></div><div class="mk-stat"><b>45 мин</b><span>доставка по городу</span></div></div></div>
+   <div class="mk-wid"><h5>Стол на вечер</h5>
+    <div class="mk-field"><span>Дата</span><span>Сегодня, 17 октября</span></div>
+    <div class="lbl">Гостей</div><div class="mk-row"><span class="mk-chip">1</span><span class="mk-chip on">2</span><span class="mk-chip">4</span><span class="mk-chip">6+</span></div>
+    <div class="lbl">Время</div><div class="mk-row"><span class="mk-chip off">18:00</span><span class="mk-chip on">19:30</span><span class="mk-chip">20:00</span><span class="mk-chip">21:30</span></div>
+    <span class="mk-btn full">Забронировать на 19:30</span><span class="note">Подтверждение придёт в Telegram</span></div></div></div>
+  <div class="mk-sec"><div class="mk-sh"><h4 class="mk-h">Что заказывают чаще всего</h4><div class="mk-row"><span class="mk-chip on">Горячее</span><span class="mk-chip">Супы</span><span class="mk-chip">Выпечка</span><span class="mk-chip">Напитки</span></div></div>
+   <div class="mk-g3">
+    <div class="mk-card"><img class="mk-img" src="img/khinkali.jpg" alt="Хинкали" loading="lazy"><b>Хинкали с бараниной</b><small>5 штук, с бульоном и чёрным перцем</small><div class="pr">390 ₽<span class="mk-btn sm">+ В заказ</span></div></div>
+    <div class="mk-card"><img class="mk-img" src="img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy"><b>Шашлык из свинины</b><small>шейка на углях, маринованный лук, ткемали</small><div class="pr">520 ₽<span class="mk-btn sm">+ В заказ</span></div></div>
+    <div class="mk-card"><img class="mk-img" src="img/khachapuri.jpg" alt="Хачапури по-аджарски" loading="lazy"><b>Хачапури по-аджарски</b><small>сулугуни, имеретинский сыр, желток</small><div class="pr">460 ₽<span class="mk-btn sm">+ В заказ</span></div></div></div></div>
+  <div class="mk-sec" style="padding-top:0"><div class="mk-g2"><div><h4 class="mk-h">Бизнес-ланч<br>с 12 до 16</h4>
+    ${lead("Суп дня и горячее","морс или чай","390 ₽")}${lead("Салат и горячее","лимонад тархун","420 ₽")}${lead("Три блюда и десерт","пахлава или чурчхела","520 ₽")}</div>
+   <div style="display:grid;gap:12px;align-content:start">
+    <div class="rev"><span class="mk-stars">★★★★★</span>Хинкали как в Тбилиси, бульон не вытекает. Сидели у камина, обслуживание быстрое.<b>Марина, Яндекс Карты</b></div>
+    <div class="rev"><span class="mk-stars">★★★★★</span>Заказываем доставку по пятницам: привозят горячим, шашлык не пересушен.<b>Игорь, 2ГИС</b></div></div></div></div>
+  <div class="mk-foot"><span>© 2026 Горный очаг · ежедневно 11:00–23:00</span><span>Бронь и заказы приходят администратору в Telegram</span></div>`},
+
+{id:"dent",tab:"Стоматология",name:"Белая линия",url:"belaya-liniya.clinic",c:"#178C8C",
+ cap:"Сайт клиники: запись к врачу с выбором окна прямо в первом экране, цены без звёздочек, врачи. Светлая палитра, акцент на доверии.",
+ vars:"--mb:#FFFFFF;--mf:#0F2B33;--ma:#178C8C;--mai:#fff;--mcard:#F3F9F9;--mline:#D7E8E8;--mr:10px;--mr2:18px;--mfont-h:'Manrope',system-ui,sans-serif;--mfont-b:'Manrope',system-ui,sans-serif",
+ html:()=>`<div class="mk-top">${nav("Белая линия",["Услуги","Врачи","Цены","Отзывы"],"Записаться")}
+  <div class="mk-hero"><div><span class="badge">Цена фиксируется до начала лечения</span><h3>Лечим зубы без боли и сюрпризов в чеке</h3>
+   <p class="l">Современная анестезия, план лечения с ценой на руки и гарантия до 5 лет. Первичная консультация терапевта бесплатно.</p>
+   <div class="mk-acts"><span class="mk-btn">Записаться онлайн</span><span class="mk-btn gh">Смотреть цены</span></div>
+   <div class="mk-check"><span>Рассрочка 0%</span><span>Детский врач</span><span>Работаем без выходных</span></div></div>
+   <div class="media"><img class="mk-photo" src="img/dent.jpg" alt="Стоматологическая установка"><div class="mk-wid" style="--mcard:#fff;border:1px solid #D7E8E8"><h5>Запись онлайн</h5>
+    <div class="mk-doc"><span class="mk-ava" style="--g:linear-gradient(135deg,#5FB3B0,#178C8C)">ЕК</span><div><b>Елена Котова</b><small>терапевт · стаж 12 лет · <span class="mk-stars">★</span> 4,9</small></div></div>
+    <div class="mk-row"><span class="mk-chip on">Сегодня</span><span class="mk-chip">Завтра</span><span class="mk-chip">Пт, 18</span><span class="mk-chip">Сб, 19</span></div>
+    <div class="slots"><span class="mk-chip off">09:00</span><span class="mk-chip">11:30</span><span class="mk-chip on">15:30</span><span class="mk-chip">17:00</span><span class="mk-chip off">18:30</span><span class="mk-chip">19:00</span></div>
+    <span class="mk-btn full">Записаться на 15:30</span><span class="note">Напомним накануне в Telegram или по SMS</span></div></div></div></div>
+  <div class="mk-sec"><div class="mk-sh"><h4 class="mk-h">Услуги и цены</h4><span class="mk-eb">цены на октябрь 2026</span></div>
+   <div class="mk-g3">
+    <div class="mk-card"><span class="ic">01</span><b>Лечение кариеса</b><small>с анестезией и пломбой из светоотверждаемого материала</small><div class="pr">от 3 900 ₽</div></div>
+    <div class="mk-card"><span class="ic">02</span><b>Профгигиена</b><small>ультразвук, Air Flow, полировка и фторирование</small><div class="pr">4 500 ₽</div></div>
+    <div class="mk-card"><span class="ic">03</span><b>Имплантация</b><small>имплант с коронкой под ключ, гарантия 5 лет</small><div class="pr">от 32 000 ₽</div></div>
+    <div class="mk-card"><span class="ic">04</span><b>Детская стоматология</b><small>лечение молочных зубов в игровой форме</small><div class="pr">от 2 500 ₽</div></div>
+    <div class="mk-card"><span class="ic">05</span><b>Отбеливание</b><small>кабинетное, до 8 тонов за визит</small><div class="pr">12 000 ₽</div></div>
+    <div class="mk-card"><span class="ic">06</span><b>Коронки</b><small>металлокерамика и диоксид циркония</small><div class="pr">от 18 000 ₽</div></div></div></div>
+  <div class="mk-sec" style="padding-top:0"><h4 class="mk-h" style="margin-bottom:22px">Врачи</h4><div class="mk-g4">
+    <div class="mk-card dr"><span class="mk-ava" style="--g:linear-gradient(135deg,#5FB3B0,#178C8C)">ЕК</span><b>Елена Котова</b><small>терапевт, 12 лет</small></div>
+    <div class="mk-card dr"><span class="mk-ava" style="--g:linear-gradient(135deg,#7FA7D9,#3D6FB0)">АС</span><b>Артём Смирнов</b><small>хирург-имплантолог, 15 лет</small></div>
+    <div class="mk-card dr"><span class="mk-ava" style="--g:linear-gradient(135deg,#E7A6B8,#B8577A)">ОЛ</span><b>Ольга Лебедева</b><small>детский врач, 9 лет</small></div>
+    <div class="mk-card dr"><span class="mk-ava" style="--g:linear-gradient(135deg,#B9A6E0,#6E58B0)">ДВ</span><b>Дмитрий Волков</b><small>ортопед, 11 лет</small></div></div></div>
+  <div class="mk-sec" style="padding-top:0"><div class="band"><div><h4 style="font-size:clamp(20px,3cqi,28px)">Консультация терапевта бесплатно</h4><p style="opacity:.85;margin-top:6px">Осмотр, снимок и план лечения с ценой за 30 минут</p></div><span class="mk-btn">Выбрать время</span></div></div>
+  <div class="mk-foot"><span>© 2026 Белая линия · лицензия Л041-00000-00/000000</span><span>Записи с сайта попадают в Google Таблицу клиники</span></div>`},
+
+{id:"salon",tab:"Студия красоты",name:"Aura",url:"aura-studio.ru",c:"#9B4D7A",
+ cap:"Студия красоты: крупная выразительная типографика, мастера, прайс и запись в три шага. Пастельная палитра с глубоким сливовым.",
+ vars:"--mb:#F7EEF1;--mf:#3A1F2D;--ma:#3A1F2D;--mai:#F7EEF1;--mcard:#FFF8FA;--mline:#E6CBD5;--mr:999px;--mr2:24px;--mfont-h:'Unbounded',system-ui,sans-serif;--mfont-b:'Manrope',system-ui,sans-serif",
+ html:()=>`${nav("aura",["Услуги","Мастера","Прайс","Сертификаты"],"Записаться")}
+  <div class="mk-hero"><div><span class="mk-eb">студия красоты на Садовой</span><h3>Время<br>для себя</h3>
+   <p class="l">Стрижки, окрашивание и маникюр без спешки. Кофе, тишина и мастера, к которым возвращаются годами.</p>
+   <div class="mk-acts"><span class="mk-btn">Записаться онлайн</span><span class="mk-btn gh">Прайс</span></div></div>
+   <div class="art"><img class="blob b1" src="img/salon.jpg" alt="Маникюр с цветным покрытием"><span class="blob b2"></span><span class="blob b3"></span>
+    <div class="float"><span style="opacity:.6">ближайшее окно</span><b>Сегодня, 16:30</b><span>Анна · стрижка</span></div></div></div>
+  <div class="mk-sec" style="background:#EFDCE3"><div class="mk-sh"><h4 class="mk-h">Прайс</h4><span class="mk-eb">цена зависит от длины волос</span></div>
+   <div class="mk-g2"><div>${lead("Женская стрижка","с мытьём и укладкой","от 1 800 ₽")}${lead("Мужская стрижка","","1 500 ₽")}${lead("Окрашивание в один тон","","от 3 500 ₽")}${lead("Airtouch, шатуш","сложные техники","от 7 000 ₽")}</div>
+   <div>${lead("Маникюр с покрытием","","1 800 ₽")}${lead("Педикюр с покрытием","","2 400 ₽")}${lead("Уход для волос","восстановление, 40 минут","2 200 ₽")}${lead("Брови и ресницы","коррекция и окрашивание","1 200 ₽")}</div></div></div>
+  <div class="mk-sec"><h4 class="mk-h" style="margin-bottom:22px">Мастера</h4><div class="mk-g3">
+    <div class="mk-card master"><span class="mk-ava" style="--g:linear-gradient(160deg,#F2C6D4,#B5668F)">А</span><b>Анна</b><small>топ-стилист, стаж 9 лет</small><span class="mk-btn sm">Записаться</span></div>
+    <div class="mk-card master"><span class="mk-ava" style="--g:linear-gradient(160deg,#E9D3F0,#9C7AC0)">М</span><b>Мария</b><small>колорист, стаж 6 лет</small><span class="mk-btn sm">Записаться</span></div>
+    <div class="mk-card master"><span class="mk-ava" style="--g:linear-gradient(160deg,#F6D8C4,#C98B6A)">Е</span><b>Ева</b><small>мастер маникюра, стаж 5 лет</small><span class="mk-btn sm">Записаться</span></div></div></div>
+  <div class="mk-sec" style="padding-top:0"><h4 class="mk-h" style="margin-bottom:22px">Запись за минуту</h4><div class="mk-g3">
+    <div class="mk-card mk-step"><em>ШАГ 1 · УСЛУГА</em><div class="mk-row"><span class="mk-chip on">Стрижка</span><span class="mk-chip">Окрашивание</span><span class="mk-chip">Маникюр</span></div></div>
+    <div class="mk-card mk-step"><em>ШАГ 2 · МАСТЕР</em><div class="mk-row"><span class="mk-chip on">Анна</span><span class="mk-chip">Мария</span><span class="mk-chip">Любой</span></div></div>
+    <div class="mk-card mk-step"><em>ШАГ 3 · ВРЕМЯ</em><div class="mk-row"><span class="mk-chip">12:00</span><span class="mk-chip on">16:30</span><span class="mk-chip">19:00</span></div></div></div></div>
+  <div class="mk-foot"><span>© 2026 Aura · ул. Садовая, 5 · 10:00–21:00</span><span>Напоминание о визите приходит в Telegram</span></div>`},
+
+{id:"auto",tab:"Автосервис",name:"ПроМотор",url:"promotor-service.ru",c:"#D2611C",
+ cap:"Автосервис: статус ремонта и калькулятор стоимости прямо на сайте. Тёмная графитовая тема с оранжевым акцентом.",
+ vars:"--mb:#1C1F24;--mf:#EEF0F2;--ma:#F07A2B;--mai:#1C1F24;--mcard:#262B33;--mline:#3A404A;--mr:6px;--mr2:10px;--mfont-h:'Unbounded',system-ui,sans-serif;--mfont-b:'Manrope',system-ui,sans-serif",
+ html:()=>`<div class="mk-top">${nav("ПРОМОТОР",["Услуги","Цены","Статус ремонта","Контакты"],"Записаться на ТО")}
+  <div class="mk-hero"><div><span class="mk-eb" style="color:#F07A2B;opacity:1">автосервис · пр. Мира, 48</span><h3>Ремонт без простоев и сюрпризов</h3>
+   <p class="l">Диагностика за 30 минут, цена согласуется до начала работ, фото каждого этапа приходят в Telegram.</p>
+   <div class="mk-acts"><span class="mk-btn">Записаться на ТО</span><span class="mk-btn gh">Узнать статус ремонта</span></div>
+   <div class="mk-stats"><div class="mk-stat"><b>30 мин</b><span>диагностика</span></div><div class="mk-stat"><b>12 мес</b><span>гарантия на работы</span></div><div class="mk-stat"><b>6</b><span>подъёмников</span></div></div></div>
+   <div class="mk-wid"><div style="display:flex;gap:14px;align-items:center"><span class="ring" aria-label="готово на 72%">72%</span><div><span class="mk-eb" style="opacity:.55">заказ-наряд</span><h5 style="margin-top:6px">А-2187 · Kia Rio</h5></div></div>
+    <div class="bar"><i></i></div>
+    <div class="st"><div class="is-ok">Приёмка, 13 окт</div><div class="is-ok">Диагностика, 13 окт</div><div class="is-now">Замена колодок и дисков</div><div>Готов к выдаче, сегодня до 18:00</div></div>
+    <span class="mk-btn full">Открыть фото этапов</span></div></div></div>
+  <div class="mk-sec"><div class="mk-sh"><h4 class="mk-h">Сколько стоит</h4><div class="mk-row"><span class="mk-chip on">Легковой</span><span class="mk-chip">Кроссовер</span><span class="mk-chip">Внедорожник</span></div></div>
+   <div class="calc"><div><div class="ck on"><span>Замена масла и фильтра</span><span>1 200 ₽</span></div><div class="ck on"><span>Передние колодки</span><span>1 400 ₽</span></div><div class="ck"><span>Тормозные диски, пара</span><span>2 000 ₽</span></div><div class="ck on"><span>Компьютерная диагностика</span><span>990 ₽</span></div><div class="ck"><span>Развал-схождение</span><span>1 800 ₽</span></div></div>
+    <div class="total"><span style="font-weight:700;font-size:13px">Итого за работы</span><b>3 590 ₽</b><span style="font-size:12.5px">запчасти считаем отдельно, есть в наличии</span><span class="mk-btn full">Записаться с этим списком</span></div></div></div>
+  <div class="mk-sec" style="padding-top:0"><div class="mk-g4">
+    <div class="mk-card"><span class="ic">ТО</span><b>Плановое ТО</b><small>по регламенту производителя, сохраняем гарантию</small></div>
+    <div class="mk-card"><span class="ic">ДВС</span><b>Двигатель</b><small>ремонт, замена ремня ГРМ, свечей и прокладок</small></div>
+    <div class="mk-card"><span class="ic">ХОД</span><b>Подвеска</b><small>амортизаторы, рычаги, сайлентблоки</small></div>
+    <div class="mk-card"><span class="ic">ЭЛ</span><b>Электрика</b><small>диагностика ошибок, стартер, генератор</small></div></div></div>
+  <div class="mk-foot"><span>© 2026 ПроМотор · пн–сб 8:00–20:00</span><span>Статус ремонта дублируется в Telegram-боте</span></div>`},
+
+{id:"flow",tab:"Цветы",name:"Флёр",url:"fleur-flowers.ru",c:"#C2456B",
+ cap:"Цветочная мастерская: каталог с фильтрами, доставка за 2 часа, оплата онлайн. Изящная антиква, пастель и нарисованные букеты.",
+ vars:"--mb:#FBF6F2;--mf:#33262A;--ma:#33262A;--mai:#FBF6F2;--mcard:#FFFFFF;--mline:#EADBD3;--mr:999px;--mr2:20px;--mfont-h:'Cormorant',Georgia,serif;--mfont-b:'Manrope',system-ui,sans-serif",
+ html:()=>`<div class="promo">Доставка за 2 часа · бесплатно от 3 000 ₽ · фото букета перед отправкой</div>
+  ${nav("Флёр",["Каталог","Свадьбы","Подписка","Доставка"],"Корзина · 0")}
+  <div class="mk-hero"><div><span class="mk-eb">цветочная мастерская</span><h3>Букеты, которые <em>говорят</em> за вас</h3>
+   <p class="l">Свежие цветы каждое утро. Соберём по вашему настроению, подпишем открытку и привезём точно ко времени.</p>
+   <div class="mk-acts"><span class="mk-btn">Выбрать букет</span><span class="mk-btn gh">Собрать свой</span></div></div>
+   <div class="hero-ph"><img class="mk-photo" src="img/roses-hero.jpg" alt="Розовые розы"><span class="mk-tag">букет дня · 4 900 ₽</span></div></div>
+  <div class="mk-sec" style="padding-top:0"><div class="mk-sh"><h4 class="mk-h">Каталог</h4><div class="mk-row"><span class="mk-chip on">Все</span><span class="mk-chip">Розы</span><span class="mk-chip">Сезонные</span><span class="mk-chip">В коробке</span><span class="mk-chip">Моно</span></div></div>
+   <div class="mk-g4">
+    <div class="mk-card prod"><img class="mk-img" src="img/roses.jpg" alt="Букет розовых роз" loading="lazy"><b>Пионовидные розы</b><small>15 шт, крафт</small><div class="pr">4 900 ₽<span class="mk-btn sm">В корзину</span></div></div>
+    <div class="mk-card prod"><img class="mk-img" src="img/autumn.jpg" alt="Оранжевые хризантемы" loading="lazy"><b>Букет «Сентябрь»</b><small>сезонные хризантемы</small><div class="pr">3 200 ₽<span class="mk-btn sm">В корзину</span></div></div>
+    <div class="mk-card prod"><img class="mk-img" src="img/tulips.jpg" alt="Розовые тюльпаны" loading="lazy"><b>Тюльпаны</b><small>25 шт, розовые</small><div class="pr">2 700 ₽<span class="mk-btn sm">В корзину</span></div></div>
+    <div class="mk-card prod"><img class="mk-img" src="img/eustoma.jpg" alt="Белая эустома" loading="lazy"><b>Эустома</b><small>монобукет, 11 веток</small><div class="pr">3 800 ₽<span class="mk-btn sm">В корзину</span></div></div></div></div>
+  <div class="mk-sec" style="background:#F3E7E1"><h4 class="mk-h" style="margin-bottom:22px">Как доставляем</h4><div class="mk-g3">
+    <div class="mk-card"><b>Собираем при вас</b><small>флорист пришлёт фото букета в Telegram до отправки</small></div>
+    <div class="mk-card"><b>Везём в термобоксе</b><small>цветы не мёрзнут зимой и не вянут летом</small></div>
+    <div class="mk-card"><b>Можно анонимно</b><small>курьер не назовёт отправителя, открытка бесплатно</small></div></div></div>
+  <div class="mk-foot"><span>© 2026 Флёр · ежедневно 8:00–22:00</span><span>Заказы и оплата приходят владельцу в Telegram</span></div>`}
+];
+function siteHTML(s){return `<div class="mk ${s.id}" style="${s.vars}">${s.html()}</div>`}
+let siteSel="cafe";
+let frameTimer=0,frameOk=false;
+addEventListener("message",e=>{if(e.data&&e.data.demo==="ready")frameOk=true});
+function renderSite(){
+  const s=SITES.find(x=>x.id===siteSel);
+  $("#siteTabs").innerHTML=SITES.map(x=>`<button class="site-tab" type="button" data-id="${x.id}" aria-pressed="${x.id===siteSel}" style="--c:${x.c}"><i></i>${esc(x.tab)}</button>`).join("");
+  document.querySelectorAll(".site-tab").forEach(b=>b.onclick=()=>{siteSel=b.dataset.id;renderSite()});
+  $("#bUrl").textContent="https://"+s.url;$("#bOpen").href="works/"+s.id+".html";
+  const v=$("#bView");v.classList.add("live");
+  v.innerHTML=`<iframe class="b-frame" src="works/${s.id}.html" title="Демо-сайт ${esc(s.name)}"></iframe><div class="b-fallback" hidden>${siteHTML(s)}</div>`;
+  clearTimeout(frameTimer);frameOk=false;
+  frameTimer=setTimeout(()=>{if(!frameOk){v.classList.remove("live");v.querySelector("iframe")?.remove();v.querySelector(".b-fallback").hidden=false;v.scrollTop=0}},4000);
+  $("#siteCap").textContent=s.name+". "+s.cap;
+}
+document.querySelectorAll(".dev button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".dev button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  $("#browser").classList.toggle("mob",b.dataset.dev==="mob");
+});
+renderSite();
+
+/* ---------- copy helpers ---------- */
+async function copyText(text,msgEl,ok){
+  try{await navigator.clipboard.writeText(text);msgEl.textContent=ok}
+  catch(e){msgEl.textContent="Не удалось скопировать, выделите текст вручную"}
+  setTimeout(()=>msgEl.textContent="",2600);
+}
+$("#copyTg").onclick=()=>copyText("@BeauG0sse",$("#copyTgMsg"),"Скопировано");
+
+/* ---------- brief ---------- */
+const NEEDS=["Сайт","Telegram-бот","Парсер","ИИ-ассистент","Интеграция","Доработка"];
+const need=new Set(["Telegram-бот"]);
+$("#needChips").innerHTML=NEEDS.map(n=>`<button type="button" class="chip" aria-pressed="${need.has(n)}">${n}</button>`).join("");
+document.querySelectorAll("#needChips .chip").forEach(c=>c.onclick=()=>{const n=c.textContent;need.has(n)?need.delete(n):need.add(n);c.setAttribute("aria-pressed",need.has(n));brief()});
+function briefText(){
+  const t=$("#bText").value.trim(),b=$("#bBudget").value.trim();
+  return `Здравствуйте! Пишу с вашего сайта.\nНужно: ${need.size?[...need].join(", "):"пока не решил"}\nСрок: ${$("#bTime").value}`+(b?`\nБюджет: ${b}`:"")+`\nЗадача: ${t||"…опишите задачу в поле выше"}`;
+}
+function brief(){$("#bOut").textContent=briefText()}
+["#bTime","#bBudget","#bText"].forEach(s=>$(s).addEventListener("input",brief));
+$("#brief").addEventListener("submit",e=>{e.preventDefault();copyText(briefText(),$("#bToast"),"Скопировано. Вставьте в чат Telegram")});
+brief();
+})();
+</script>

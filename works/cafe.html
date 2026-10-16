@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Горный очаг</title>
+<meta name="description" content="Кафе кавказской кухни: хинкали ручной лепки, мясо на углях, бронь стола и доставка.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Тёмный зал у огня: угольный фон, тлеющий оранжевый, кремовые «бумажные» разделы меню */
+:root{
+  --soot:#160F0B; --soot2:#21170F; --ember:#E8762C; --ember2:#F3A257; --cream:#F5EBDC; --paper:#FBF5EA;
+  --ink:#2A1E15; --muted:#7A6A5B; --line:#E3D3BC; --wine:#6E1F2A; --sage:#55704F;
+  --f-h:"Oranienbaum","Times New Roman",serif; --f-b:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 16px/1.6 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+h1,h2,h3{font-family:var(--f-h);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eb{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-fire{background:var(--ember);color:#1A0F08}
+.btn-fire:hover{background:var(--ember2)}
+.btn-line{box-shadow:inset 0 0 0 1.5px currentColor}
+
+.demo{background:#000;color:#cbbba8;font-size:12.5px;text-align:center;padding:7px 16px}
+.demo a{color:var(--ember2);font-weight:700;text-decoration:none}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(22,15,11,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--cream);border-bottom:1px solid rgba(245,235,220,.08)}
+.top .wrap{display:flex;align-items:center;gap:28px;padding-block:14px}
+.logo{font:400 26px/1 var(--f-h);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:12px;height:18px;background:linear-gradient(var(--ember2),var(--ember));border-radius:50% 50% 50% 50%/60% 60% 40% 40%;transform:rotate(8deg)}
+.nav{display:flex;gap:24px;margin-left:auto;font-size:14.5px;font-weight:600}
+.nav a{text-decoration:none;opacity:.78;text-transform:uppercase;letter-spacing:.16em;font-size:12px}
+.nav a:hover{opacity:1;color:var(--ember2)}
+.cart-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(245,235,220,.1);font-weight:700;font-size:14px}
+.cart-btn b{background:var(--ember);color:#1A0F08;border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;padding:0 6px}
+@media (max-width:900px){.nav{display:none}.cart-btn{margin-left:auto}}
+
+/* hero */
+.hero{position:relative;color:var(--cream);background:linear-gradient(90deg,rgba(22,15,11,.96) 0%,rgba(22,15,11,.85) 40%,rgba(22,15,11,.35) 75%,rgba(22,15,11,.2)),url(../img/cafe-hero.jpg) 70% center/cover,var(--soot);overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:120px;background:linear-gradient(transparent,var(--soot));pointer-events:none}
+.info{background:var(--soot);color:var(--cream);border-top:1px solid rgba(245,235,220,.1)}
+.info .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;padding-block:0}
+.info div{padding:22px 20px;border-left:1px solid rgba(245,235,220,.1)}
+.info div:first-child{border-left:0;padding-left:0}
+.info small{display:block;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ember2);margin-bottom:6px}
+.info b{font:400 22px/1.2 var(--f-h)}
+.info a{color:var(--cream)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#6FCF6A;margin-right:8px;vertical-align:middle;box-shadow:0 0 0 4px rgba(111,207,106,.2)}
+.live.off{background:#C9663B;box-shadow:0 0 0 4px rgba(201,102,59,.2)}
+@media (max-width:900px){.info .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.info div{padding:16px 14px}.info div:nth-child(3){border-left:0;padding-left:0}.info div:nth-child(n+3){border-top:1px solid rgba(245,235,220,.1)}}
+.manifesto{padding-block:110px 20px;text-align:center}
+.manifesto .eb{color:var(--wine)}
+.manifesto p{font:400 clamp(28px,3.6vw,48px)/1.22 var(--f-h);max-width:22em;margin:22px auto 0;text-wrap:balance}
+.manifesto p em{font-style:normal;color:var(--ember)}
+.manifesto .sign{display:block;margin-top:26px;font-size:14px;color:var(--muted);font-weight:600}
+@media (max-width:900px){.manifesto{padding-block:72px 0}}
+.mbar{display:none}
+@media (max-width:700px){.mbar{position:fixed;left:0;right:0;bottom:0;z-index:35;display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(22,15,11,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.mbar .btn{padding:13px 18px}body{padding-bottom:76px}.drawer{bottom:calc(86px + env(safe-area-inset-bottom,0px))}}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:48px;align-items:end;padding-block:96px 72px}
+.hero .eb{color:var(--ember2)}
+.hero h1{font-size:clamp(52px,8.4vw,118px);line-height:.92;margin:20px 0 26px}
+.hero h1 em{font-style:normal;color:var(--ember2)}
+.hero p.lead{font-size:clamp(16px,1.6vw,19px);max-width:31em;color:rgba(245,235,220,.82)}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.facts{display:grid;gap:14px;align-self:end}
+.fact{padding:18px 20px;border-radius:18px;background:rgba(245,235,220,.07);border:1px solid rgba(245,235,220,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:baseline;gap:14px}
+.fact b{font:400 40px/1 var(--f-h);color:var(--ember2);white-space:nowrap;flex:none}
+.fact span{flex:1;min-width:0}
+.fact span{font-size:14px;color:rgba(245,235,220,.8)}
+@media (max-width:900px){.hero .wrap{grid-template-columns:minmax(0,1fr);padding-block:64px 56px}.facts{grid-template-columns:repeat(3,minmax(0,1fr))}.fact{flex-direction:column;gap:6px;padding:14px}.fact b{font-size:24px;min-width:0}.fact span{font-size:12.5px;line-height:1.35}}
+
+/* story */
+.story{background:var(--soot);color:var(--cream)}
+.story .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center;padding-block:40px 100px}
+.story-img{position:relative}
+.story-img img{border-radius:28px 28px 28px 140px;aspect-ratio:4/3.3;object-fit:cover;width:100%}
+.story-img .stamp{position:absolute;right:-14px;bottom:24px;width:128px;height:128px;border-radius:50%;background:var(--ember);color:#1A0F08;display:grid;place-items:center;text-align:center;font-weight:800;font-size:12px;line-height:1.25;letter-spacing:.06em;text-transform:uppercase;transform:rotate(-10deg)}
+.story-img .stamp b{display:block;font:400 38px/1 var(--f-h);letter-spacing:0;text-transform:none}
+.story h2{font-size:clamp(36px,4.6vw,62px);line-height:1;margin:16px 0 22px}
+.story .eb{color:var(--ember2)}
+.story p{color:rgba(245,235,220,.78);max-width:32em}
+.story p+p{margin-top:14px}
+.ticks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:30px}
+.ticks div{border-top:1px solid rgba(245,235,220,.18);padding-top:14px;font-size:14px;color:rgba(245,235,220,.75)}
+.ticks b{display:block;font:400 30px/1.1 var(--f-h);color:var(--cream)}
+@media (max-width:900px){.story .wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:24px 72px}.story-img .stamp{right:10px;width:104px;height:104px}.story-img .stamp b{font-size:30px}}
+
+/* menu */
+.menu{padding-block:100px 90px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px 40px;flex-wrap:wrap;margin-bottom:36px}
+.sec-h h2{font-size:clamp(40px,5vw,68px);line-height:.95;margin-top:12px}
+.sec-h .eb{color:var(--wine)}
+.sec-h p{max-width:28em;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px}
+.tab{padding:10px 18px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;font-size:14.5px;background:var(--paper)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.menu-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:start}
+.feature{position:sticky;top:90px;border-radius:26px;overflow:hidden;background:var(--soot);color:var(--cream)}
+.feature img{width:100%;aspect-ratio:4/3.4;object-fit:cover}
+.feature div{padding:22px 24px 24px}
+.feature h3{font-size:30px}
+.feature p{font-size:14.5px;color:rgba(245,235,220,.75);margin-top:6px}
+.items{display:grid}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 18px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.item h3{font-size:26px;line-height:1.1}
+.item p{grid-column:1/2;font-size:14px;color:var(--muted)}
+.item .tag{display:inline-block;margin-left:8px;font:700 10.5px/1 var(--f-b);letter-spacing:.08em;text-transform:uppercase;color:var(--sage);vertical-align:middle;padding:4px 7px;border-radius:5px;background:#E3E8D9}
+.item .pr{grid-row:1/3;grid-column:2;font:400 26px/1 var(--f-h);white-space:nowrap;font-variant-numeric:tabular-nums}
+.add{grid-row:1/3;grid-column:3;width:46px;height:46px;border-radius:50%;background:var(--ink);color:var(--cream);font-size:22px;line-height:1;transition:background .15s,transform .15s}
+.add:hover{background:var(--ember);color:#1A0F08}
+.add.done{background:var(--sage);color:#fff}
+@media (max-width:900px){.menu{padding-block:72px 64px}.menu-grid{grid-template-columns:minmax(0,1fr)}.feature{position:static}.feature img{aspect-ratio:16/9}.item h3{font-size:22px}.item .pr{font-size:22px}}
+
+/* grill banner */
+.grill{position:relative;color:var(--cream);background:linear-gradient(0deg,rgba(22,15,11,.92),rgba(22,15,11,.35) 60%,rgba(22,15,11,.2)),url(../img/shashlik.jpg) center/cover;min-height:460px;display:flex;align-items:flex-end}
+.grill .wrap{width:100%;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;padding-block:60px}
+.grill h2{font-size:clamp(40px,6vw,84px);line-height:.95;max-width:9em}
+.grill .eb{color:var(--ember2);display:block;margin-bottom:14px}
+.grill p{max-width:24em;color:rgba(245,235,220,.85)}
+
+/* booking */
+.book{background:var(--paper);padding-block:100px}
+.book .wrap{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:start}
+.book h2{font-size:clamp(40px,5vw,66px);line-height:.95;margin:12px 0 18px}
+.book .eb{color:var(--wine)}
+.book .side p{color:var(--muted);max-width:26em}
+.hours{margin-top:28px;display:grid;gap:0;max-width:340px}
+.hours div{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.hours b{font-variant-numeric:tabular-nums}
+.form{background:#fff;border-radius:26px;padding:30px;box-shadow:0 30px 70px -40px rgba(42,30,21,.45);display:grid;gap:20px}
+.lbl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 16px;border-radius:12px;border:1.5px solid var(--line);font-weight:700;font-size:14.5px;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.chip:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inp{width:100%;font:inherit;font-size:16px;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
+.form .btn{width:100%}
+.ok{display:none;background:#E9EFE2;color:#2F4A2B;border-radius:14px;padding:16px 18px;font-size:15px}
+.ok.show{display:block}
+@media (max-width:900px){.book{padding-block:72px}.book .wrap{grid-template-columns:minmax(0,1fr);gap:36px}.form{padding:22px}}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+
+/* delivery + reviews */
+.deliv{padding-block:96px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
+.step{padding:26px;border-radius:22px;background:var(--paper);border:1px solid var(--line)}
+.step::before{counter-increment:s;content:counter(s);font:400 54px/1 var(--f-h);color:var(--ember);display:block;margin-bottom:12px}
+.step h3{font-size:26px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:15px}
+.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:70px}
+.rev{background:var(--soot);color:var(--cream);border-radius:22px;padding:26px;display:grid;gap:14px;align-content:start}
+.rev .st{color:var(--ember2);letter-spacing:3px}
+.rev p{font:400 21px/1.35 var(--f-h)}
+.rev b{font-size:13.5px;color:rgba(245,235,220,.65);font-weight:600}
+@media (max-width:900px){.deliv{padding-block:64px}.steps,.revs{grid-template-columns:minmax(0,1fr)}}
+
+/* footer */
+.foot{background:var(--soot);color:var(--cream)}
+.foot .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:40px;padding-block:70px 30px}
+.foot h3{font-size:44px;line-height:1}
+.foot p,.foot li{color:rgba(245,235,220,.72);font-size:15px}
+.foot ul{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}
+.foot .eb{color:var(--ember2)}
+.credits{grid-column:1/-1;border-top:1px solid rgba(245,235,220,.12);padding-top:22px;font-size:12px;color:rgba(245,235,220,.5)}
+.credits a{color:rgba(245,235,220,.7)}
+@media (max-width:900px){.foot .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* cart drawer */
+.drawer{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:min(360px,calc(100vw - 32px));background:#fff;border-radius:22px;box-shadow:0 30px 80px -20px rgba(0,0,0,.45);padding:20px;display:grid;gap:12px}
+.drawer[hidden]{display:none}
+.drawer h3{font-size:28px;display:flex;justify-content:space-between;align-items:center}
+.drawer h3 button{font:600 14px var(--f-b);color:var(--muted)}
+.drawer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-height:220px;overflow:auto}
+.drawer li{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.drawer .sum{display:flex;justify-content:space-between;font-weight:800;font-size:17px;border-top:1px solid var(--line);padding-top:12px}
+.empty{color:var(--muted);font-size:15px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="demo">Демо-сайт, заведение вымышленное. Сделано в PathCode · <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">заказать такой сайт →</a></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>Горный очаг</a>
+    <nav class="nav"><a href="#menu">Меню</a><a href="#grill">Мангал</a><a href="#book">Бронь</a><a href="#delivery">Доставка</a><a href="#contacts">Контакты</a></nav>
+    <button class="cart-btn" id="cartBtn" type="button">Заказ <b id="cartCount">0</b></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eb">Кавказская кухня · ул. Горная, 12</span>
+      <h1>Хинкали, угли<br>и <em>камин</em></h1>
+      <p class="lead">Лепим хинкали руками каждое утро и готовим мясо на углях из виноградной лозы. Приходите ужинать у огня или закажите домой: привезём горячим за 45 минут.</p>
+      <div class="acts"><a class="btn btn-fire" href="#book">Забронировать стол</a><a class="btn btn-line" href="#menu">Открыть меню</a></div>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>4,8</b><span>рейтинг на картах</span></div>
+      <div class="fact"><b>40</b><span>мест в зале у живого камина</span></div>
+      <div class="fact"><b>45 мин</b><span>доставка по центру города</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="info" aria-label="Коротко о главном"><div class="wrap">
+  <div><small>Сейчас</small><b id="openNow"><span class="live"></span>Открыто до 23:00</b></div>
+  <div><small>Где</small><b>ул. Горная, 12</b></div>
+  <div><small>Средний чек</small><b>1 200 ₽</b></div>
+  <div><small>Бронь</small><b><a href="#book">онлайн за минуту →</a></b></div>
+</div></section>
+
+<section class="story">
+  <div class="wrap">
+    <div class="story-img"><img src="../img/khachapuri.jpg" alt="Хачапури по-аджарски с желтком" loading="lazy"><div class="stamp"><span><b>с 2016</b>на горной улице</span></div></div>
+    <div>
+      <span class="eb">О нас</span>
+      <h2>Готовим так, как готовят дома в горах</h2>
+      <p>Тесто для хинкали замешиваем вручную, фарш рубим ножом, а не крутим. Сыр для хачапури привозят с семейной сыроварни, лаваш печём в тандыре прямо в зале.</p>
+      <p>Шеф Тамаз двадцать лет готовит по рецептам своей бабушки и сам выходит к гостям, если хотите узнать, как правильно есть хинкали.</p>
+      <div class="ticks"><div><b>18</b>хинкали в час лепит один повар</div><div><b>3</b>вида углей для мангала</div><div><b>0</b>заморозки в меню</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="manifesto"><div class="wrap">
+  <span class="eb">Как у нас устроен вечер</span>
+  <p>В шесть разжигаем мангал на виноградной лозе. В семь зал наполняется запахом дыма и <em>горячего лаваша</em>, а к восьми у камина не остаётся свободных мест.</p>
+  <span class="sign">Тамаз, шеф и хозяин «Горного очага»</span>
+</div></section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="sec-h"><div><span class="eb">Меню</span><h2>Что заказывают чаще всего</h2></div><p>Нажмите «+», чтобы собрать заказ на доставку. Цены указаны за порцию.</p></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="menu-grid">
+      <div class="feature"><img id="featImg" src="../img/khinkali.jpg" alt=""><div><h3 id="featT"></h3><p id="featP"></p></div></div>
+      <div class="items" id="items"></div>
+    </div>
+  </div>
+</section>
+
+<section class="grill" id="grill">
+  <div class="wrap">
+    <h2><span class="eb">Каждый вечер с 18:00</span>Мангал на виноградной лозе</h2>
+    <p>Свинина, баранина, курица и овощи на открытом огне. Лоза даёт мягкий дым и тот самый вкус, за которым возвращаются.</p>
+  </div>
+</section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="side">
+      <span class="eb">Бронь стола</span>
+      <h2>Стол у камина на вечер</h2>
+      <p>Выберите день, время и количество гостей. Администратор подтвердит бронь в Telegram или перезвонит за 15 минут.</p>
+      <div class="hours"><div><span>Пн–Чт</span><b>11:00–23:00</b></div><div><span>Пт–Сб</span><b>11:00–01:00</b></div><div><span>Вс</span><b>12:00–23:00</b></div></div>
+    </div>
+    <form class="form" id="bookForm" novalidate>
+      <div><span class="lbl">День</span><div class="chips" data-group="day"><button type="button" class="chip" aria-pressed="true">Сегодня</button><button type="button" class="chip" aria-pressed="false">Завтра</button><button type="button" class="chip" aria-pressed="false">Пт, 17</button><button type="button" class="chip" aria-pressed="false">Сб, 18</button></div></div>
+      <div><span class="lbl">Гостей</span><div class="chips" data-group="guests"><button type="button" class="chip" aria-pressed="false">1</button><button type="button" class="chip" aria-pressed="true">2</button><button type="button" class="chip" aria-pressed="false">3–4</button><button type="button" class="chip" aria-pressed="false">5–8</button><button type="button" class="chip" aria-pressed="false">Банкет</button></div></div>
+      <div><span class="lbl">Время</span><div class="chips" data-group="time"><button type="button" class="chip" disabled>18:00</button><button type="button" class="chip" aria-pressed="false">18:30</button><button type="button" class="chip" aria-pressed="true">19:30</button><button type="button" class="chip" disabled>20:00</button><button type="button" class="chip" aria-pressed="false">21:00</button><button type="button" class="chip" aria-pressed="false">22:00</button></div></div>
+      <div class="row2"><input class="inp" id="bName" placeholder="Имя" autocomplete="off"><input class="inp" id="bPhone" placeholder="Телефон" inputmode="tel" autocomplete="off"></div>
+      <button class="btn btn-fire" type="submit" id="bookBtn">Забронировать</button>
+      <div class="ok" id="bookOk" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section class="deliv" id="delivery">
+  <div class="wrap">
+    <div class="sec-h"><div><span class="eb" style="color:var(--wine)">Доставка</span><h2>Горячим до двери</h2></div><p>Бесплатно от 1 500 ₽ в пределах Садового кольца, дальше 190 ₽.</p></div>
+    <div class="steps">
+      <div class="step"><h3>Соберите заказ</h3><p>На сайте или в нашем Telegram-боте. Оплата картой, СБП или наличными курьеру.</p></div>
+      <div class="step"><h3>Готовим сразу</h3><p>Хинкали лепим под заказ, шашлык снимаем с огня перед отправкой.</p></div>
+      <div class="step"><h3>Везём в термосумке</h3><p>45 минут по центру. Статус заказа приходит в Telegram.</p></div>
+    </div>
+    <div class="revs">
+      <div class="rev"><span class="st">★★★★★</span><p>«Хинкали как в Тбилиси, бульон не вытекает. Сидели у камина весь вечер.»</p><b>Марина · Яндекс Карты</b></div>
+      <div class="rev"><span class="st">★★★★★</span><p>«Заказываем по пятницам. Шашлык привозят горячим, лаваш хрустит.»</p><b>Игорь · 2ГИС</b></div>
+      <div class="rev"><span class="st">★★★★★</span><p>«Отмечали день рождения на 12 человек, всё помогли рассчитать заранее.»</p><b>Аслан · Google</b></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot" id="contacts">
+  <div class="wrap">
+    <div><h3>Горный очаг</h3><p style="margin-top:14px;max-width:24em">Кафе кавказской кухни. Живой камин, мангал на лозе и хинкали ручной лепки.</p></div>
+    <div><span class="eb">Адрес</span><ul><li>ул. Горная, 12</li><li>5 минут от метро «Центральная»</li><li>Парковка во дворе</li></ul></div>
+    <div><span class="eb">Связь</span><ul><li>Telegram-бот: @gorny_ochag_bot</li><li>Бронь банкетов: через форму выше</li><li>Ежедневно до 23:00</li></ul></div>
+    <div class="credits">Фото: <a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0 · <a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Khinkali</a>, shankar s., CC BY 2.0 · <a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0 · <a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Grilling skewers</a>, rawpixel, CC0</div>
+  </div>
+</footer>
+
+<div class="mbar"><a class="btn btn-fire" href="#book">Забронировать стол</a><a class="btn btn-line" style="color:var(--cream)" href="#menu">Меню</a></div>
+
+<div class="drawer" id="drawer" hidden role="dialog" aria-label="Ваш заказ">
+  <h3>Ваш заказ <button type="button" id="drawerClose">закрыть</button></h3>
+  <ul id="cartList"></ul>
+  <div class="sum"><span>Итого</span><span id="cartSum">0 ₽</span></div>
+  <button class="btn btn-fire" type="button" id="checkout">Оформить доставку</button>
+  <div class="ok" id="cartOk" aria-live="polite"></div>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const rub=n=>n.toLocaleString("ru-RU").replace(/ /g," ")+" ₽";
+const MENU={
+ "Горячее":{img:"../img/khinkali.jpg",t:"Хинкали ручной лепки",p:"Тесто раскатываем тонко, внутри бульон и рубленое мясо со специями.",items:[
+  ["Хинкали с бараниной","5 шт., бульон, чёрный перец",390,"хит"],["Хинкали с говядиной и свининой","5 шт., зелень, кинза",360],["Шашлык из свиной шеи","на углях, маринованный лук, ткемали",520],["Люля-кебаб из баранины","лаваш, томаты, сумах",480],["Чашушули","тушёная говядина с томатами и аджикой",540]]},
+ "Супы":{img:"../img/cafe-hero.jpg",t:"Супы на костном бульоне",p:"Варим с вечера, подаём с горячим лавашом из тандыра.",items:[
+  ["Харчо","говядина, рис, ткемали, грецкий орех",340,"хит"],["Чихиртма","куриный бульон, яйцо, кинза",310],["Хаши","по выходным с 9 утра, чеснок, лаваш",420]]},
+ "Выпечка":{img:"../img/khachapuri.jpg",t:"Хачапури и лаваш",p:"Сыр с семейной сыроварни, тесто на мацони.",items:[
+  ["Хачапури по-аджарски","сулугуни, имеретинский сыр, желток, масло",460,"хит"],["Хачапури по-мегрельски","двойной слой сыра",490],["Лаваш из тандыра","горячий, с маслом и зеленью",90]]},
+ "Напитки":{img:"../img/cafe-hero.jpg",t:"Домашние напитки",p:"Лимонады варим сами, травы для чая собирают в горах.",items:[
+  ["Тархун домашний","0,5 л, эстрагон, лайм",180],["Чай с чабрецом","чайник 0,6 л",250],["Морс из кизила","0,5 л",190]]}
+};
+const cart=[];let tab="Горячее";
+function renderTabs(){
+  $("#tabs").innerHTML=Object.keys(MENU).map(k=>`<button class="tab" role="tab" type="button" aria-selected="${k===tab}">${k}</button>`).join("");
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{tab=b.textContent;renderTabs();renderItems()});
+}
+function renderItems(){
+  const m=MENU[tab];$("#featImg").src=m.img;$("#featImg").alt=m.t;$("#featT").textContent=m.t;$("#featP").textContent=m.p;
+  $("#items").innerHTML=m.items.map((it,i)=>`<div class="item"><h3>${it[0]}${it[3]?`<span class="tag">${it[3]}</span>`:""}</h3><p>${it[1]}</p><span class="pr">${rub(it[2])}</span><button class="add" type="button" data-i="${i}" aria-label="Добавить ${it[0]}">+</button></div>`).join("");
+  document.querySelectorAll(".add").forEach(b=>b.onclick=()=>{const it=m.items[+b.dataset.i];cart.push([it[0],it[2]]);b.classList.add("done");b.textContent="✓";setTimeout(()=>{b.classList.remove("done");b.textContent="+"},900);renderCart()});
+}
+function renderCart(){
+  $("#cartCount").textContent=cart.length;
+  $("#cartList").innerHTML=cart.length?cart.map(c=>`<li><span>${c[0]}</span><b>${rub(c[1])}</b></li>`).join(""):`<li class="empty">Пока пусто. Добавьте блюда из меню.</li>`;
+  $("#cartSum").textContent=rub(cart.reduce((a,c)=>a+c[1],0));
+}
+$("#cartBtn").onclick=()=>{$("#drawer").hidden=!$("#drawer").hidden;$("#cartOk").classList.remove("show")};
+$("#drawerClose").onclick=()=>$("#drawer").hidden=true;
+$("#checkout").onclick=()=>{const ok=$("#cartOk");ok.textContent=cart.length?`Это демо. На настоящем сайте заказ на ${$("#cartSum").textContent} ушёл бы на кухню, а администратор получил бы уведомление в Telegram.`:"Добавьте хотя бы одно блюдо.";ok.classList.add("show")};
+document.querySelectorAll(".chips").forEach(g=>g.querySelectorAll(".chip:not(:disabled)").forEach(c=>c.onclick=()=>{g.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));upd()}));
+const pick=g=>document.querySelector(`[data-group=${g}] [aria-pressed="true"]`).textContent;
+function upd(){$("#bookBtn").textContent=`Забронировать: ${pick("day").toLowerCase()}, ${pick("time")}`}
+$("#bookForm").addEventListener("submit",e=>{e.preventDefault();const ok=$("#bookOk");
+  ok.textContent=`Это демо. Бронь на ${pick("day").toLowerCase()}, ${pick("time")}, гостей: ${pick("guests")}${$("#bName").value?`, имя: ${$("#bName").value}`:""} ушла бы администратору в Telegram.`;ok.classList.add("show")});
+renderTabs();renderItems();renderCart();upd();
+const h=new Date().getHours();const open=h>=11&&h<23;
+$("#openNow").innerHTML=`<span class="live${open?"":" off"}"></span>${open?"Открыто до 23:00":"Откроемся в 11:00"}`;
+})();
+</script>
+<script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>
+</body>
+</html>
