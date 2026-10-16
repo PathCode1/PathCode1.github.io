@@ -83,10 +83,13 @@ p{margin:0}
 
 /* code window */
 .code{background:var(--code-bg);color:var(--code-fg);border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(18,24,38,.45);min-width:0}
-.code-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto}
+.code-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto;scrollbar-width:none}
 .code-tab{border:0;background:transparent;color:var(--code-dim);font:500 13px/1 var(--f-mono);padding:8px 12px;border-radius:8px;white-space:nowrap}
 .code-tab[aria-selected="true"]{background:rgba(255,255,255,.08);color:var(--code-fg)}
-.code pre{margin:0;padding:20px 22px 8px;font:400 13.5px/1.75 var(--f-mono);overflow-x:auto;min-height:250px}
+.code pre{margin:0;padding:20px 22px 8px;font:400 clamp(11.5px,1.05vw,13.5px)/1.75 var(--f-mono);overflow-x:auto;min-height:250px;scrollbar-width:none}
+.code pre::-webkit-scrollbar,.code-bar::-webkit-scrollbar{display:none}
+@media (max-width:980px){.code pre{font-size:clamp(11px,2.9vw,13.5px)}}
+@media (max-width:560px){.code pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px 16px 6px;min-height:0}}
 .code .k{color:var(--code-kw)}.code .s{color:var(--code-str)}.code .f{color:var(--code-fn)}.code .d{color:var(--code-dec)}.code .c{color:var(--code-dim)}
 .code-out{display:flex;gap:10px;align-items:center;padding:12px 22px 18px;font:400 12.5px/1.4 var(--f-mono);color:var(--code-dim)}
 .code-out i{width:7px;height:7px;border-radius:50%;background:#3CCB86;flex:none}
@@ -624,7 +627,8 @@ router = Router()
         <span class="s">"Свободно в субботу:"</span>,
         reply_markup=<span class="f">slots_kb</span>(slots),
     )
-    <span class="k">await</span> <span class="f">notify_admin</span>(msg.from_user)  <span class="c"># уведомить владельца</span>`},
+    <span class="c"># уведомить владельца о записи</span>
+    <span class="k">await</span> <span class="f">notify_admin</span>(msg.from_user)`},
  api:{out:"POST /lead → 200 OK · строка добавлена в Google Таблицу",src:
 `<span class="k">from</span> fastapi <span class="k">import</span> FastAPI
 <span class="k">from</span> pydantic <span class="k">import</span> BaseModel
@@ -638,8 +642,8 @@ app = FastAPI()
 
 <span class="d">@app.post</span>(<span class="s">"/lead"</span>)
 <span class="k">async def</span> <span class="f">new_lead</span>(lead: Lead):
-    <span class="k">await</span> sheets.<span class="f">append</span>(lead)     <span class="c"># Google Sheets</span>
-    <span class="k">await</span> bot.<span class="f">notify</span>(lead)        <span class="c"># сообщение в Telegram</span>
+    <span class="k">await</span> sheets.<span class="f">append</span>(lead)  <span class="c"># в таблицу</span>
+    <span class="k">await</span> bot.<span class="f">notify</span>(lead)     <span class="c"># в Telegram</span>
     <span class="k">return</span> {<span class="s">"ok"</span>: <span class="k">True</span>}`},
  java:{out:"Spring Boot · заказ сохранён в PostgreSQL, id=1042",src:
 `<span class="d">@RestController</span>
@@ -651,7 +655,7 @@ app = FastAPI()
     <span class="d">@PostMapping</span>
     Order <span class="f">create</span>(<span class="d">@Valid @RequestBody</span> Order order) {
         order.<span class="f">setStatus</span>(Status.NEW);
-        <span class="k">return</span> repo.<span class="f">save</span>(order);   <span class="c">// JPA → PostgreSQL</span>
+        <span class="k">return</span> repo.<span class="f">save</span>(order); <span class="c">// в БД</span>
     }
 }`}
 };
