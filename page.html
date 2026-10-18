@@ -520,18 +520,32 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   .fx-dk-m span{display:inline-block}
 }
 
-/* карусели (телефон): услуги и шаги листаются свайпом */
-.car-dots{display:none}
+/* карусели: на телефоне услуги и шаги, стек — везде */
+.car-nav{display:none}
+.car-nav.on{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:14px}
+.car-dots{display:flex;align-items:center;gap:6px}
+.car-dots button{width:7px;height:7px;padding:0;border:0;border-radius:7px;background:var(--ink);opacity:.22;transition:width .35s cubic-bezier(.3,1.4,.4,1),opacity .3s}
+.car-dots button[aria-current="true"]{width:24px;opacity:.85}
+.car-arr{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 16px/1 var(--f-mono);display:grid;place-items:center;transition:border-color .15s,opacity .15s}
+.car-arr:hover:not(:disabled){border-color:var(--ink)}
+.car-arr:disabled{opacity:.35;cursor:default}
+.car::-webkit-scrollbar{display:none}
+.groups.car{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-top:0;padding:4px 0 6px}
+.groups.car>.group{flex:0 0 calc((100% - 32px)/3);scroll-snap-align:start;display:flex;flex-direction:column;gap:14px;padding:22px 20px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.groups.car>.group:only-child{flex-basis:100%}
+@media (max-width:1000px){.groups.car>.group{flex-basis:calc((100% - 16px)/2)}}
 @media (max-width:700px){
   .svc.car,.steps4.car{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;
     margin-inline:-16px;padding:6px 16px 12px;scroll-padding-inline:16px;border-top:0}
-  .car::-webkit-scrollbar{display:none}
   .car>*{flex:0 0 84%;scroll-snap-align:center;scroll-snap-stop:always;transform:scale(calc(1 - var(--c,0) * .06));opacity:calc(1 - var(--c,0) * .4);will-change:transform}
   .svc.car .svc-row{align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;min-height:230px}
   .svc.car .svc-row p{margin-bottom:auto}
-  .car-dots{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:10px}
-  .car-dots button{width:7px;height:7px;padding:0;border:0;border-radius:7px;background:var(--ink);opacity:.22;transition:width .35s cubic-bezier(.3,1.4,.4,1),opacity .3s}
-  .car-dots button[aria-current="true"]{width:24px;opacity:.85}
+  .groups.car{gap:12px;margin-inline:-16px;padding:6px 16px 12px;scroll-padding-inline:16px}
+  .groups.car>.group{flex-basis:84%;scroll-snap-align:center}
+  .groups.car>.group:only-child{flex-basis:100%}
+  .car-nav.on{margin-top:10px}
+  .car-arr{display:none}
 }
 
 /* появление */
@@ -612,7 +626,7 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Направления и стек</span><h2>Чем пишу и что умею</h2></div>
-      <p>Наведите или нажмите на технологию, чтобы прочитать, для чего я её беру. Фильтр оставит только нужное направление.</p>
+      <p>Листайте направления, наведите или нажмите на технологию — покажу, для чего я её беру. Фильтр оставит только нужное.</p>
     </div>
     <div class="dirs" id="dirs" role="group" aria-label="Фильтр по направлению"></div>
     <div class="groups" id="groups"></div>
@@ -1300,27 +1314,47 @@ thb.addEventListener("click",()=>{
     {duration:650,easing:"cubic-bezier(.7,0,.2,1)",pseudoElement:"::view-transition-new(root)"}));
 });
 
-/* карусели: на телефоне ряды становятся лентой со свайпом и точками */
-const carMQ=matchMedia("(max-width:700px)");
-$$(".svc,.steps4").forEach(c=>{
-  const items=[...c.children],dots=d.createElement("div");
-  dots.className="car-dots";dots.setAttribute("aria-label","Листать");
-  dots.innerHTML=items.map((_,i)=>`<button type="button" aria-label="${i+1} из ${items.length}"></button>`).join("");
-  c.after(dots);
-  const go=i=>{const it=items[i];c.scrollTo({left:it.offsetLeft-(c.clientWidth-it.offsetWidth)/2,behavior:RM?"auto":"smooth"})};
-  [...dots.children].forEach((b,i)=>b.addEventListener("click",()=>go(i)));
-  let raf=0,hinted=false;
-  function upd(){raf=0;const w=c.clientWidth;if(!w||!c.classList.contains("car"))return;const mid=c.scrollLeft+w/2;let best=0,bd=1e9;
-    items.forEach((it,i)=>{const dist=Math.abs(it.offsetLeft+it.offsetWidth/2-mid);it.style.setProperty("--c",Math.min(dist/w,1).toFixed(3));if(dist<bd){bd=dist;best=i}});
-    [...dots.children].forEach((b,i)=>b.setAttribute("aria-current",i===best))}
+/* карусели: ряды становятся лентой со свайпом, точками и (на ПК) стрелками */
+const phoneMQ=matchMedia("(max-width:700px)");
+function carousel(c,mq){
+  const nav=d.createElement("div"),dots=d.createElement("div");
+  nav.className="car-nav";dots.className="car-dots";dots.setAttribute("aria-label","Листать");
+  const arr=(lbl,txt)=>{const b=d.createElement("button");b.type="button";b.className="car-arr";b.setAttribute("aria-label",lbl);b.textContent=txt;return b};
+  const prev=arr("Назад","←"),next=arr("Вперёд","→");
+  nav.append(prev,dots,next);c.after(nav);
+  let stops=[],cur=0,raf=0,hinted=false;
+  const on=()=>c.classList.contains("car");
+  /* позиции ленты: где каждая карточка встаёт на место (повторы у края схлопываются) */
+  function measure(){const items=[...c.children];stops=[];
+    if(on()&&items.length&&c.clientWidth){const cr=c.getBoundingClientRect(),max=c.scrollWidth-c.clientWidth,
+      start=getComputedStyle(items[0]).scrollSnapAlign.includes("start"),pad=parseFloat(getComputedStyle(c).scrollPaddingLeft)||0;
+      items.forEach(it=>{const r=it.getBoundingClientRect(),mid=c.scrollLeft+r.left+r.width/2-cr.left-c.clientLeft;
+        const t=Math.max(0,Math.min(max,start?mid-it.offsetWidth/2-pad:mid-c.clientWidth/2));
+        if(!stops.length||t-stops[stops.length-1]>2)stops.push(t)})}
+    if(dots.children.length!==stops.length)dots.innerHTML=stops.map((_,i)=>`<button type="button" aria-label="${i+1} из ${stops.length}"></button>`).join("")}
+  const go=i=>{if(!stops.length)return;i=Math.max(0,Math.min(stops.length-1,i));c.scrollTo({left:stops[i],behavior:RM?"auto":"smooth"})};
+  dots.addEventListener("click",e=>{const b=e.target.closest("button");if(b)go([...dots.children].indexOf(b))});
+  prev.addEventListener("click",()=>go(cur-1));next.addEventListener("click",()=>go(cur+1));
+  function upd(){raf=0;nav.classList.toggle("on",on()&&stops.length>1);if(!on()||!stops.length)return;
+    const w=c.clientWidth,cr=c.getBoundingClientRect();
+    [...c.children].forEach(it=>{const r=it.getBoundingClientRect();it.style.setProperty("--c",Math.min(Math.abs(r.left+r.width/2-cr.left-w/2)/w,1).toFixed(3))});
+    cur=stops.reduce((b,t,i)=>Math.abs(t-c.scrollLeft)<Math.abs(stops[b]-c.scrollLeft)?i:b,0);
+    [...dots.children].forEach((b,i)=>b.setAttribute("aria-current",i===cur));
+    prev.disabled=cur===0;next.disabled=cur===stops.length-1}
+  const refresh=()=>{measure();upd()};
   c.addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});
-  function mode(){const on=carMQ.matches;c.classList.toggle("car",on);if(!on)items.forEach(it=>it.style.removeProperty("--c"));upd()}
-  carMQ.addEventListener("change",mode);mode();
-  /* подсказка, что ленту можно листать: один раз чуть сдвигаем при первом показе */
-  if(!RM&&"IntersectionObserver" in window){const o=new IntersectionObserver(es=>{if(!es[0].isIntersecting||hinted||!c.classList.contains("car"))return;
+  function mode(){const v=!mq||mq.matches;c.classList.toggle("car",v);if(!v)[...c.children].forEach(it=>it.style.removeProperty("--c"));refresh()}
+  if(mq)mq.addEventListener("change",mode);mode();
+  if("ResizeObserver" in window)new ResizeObserver(()=>requestAnimationFrame(refresh)).observe(c);
+  /* фильтр стека перерисовывает карточки — ленту в начало и пересчитать */
+  new MutationObserver(()=>{c.scrollLeft=0;refresh()}).observe(c,{childList:true});
+  /* подсказка на телефоне, что ленту можно листать: один раз чуть сдвигаем при первом показе */
+  if(!RM&&"IntersectionObserver" in window){const o=new IntersectionObserver(es=>{if(!es[0].isIntersecting||hinted||!on()||!phoneMQ.matches)return;
     hinted=true;o.disconnect();if(c.scrollLeft>4)return;
     setTimeout(()=>{c.scrollTo({left:70,behavior:"smooth"});setTimeout(()=>c.scrollTo({left:0,behavior:"smooth"}),520)},400)},{threshold:.5});o.observe(c)}
-});
+}
+$$(".svc,.steps4").forEach(c=>carousel(c,phoneMQ));
+carousel(d.getElementById("groups"),null);
 
 /* подсветка карточек за курсором */
 d.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".step,.tech");if(!c)return;
