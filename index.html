@@ -525,6 +525,20 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   .fx-dk-m span{display:inline-block}
 }
 
+/* карусели (телефон): услуги и шаги листаются свайпом */
+.car-dots{display:none}
+@media (max-width:700px){
+  .svc.car,.steps4.car{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    margin-inline:-16px;padding:6px 16px 12px;scroll-padding-inline:16px;border-top:0}
+  .car::-webkit-scrollbar{display:none}
+  .car>*{flex:0 0 84%;scroll-snap-align:center;scroll-snap-stop:always;transform:scale(calc(1 - var(--c,0) * .06));opacity:calc(1 - var(--c,0) * .4);will-change:transform}
+  .svc.car .svc-row{align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;min-height:230px}
+  .svc.car .svc-row p{margin-bottom:auto}
+  .car-dots{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:10px}
+  .car-dots button{width:7px;height:7px;padding:0;border:0;border-radius:7px;background:var(--ink);opacity:.22;transition:width .35s cubic-bezier(.3,1.4,.4,1),opacity .3s}
+  .car-dots button[aria-current="true"]{width:24px;opacity:.85}
+}
+
 /* появление */
 .fx .fx-in{animation:fxin .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 110ms + 80ms)}
 .fx .fx-r{opacity:0;translate:0 30px;transition:opacity .8s cubic-bezier(.2,.8,.2,1),translate .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--d,0) * 85ms)}
@@ -1292,6 +1306,28 @@ thb.addEventListener("click",()=>{
     {duration:650,easing:"cubic-bezier(.7,0,.2,1)",pseudoElement:"::view-transition-new(root)"}));
 });
 
+/* карусели: на телефоне ряды становятся лентой со свайпом и точками */
+const carMQ=matchMedia("(max-width:700px)");
+$$(".svc,.steps4").forEach(c=>{
+  const items=[...c.children],dots=d.createElement("div");
+  dots.className="car-dots";dots.setAttribute("aria-label","Листать");
+  dots.innerHTML=items.map((_,i)=>`<button type="button" aria-label="${i+1} из ${items.length}"></button>`).join("");
+  c.after(dots);
+  const go=i=>{const it=items[i];c.scrollTo({left:it.offsetLeft-(c.clientWidth-it.offsetWidth)/2,behavior:RM?"auto":"smooth"})};
+  [...dots.children].forEach((b,i)=>b.addEventListener("click",()=>go(i)));
+  let raf=0,hinted=false;
+  function upd(){raf=0;const w=c.clientWidth;if(!w||!c.classList.contains("car"))return;const mid=c.scrollLeft+w/2;let best=0,bd=1e9;
+    items.forEach((it,i)=>{const dist=Math.abs(it.offsetLeft+it.offsetWidth/2-mid);it.style.setProperty("--c",Math.min(dist/w,1).toFixed(3));if(dist<bd){bd=dist;best=i}});
+    [...dots.children].forEach((b,i)=>b.setAttribute("aria-current",i===best))}
+  c.addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});
+  function mode(){const on=carMQ.matches;c.classList.toggle("car",on);if(!on)items.forEach(it=>it.style.removeProperty("--c"));upd()}
+  carMQ.addEventListener("change",mode);mode();
+  /* подсказка, что ленту можно листать: один раз чуть сдвигаем при первом показе */
+  if(!RM&&"IntersectionObserver" in window){const o=new IntersectionObserver(es=>{if(!es[0].isIntersecting||hinted||!c.classList.contains("car"))return;
+    hinted=true;o.disconnect();if(c.scrollLeft>4)return;
+    setTimeout(()=>{c.scrollTo({left:70,behavior:"smooth"});setTimeout(()=>c.scrollTo({left:0,behavior:"smooth"}),520)},400)},{threshold:.5});o.observe(c)}
+});
+
 /* подсветка карточек за курсором */
 d.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".step,.tech");if(!c)return;
   const r=c.getBoundingClientRect();c.style.setProperty("--mx",e.clientX-r.left+"px");c.style.setProperty("--my",e.clientY-r.top+"px")},{passive:true});
@@ -1315,6 +1351,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return
 }),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
 const groups=new Map();
 $$(".sec-head>div,.sec-head>p,.dirs,.groups,.switch,#pBots,#pSites,.svc-row,.svc-foot,.step,.guar,.contact h2,.contact .sub,.lnk,.copy-row,.brief").forEach(e=>{
+  if(e.parentNode.classList.contains("car"))return;
   const p=e.parentNode,k=groups.get(p)||0;groups.set(p,k+1);e.classList.add("fx-r");e.style.setProperty("--d",k%6);io.observe(e)});
 
 /* счётчик «10+» */
