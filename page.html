@@ -426,6 +426,94 @@ p{margin:0}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:26px;font-size:14px;color:var(--muted)}
 footer span:last-child{font-family:var(--f-mono);font-size:13px}
 
+/* анимации и плавающие блоки (fx-*) */
+.fx-pr{position:fixed;left:0;right:0;top:0;height:3px;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);z-index:80;pointer-events:none}
+.top{transition:box-shadow .3s}
+.fx-sc .top{box-shadow:0 8px 30px rgba(18,24,38,.1)}
+.fx-stage{position:relative;min-width:0}
+.fx-badge{position:absolute;z-index:2;display:inline-flex;align-items:center;gap:7px;font:600 12.5px/1 var(--f-mono);white-space:nowrap;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 14px;box-shadow:0 14px 30px -12px rgba(18,24,38,.35);pointer-events:none;transition:translate .6s cubic-bezier(.2,.8,.2,1)}
+.fx-badge i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.fx-badge.b1{top:-18px;right:28px}
+.fx-badge.b2{left:-34px;top:46%;background:var(--mark);color:var(--mark-ink);border-color:transparent}
+.fx-badge.b3{right:-22px;bottom:-18px}
+@media (max-width:980px){.fx-badge.b1{right:14px}.fx-badge.b2{display:none}.fx-badge.b3{right:14px}}
+.hl{background:linear-gradient(var(--mark),var(--mark)) 0 100%/100% .16em no-repeat;text-decoration:none;padding-bottom:.04em}
+.btn--main,.lnk.tg{position:relative;overflow:hidden}
+.lnk.tg::before{content:none}
+.btn--main::after,.lnk.tg::after{content:"";position:absolute;top:0;bottom:0;width:60px;left:-90px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);pointer-events:none}
+@media (hover:hover){.step:hover,.tech:hover{background-image:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 13%,transparent),transparent 70%)}}
+.step,.tech{transition:transform .2s,border-color .2s}
+.step:hover,.tech:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.contact{position:relative;overflow:hidden}
+.contact>.wrap{position:relative;z-index:1}
+.contact::before,.contact::after{content:"";position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.contact::before{width:440px;height:440px;left:-140px;top:-160px;background:color-mix(in srgb,var(--accent) 40%,transparent)}
+.contact::after{width:380px;height:380px;right:-100px;bottom:-180px;background:color-mix(in srgb,var(--mark) 22%,transparent)}
+
+/* плавающая кнопка Telegram (ПК) */
+.fx-fab{position:fixed;right:28px;bottom:28px;z-index:50;display:flex;align-items:center;gap:10px;background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;font-size:15px;padding:14px 22px 14px 16px;border-radius:999px;box-shadow:0 16px 36px -10px color-mix(in srgb,var(--accent) 70%,transparent);opacity:0;translate:0 30px;pointer-events:none;transition:opacity .4s,translate .5s cubic-bezier(.3,1.4,.4,1),transform .2s}
+.fx-fab svg{width:22px;height:22px;fill:currentColor}
+.fx-fab.on{opacity:1;translate:0 0;pointer-events:auto}
+.fx-fab:hover{transform:translateY(-3px)}
+
+/* бургер и шторка-меню, нижняя панель (телефон) */
+.fx-bt,.fx-sh,.fx-dk{display:none}
+@media (max-width:820px){
+  .fx-bt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:42px;height:42px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0}
+  .fx-bt i{display:block;width:18px;height:2px;border-radius:2px;background:currentColor}
+  .fx-bt i:last-child{width:12px;margin-left:6px}
+  .fx-sh{display:block;position:fixed;inset:0;z-index:70;background:var(--ink);color:var(--bg);overflow-y:auto;visibility:hidden;
+    clip-path:circle(0 at var(--ox,90%) var(--oy,30px));transition:clip-path .65s cubic-bezier(.7,0,.2,1),visibility 0s .65s}
+  .fx-open .fx-sh{visibility:visible;clip-path:circle(150% at var(--ox,90%) var(--oy,30px));transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
+  .fx-open body{overflow:hidden}
+  .fx-sh::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 100% 0%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 60%)}
+  .fx-sh-in{position:relative;min-height:100%;display:flex;flex-direction:column;padding:calc(90px + env(safe-area-inset-top,0px)) 24px calc(30px + env(safe-area-inset-bottom,0px))}
+  .fx-x{position:fixed;width:42px;height:42px;border:1px solid color-mix(in srgb,var(--bg) 25%,var(--ink));border-radius:12px;background:transparent;color:var(--bg);font-size:20px;line-height:1}
+  .fx-sh nav{display:flex;flex-direction:column}
+  .fx-sh nav a{display:flex;align-items:baseline;gap:14px;padding:13px 0;border-bottom:1px solid color-mix(in srgb,var(--bg) 14%,var(--ink));text-decoration:none;font:700 30px/1.1 var(--f-display);letter-spacing:-.02em}
+  .fx-sh nav a small{font:500 12px/1 var(--f-mono);opacity:.55;min-width:22px}
+  .fx-sh-f{margin-top:auto;padding-top:30px}
+  .fx-sh-f p{opacity:.7;font-size:15px;margin-bottom:14px}
+  .fx-sh-cta{display:flex;justify-content:space-between;align-items:center;background:var(--accent);color:var(--on-accent);border-radius:16px;padding:18px 20px;font-weight:700;text-decoration:none}
+  .fx-sh nav a,.fx-sh-f{opacity:0;transform:translateY(24px);transition:opacity .3s,transform .3s}
+  .fx-open .fx-sh nav a,.fx-open .fx-sh-f{opacity:1;transform:none;transition:opacity .6s calc(.25s + var(--i)*.06s),transform .7s cubic-bezier(.2,.9,.2,1) calc(.25s + var(--i)*.06s)}
+}
+@media (max-width:700px){
+  .fx-fab{display:none}
+  .fx-dk{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;gap:8px;padding:7px;border-radius:22px;
+    background:color-mix(in srgb,var(--ink) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(0,0,0,.28);
+    transform:translateY(calc(100% + 30px));transition:transform .55s cubic-bezier(.3,1.35,.4,1)}
+  .fx-dock .fx-dk{transform:none}
+  .fx-dk a{height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+  .fx-dk-r{width:52px;flex:none;background:color-mix(in srgb,var(--bg) 12%,var(--ink));color:var(--mark)}
+  .fx-dk-r svg{width:22px;height:22px}
+  .fx-dk-m{flex:1;gap:10px;background:var(--accent);color:var(--on-accent);font-weight:700;position:relative;overflow:hidden}
+  .fx-dk-m span{display:inline-block}
+}
+
+/* появление */
+.fx .fx-in{animation:fxin .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 110ms + 80ms)}
+.fx .fx-r{opacity:0;translate:0 30px;transition:opacity .8s cubic-bezier(.2,.8,.2,1),translate .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--d,0) * 85ms)}
+.fx .fx-r.fx-v{opacity:1;translate:0 0}
+.fx .hl{background-size:0 .16em;animation:fxline 1s 1s cubic-bezier(.6,0,.2,1) forwards}
+.fx-badge.b1{animation:fxfloat 5s ease-in-out infinite}
+.fx-badge.b2{animation:fxfloat 6s -2s ease-in-out infinite}
+.fx-badge.b3{animation:fxfloat 5.5s -1s ease-in-out infinite}
+.status i{animation:fxpulse 2s ease-in-out infinite}
+.btn--main::after,.lnk.tg::after{animation:fxshine 5s 2s ease-in-out infinite}
+.fx-fab::before{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--accent);animation:fxring 2.4s ease-out infinite;pointer-events:none}
+.fx-dk-m span{animation:fxnudge 1.8s ease-in-out infinite}
+.contact::before{animation:fxdrift 14s ease-in-out infinite alternate}
+.contact::after{animation:fxdrift 17s -5s ease-in-out infinite alternate-reverse}
+@keyframes fxin{from{opacity:0;transform:translateY(30px)}}
+@keyframes fxline{to{background-size:100% .16em}}
+@keyframes fxfloat{50%{transform:translateY(-12px)}}
+@keyframes fxpulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--ok) 0%,transparent)}}
+@keyframes fxshine{0%{left:-90px}30%,100%{left:110%}}
+@keyframes fxring{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.3,1.6)}}
+@keyframes fxnudge{0%,60%,100%{transform:none}30%{transform:translateX(5px)}}
+@keyframes fxdrift{to{transform:translate(160px,90px) scale(1.15)}}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 
@@ -436,6 +524,7 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
       <a href="#stack">Стек</a><a href="#works">Работы</a><a href="#services">Услуги и цены</a><a href="#process">Как работаю</a><a href="#contact">Контакты</a>
     </nav>
     <a class="btn btn--main" href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Написать</a>
+    <button class="fx-bt" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="fxSh"><i></i><i></i></button>
   </div>
 </header>
 
@@ -457,6 +546,7 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
         <div><b>0 ₽</b><span>за исправление недочётов после сдачи</span></div>
       </div>
     </div>
+    <div class="fx-stage">
     <div class="code" aria-label="Пример кода">
       <div class="code-bar" role="tablist" aria-label="Файлы">
         <button class="code-tab" role="tab" aria-selected="true" data-code="bot">bot.py</button>
@@ -465,6 +555,10 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
       </div>
       <pre id="codeView"></pre>
       <div class="code-out"><i></i><span id="codeOut"></span></div>
+    </div>
+      <span class="fx-badge b1" aria-hidden="true"><i></i>бот онлайн 24/7</span>
+      <span class="fx-badge b2" aria-hidden="true">SSL ✓ 200 OK</span>
+      <span class="fx-badge b3" aria-hidden="true">⚡ FastAPI · aiogram</span>
     </div>
   </div>
 </section>
@@ -1086,5 +1180,86 @@ function brief(){$("#bOut").textContent=briefText()}
 ["#bTime","#bBudget","#bText"].forEach(s=>$(s).addEventListener("input",brief));
 $("#brief").addEventListener("submit",e=>{e.preventDefault();copyText(briefText(),$("#bToast"),"Скопировано. Вставьте в чат Telegram")});
 brief();
+})();
+</script>
+
+<div class="fx-pr" aria-hidden="true"></div>
+<a class="fx-fab" href="https://t.me/BeauG0sse" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.3 18.6 19.9c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L5.9 13.4l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.5 2.9c.9-.3 1.7.2 1.4 1.4z"/></svg>Написать</a>
+<div class="fx-sh" id="fxSh" aria-hidden="true"><div class="fx-sh-in">
+  <button class="fx-x" type="button" aria-label="Закрыть меню">✕</button>
+  <nav aria-label="Меню"></nav>
+  <div class="fx-sh-f"><p>Отвечаю в течение часа<br>с 9:00 до 22:00 по Москве</p><a class="fx-sh-cta" href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Написать в Telegram <span aria-hidden="true">→</span></a></div>
+</div></div>
+<div class="fx-dk">
+  <a class="fx-dk-r" href="#works" aria-label="Работы"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg></a>
+  <a class="fx-dk-m" href="https://t.me/BeauG0sse" target="_blank" rel="noopener"><b>Написать в Telegram</b><span aria-hidden="true">→</span></a>
+</div>
+<script>
+/* ---------- анимации и плавающие блоки ---------- */
+(function(){
+const d=document,h=d.documentElement,$$=s=>[...d.querySelectorAll(s)];
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const pr=d.querySelector(".fx-pr"),fab=d.querySelector(".fx-fab"),hero=d.querySelector(".hero"),end=d.querySelector("#contact");
+
+/* меню-шторка из пунктов шапки */
+const bt=d.querySelector(".fx-bt"),sh=d.querySelector(".fx-sh"),x=sh.querySelector(".fx-x"),nav=sh.querySelector("nav");
+nav.innerHTML=$$(".nav a").map((a,i)=>`<a href="${a.getAttribute("href")}" style="--i:${i}"><small>0${i+1}</small><span>${a.textContent}</span></a>`).join("");
+sh.querySelector(".fx-sh-f").style.setProperty("--i",$$(".nav a").length);
+function tog(o){
+  if(o){const r=bt.getBoundingClientRect();sh.style.setProperty("--ox",r.left+r.width/2+"px");sh.style.setProperty("--oy",r.top+r.height/2+"px");
+    x.style.left=r.left+"px";x.style.top=r.top+"px"}
+  h.classList.toggle("fx-open",o);bt.setAttribute("aria-expanded",o);sh.setAttribute("aria-hidden",!o);
+  (o?x:bt).focus({preventScroll:true});tick();
+}
+bt.addEventListener("click",()=>tog(true));
+x.addEventListener("click",()=>tog(false));
+nav.addEventListener("click",e=>{if(e.target.closest("a"))tog(false)});
+d.addEventListener("keydown",e=>{if(e.key==="Escape"&&h.classList.contains("fx-open"))tog(false)});
+
+/* прогресс, тень шапки, плавающая кнопка и нижняя панель */
+let endIn=false;
+if("IntersectionObserver" in window)new IntersectionObserver(es=>{endIn=es[0].isIntersecting;tick()},{threshold:.12}).observe(end);
+function tick(){
+  const y=scrollY,max=h.scrollHeight-innerHeight,show=y>hero.offsetHeight*.6&&!endIn&&!h.classList.contains("fx-open");
+  pr.style.transform=`scaleX(${max>0?Math.min(y/max,1):0})`;
+  h.classList.toggle("fx-sc",y>20);
+  h.classList.toggle("fx-dock",show);
+  fab.classList.toggle("on",show);
+}
+let tk=0;
+addEventListener("scroll",()=>{if(!tk){tk=1;requestAnimationFrame(()=>{tk=0;tick()})}},{passive:true});
+addEventListener("resize",tick);
+tick();
+
+/* подсветка карточек за курсором */
+d.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".step,.tech");if(!c)return;
+  const r=c.getBoundingClientRect();c.style.setProperty("--mx",e.clientX-r.left+"px");c.style.setProperty("--my",e.clientY-r.top+"px")},{passive:true});
+
+if(RM||!("IntersectionObserver" in window))return;
+h.classList.add("fx");
+
+/* первый экран по очереди */
+$$(".hero .status,.hero h1,.hero .lead,.hero .cta,.hero .facts,.fx-stage").forEach((e,i)=>{e.classList.add("fx-in");e.style.setProperty("--i",i)});
+
+/* бейджи у окна кода слегка следуют за курсором */
+const bs=$$(".fx-badge");
+hero.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=hero.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+  bs.forEach((b,i)=>{const k=(i+1)*9;b.style.translate=`${(px*k).toFixed(1)}px ${(py*k).toFixed(1)}px`})});
+hero.addEventListener("pointerleave",()=>bs.forEach(b=>b.style.translate=""));
+
+/* появление при прокрутке */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;io.unobserve(t);
+  t.classList.add("fx-v");
+  setTimeout(()=>t.classList.remove("fx-r","fx-v"),1600);
+}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+const groups=new Map();
+$$(".sec-head>div,.sec-head>p,.dirs,.groups,.switch,#pBots,#pSites,.svc-row,.svc-foot,.step,.guar,.contact h2,.contact .sub,.lnk,.copy-row,.brief").forEach(e=>{
+  const p=e.parentNode,k=groups.get(p)||0;groups.set(p,k+1);e.classList.add("fx-r");e.style.setProperty("--d",k%6);io.observe(e)});
+
+/* счётчик «10+» */
+const cnt=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){cnt.unobserve(e.target);count(e.target)}}),{threshold:.5});
+$$(".facts b").forEach(e=>{if(/^[1-9]\d*/.test(e.textContent))cnt.observe(e)});
+function count(e){const src=e.textContent,m=src.match(/\d+/),val=+m[0],pre=src.slice(0,m.index),post=src.slice(m.index+m[0].length),t0=performance.now();
+  (function step(t){const k=Math.min((t-t0)/1400,1);e.textContent=pre+Math.round(val*(1-Math.pow(2,-10*k)))+post;if(k<1)requestAnimationFrame(step)})(t0)}
 })();
 </script>
