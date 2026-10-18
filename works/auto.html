@@ -127,6 +127,64 @@ footer{padding-block:48px 32px}
 .stamp .name{font:700 30px/1 var(--f-h);grid-row:span 2;display:flex;flex-direction:column;justify-content:center}
 .credits{font-size:12.5px;color:var(--grey);margin-top:16px}
 @media (max-width:760px){.stamp{grid-template-columns:1fr 1fr}.stamp div{border-right:1px solid var(--ink)!important;border-bottom:1px solid var(--ink)!important}.stamp div:nth-child(2n){border-right:0!important}.stamp .name{grid-column:1/-1;grid-row:auto;border-right:0!important}}
+
+/* преимущества */
+.adv{background:var(--ink);color:#fff}
+.adv .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.adv div{padding:22px 20px;border-left:1px solid #2E3439}
+.adv div:first-child{border-left:0;padding-left:0}
+.adv b{display:block;font:700 26px/1.1 var(--f-h);color:#FFB37A}
+.adv span{font-size:14.5px;color:#C4CBD2}
+@media (max-width:900px){.adv .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.adv div:nth-child(3){border-left:0;padding-left:0}.adv div:nth-child(n+3){border-top:1px solid #2E3439}}
+/* услуги */
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin-top:28px;background:var(--line);border:2px solid var(--ink)}
+.svc a{background:var(--white);text-decoration:none;display:flex;flex-direction:column}
+.svc img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.svc div{padding:14px 16px 16px;display:grid;gap:4px}
+.svc h3{font-size:24px}
+.svc p{font-size:15px;color:var(--grey)}
+.svc .from{font-weight:700;margin-top:4px}
+.svc a:hover h3{color:var(--orange)}
+@media (max-width:860px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.svc{grid-template-columns:minmax(0,1fr)}}
+/* акции */
+.deals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.deal{background:var(--white);border:1px solid var(--line);border-top:4px solid var(--orange);padding:20px;display:flex;flex-direction:column;gap:8px}
+.deal .v{font:700 34px/1 var(--f-h)}
+.deal h3{font-size:22px}
+.deal p{font-size:15px;color:var(--grey)}
+.deal small{font-size:13.5px;color:var(--grey);margin-top:auto}
+@media (max-width:860px){.deals{grid-template-columns:minmax(0,1fr)}}
+/* этапы */
+.flow5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-top:28px;list-style:none;padding:0;counter-reset:f;border-top:2px solid var(--ink)}
+.flow5 li{counter-increment:f;padding:18px 18px 0 0;font-size:15.5px}
+.flow5 li::before{content:counter(f);display:block;font:700 40px/1 var(--f-h);color:var(--orange);margin-bottom:8px}
+.flow5 b{display:block;font:700 20px/1.15 var(--f-h);margin-bottom:4px}
+.flow5 span{color:var(--grey)}
+@media (max-width:900px){.flow5{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
+@media (max-width:480px){.flow5{grid-template-columns:minmax(0,1fr)}}
+/* отзывы */
+.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.rev{background:var(--white);border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:10px}
+.rev .car{font-size:13.5px;color:var(--grey)}
+.rev .stars{color:var(--orange);letter-spacing:2px}
+.rev b{font-family:var(--f-h);font-size:19px}
+@media (max-width:860px){.revs{grid-template-columns:minmax(0,1fr)}}
+/* вопросы */
+.faq{margin-top:20px;border-top:2px solid var(--ink);max-width:920px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:15px 0;font:700 20px/1.25 var(--f-h);display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--orange)}
+.faq details[open] summary::after{content:"−"}
+.faq p{padding-bottom:16px;color:var(--grey);max-width:46em}
+/* схема */
+.route{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;margin-top:28px;align-items:start}
+.route svg{width:100%;height:auto;display:block;border:2px solid var(--ink)}
+.route dl{margin:0;display:grid;gap:14px}
+.route dt{font:700 20px/1.2 var(--f-h)}
+.route dd{margin:2px 0 0;color:var(--grey)}
+@media (max-width:860px){.route{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -135,7 +193,7 @@ footer{padding-block:48px 32px}
 
 <header class="top"><div class="wrap">
   <a class="logo" href="#"><b>ПроМотор</b><span>автосервис на проспекте Мира, 48</span></a>
-  <nav class="nav"><a href="#price">Стоимость работ</a><a href="#shop">Цех</a><a href="#terms">Гарантия</a><a href="#contacts">Как проехать</a></nav>
+  <nav class="nav"><a href="#services">Услуги</a><a href="#price">Калькулятор</a><a href="#deals">Акции</a><a href="#reviews">Отзывы</a><a href="#route">Как проехать</a></nav>
   <a class="tel" href="tel:+79000000000"><b>+7 900 000-00-00</b><span id="openNow">пн–сб 8:00–20:00</span></a>
 </div></header>
 
@@ -151,6 +209,27 @@ footer{padding-block:48px 32px}
     <p class="hint">Номер указан в правом верхнем углу заказ-наряда. Для проверки демо есть А-2187 и Б-0451.</p>
   </div>
   <figure><img src="../img/auto-jack.jpg" alt="Машина на подставках в боксе" onerror="this.src='../img/auto.jpg'"><figcaption>Бокс №2: замена тормозов и подвески</figcaption></figure>
+</div></section>
+
+
+<section class="adv"><div class="wrap">
+  <div><b>12 лет</b><span>на проспекте Мира</span></div>
+  <div><b>6 постов</b><span>принимаем без долгой очереди</span></div>
+  <div><b>30 минут</b><span>компьютерная диагностика</span></div>
+  <div><b>12 месяцев</b><span>гарантия на работы</span></div>
+</div></section>
+
+<section class="sec" id="services"><div class="wrap">
+  <h2>Услуги</h2>
+  <p class="intro">Цены указаны за работу для легковой машины. Нажмите на услугу, чтобы посчитать стоимость в калькуляторе.</p>
+  <div class="svc">
+    <a href="#price"><img src="../img/auto-oil.jpg" alt="Замена масла" loading="lazy" onerror="this.onerror=null;this.src='../img/auto-engine.jpg'"><div><h3>ТО и замена масла</h3><p>по регламенту производителя, гарантия дилера сохраняется</p><span class="from">от 1 100 ₽</span></div></a>
+    <a href="#price"><img src="../img/brake.jpg" alt="Тормозной диск" loading="lazy" onerror="this.onerror=null;this.src='../img/brake.jpg'"><div><h3>Тормоза</h3><p>колодки, диски, суппорты, тормозная жидкость</p><span class="from">от 1 760 ₽</span></div></a>
+    <a href="#price"><img src="../img/auto-under.jpg" alt="Подвеска снизу" loading="lazy" onerror="this.onerror=null;this.src='../img/auto-jack.jpg'"><div><h3>Подвеска</h3><p>амортизаторы, рычаги, сайлентблоки, развал-схождение</p><span class="from">от 1 540 ₽</span></div></a>
+    <a href="#price"><img src="../img/auto-diag.jpg" alt="Компьютерная диагностика" loading="lazy" onerror="this.onerror=null;this.src='../img/auto-engine.jpg'"><div><h3>Диагностика</h3><p>чтение ошибок, проверка датчиков, отчёт с фото</p><span class="from">1 100 ₽</span></div></a>
+    <a href="#price"><img src="../img/auto-engine.jpg" alt="Двигатель" loading="lazy" onerror="this.onerror=null;this.src='../img/auto-engine.jpg'"><div><h3>Двигатель</h3><p>ремень ГРМ, свечи, прокладки, течи масла</p><span class="from">от 2 200 ₽</span></div></a>
+    <a href="#deals"><img src="../img/auto-tire.jpg" alt="Шиномонтаж" loading="lazy" onerror="this.onerror=null;this.src='../img/auto-jack.jpg'"><div><h3>Шиномонтаж</h3><p>сезонная замена, балансировка, хранение шин</p><span class="from">от 1 600 ₽ за 4 колеса</span></div></a>
+  </div>
 </div></section>
 
 <section class="sec" id="price"><div class="wrap">
@@ -171,12 +250,33 @@ footer{padding-block:48px 32px}
   </div>
 </div></section>
 
+
+<section class="sec" id="deals" style="padding-top:0"><div class="wrap">
+  <h2>Акции</h2>
+  <div class="deals">
+    <div class="deal"><span class="v">1 600 ₽</span><h3>Сезонный шиномонтаж</h3><p>Четыре колеса R13–R16 с балансировкой. Запись на конкретное время, без живой очереди.</p><small>до 30 ноября</small></div>
+    <div class="deal"><span class="v">0 ₽</span><h3>Диагностика ходовой</h3><p>Бесплатно, если ремонт подвески делаете у нас. Покажем люфты на подъёмнике.</p><small>постоянно</small></div>
+    <div class="deal"><span class="v">3 000 ₽</span><h3>Хранение шин на сезон</h3><p>Моем, упаковываем и храним в отапливаемом складе. При записи на шиномонтаж — 2 500 ₽.</p><small>весь сезон</small></div>
+  </div>
+</div></section>
+
+<section class="sec" id="steps" style="padding-top:0"><div class="wrap">
+  <h2>Как проходит ремонт</h2>
+  <ol class="flow5">
+    <li><b>Запись</b><span>По телефону, в Telegram или через калькулятор на сайте.</span></li>
+    <li><b>Приёмка</b><span>Мастер осматривает машину при вас и пишет заказ-наряд.</span></li>
+    <li><b>Согласование</b><span>Если найдём что-то ещё, сначала позвоним и назовём цену.</span></li>
+    <li><b>Ремонт</b><span>Фото этапов приходят в Telegram, статус виден на сайте.</span></li>
+    <li><b>Выдача</b><span>Отдаём старые запчасти и акт выполненных работ.</span></li>
+  </ol>
+</div></section>
+
 <section class="sec" id="shop" style="padding-top:0"><div class="wrap">
   <h2>Цех</h2>
   <div class="shop">
     <figure><img src="../img/auto.jpg" alt="Цех автосервиса" loading="lazy"><figcaption><b>Шесть постов</b>Два из них с подъёмниками для кроссоверов до 4 тонн</figcaption></figure>
-    <figure><img src="../img/auto-under.jpg" alt="Подвеска машины снизу на подъёмнике" loading="lazy" onerror="this.src='../img/brake.jpg'"><figcaption><b>Подвеска и выхлоп</b>Смотрим машину снизу при вас, если хотите</figcaption></figure>
-    <figure><img src="../img/auto-engine.jpg" alt="Двигатель под капотом" loading="lazy" onerror="this.src='../img/brake.jpg'"><figcaption><b>Диагностика</b>Сканер и эндоскоп для цилиндров</figcaption></figure>
+    <figure><img src="../img/auto-lift.jpg" alt="Машина на подъёмнике" loading="lazy" onerror="this.src='../img/auto.jpg'"><figcaption><b>Подъёмники до 4 тонн</b>Поднимаем и кроссоверы, и микроавтобусы</figcaption></figure>
+    <figure><img src="../img/auto-shop2.jpg" alt="Двухуровневый цех с полками запчастей" loading="lazy" onerror="this.src='../img/auto.jpg'"><figcaption><b>Склад запчастей</b>Расходники на 300 моделей в наличии</figcaption></figure>
   </div>
 </div></section>
 
@@ -192,6 +292,50 @@ footer{padding-block:48px 32px}
   </dl>
 </div></section>
 
+
+<section class="sec" id="reviews" style="padding-top:0"><div class="wrap">
+  <h2>Отзывы</h2>
+  <div class="revs">
+    <div class="rev"><span class="stars">★★★★★</span><p>Сделали ТО за полтора часа, пока я работал в кафе через дорогу. Фото колодок прислали в Telegram.</p><b>Сергей</b><span class="car">Hyundai Solaris, Яндекс Карты</span></div>
+    <div class="rev"><span class="stars">★★★★★</span><p>Цена совпала с калькулятором на сайте до рубля. Старые диски отдали в пакете, как и обещали.</p><b>Анна</b><span class="car">Kia Rio, 2ГИС</span></div>
+    <div class="rev"><span class="stars">★★★★☆</span><p>Нашли причину стука, которую не нашли в двух других сервисах. Ждал запчасть два дня, но предупредили заранее.</p><b>Тимур</b><span class="car">Skoda Octavia, Google</span></div>
+  </div>
+</div></section>
+
+<section class="sec" id="faq" style="padding-top:0"><div class="wrap">
+  <h2>Вопросы и ответы</h2>
+  <div class="faq">
+    <details open><summary>Можно привезти свои запчасти?</summary><p>Да. Гарантию на работу даём, на сами детали — нет, если они куплены не у нас. Масло и фильтры можно привозить без ограничений.</p></details>
+    <details><summary>Сохранится ли гарантия дилера после ТО у вас?</summary><p>Сохранится: делаем ТО по регламенту производителя, ставим печать в сервисную книжку и выдаём заказ-наряд с номерами деталей.</p></details>
+    <details><summary>Сколько ждать, если запчасти нет в наличии?</summary><p>Расходники держим на складе. Остальное привозим от поставщиков за 1–2 дня, срок называем при приёмке.</p></details>
+    <details><summary>Работаете с юрлицами?</summary><p>Да, по договору с отсрочкой платежа и закрывающими документами с НДС. Обслуживаем таксопарки и корпоративные автопарки.</p></details>
+    <details><summary>Можно подождать машину на месте?</summary><p>Есть зона ожидания с кофе и Wi-Fi и окно в цех, через которое видно ваш пост.</p></details>
+  </div>
+</div></section>
+
+<section class="sec" id="route" style="padding-top:0"><div class="wrap">
+  <h2>Как проехать</h2>
+  <div class="route">
+    <svg viewBox="0 0 640 360" role="img" aria-label="Схема: автосервис на проспекте Мира, 48, въезд со двора с улицы Заводской">
+      <rect width="640" height="360" fill="#ECEEF0"/>
+      <rect x="30" y="30" width="250" height="120" fill="#DDE1E5"/><rect x="330" y="30" width="280" height="120" fill="#DDE1E5"/>
+      <rect x="30" y="210" width="250" height="120" fill="#DDE1E5"/><rect x="330" y="210" width="280" height="120" fill="#C9CFD5"/>
+      <path d="M0 180 H640" stroke="#fff" stroke-width="40"/><path d="M305 0 V360" stroke="#fff" stroke-width="26"/>
+      <path d="M0 180 H640" stroke="#C9CFD5" stroke-width="2" stroke-dasharray="14 12"/>
+      <text x="16" y="168" font-family="PT Sans,sans-serif" font-size="14" fill="#5E6770">пр. Мира</text>
+      <text x="313" y="340" font-family="PT Sans,sans-serif" font-size="13" fill="#5E6770" transform="rotate(-90 313 340)">ул. Заводская</text>
+      <path d="M318 230 H360 V270" stroke="#E8590C" stroke-width="4" fill="none"/><path d="M352 262 L360 274 L368 262" fill="#E8590C"/>
+      <rect x="380" y="240" width="200" height="60" fill="#15181B"/><text x="480" y="276" text-anchor="middle" font-family="PT Sans Narrow,sans-serif" font-size="20" font-weight="700" fill="#fff">ПроМотор, 6 постов</text>
+      <text x="330" y="226" font-family="PT Sans,sans-serif" font-size="12" fill="#E8590C">въезд</text>
+    </svg>
+    <dl>
+      <div><dt>Адрес</dt><dd>пр. Мира, 48. Въезд со двора: с проспекта поверните на Заводскую, через 30 метров направо под шлагбаум.</dd></div>
+      <div><dt>Часы</dt><dd>пн–сб 8:00–20:00, воскресенье выходной. Эвакуатор принимаем круглосуточно.</dd></div>
+      <div><dt>Общественный транспорт</dt><dd>Остановка «Заводская», автобусы 12 и 45, 2 минуты пешком.</dd></div>
+    </dl>
+  </div>
+</div></section>
+
 <footer id="contacts"><div class="wrap">
   <div class="stamp">
     <div class="name">ПроМотор<small style="font-family:var(--f-b);font-weight:400;margin-top:6px">автосервис</small></div>
@@ -202,7 +346,7 @@ footer{padding-block:48px 32px}
     <div><small>Юрлицо</small>ООО «ПроМотор», ИНН 0000000000</div>
     <div><small>Лист</small>1 из 1</div>
   </div>
-  <p class="credits" id="credits">Демо-данные. Фото: <a href="https://www.flickr.com/photos/63876656@N00/469119046" target="_blank" rel="noopener">Lifted Miata in the Garage</a>, J$, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/w/index.php?curid=113443523" target="_blank" rel="noopener">Car repair shop</a>, Martin Vorel, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/26209464@N00/4120292631" target="_blank" rel="noopener">Colors</a>, simonov, CC BY-SA 2.0; <a href="https://www.flickr.com/photos/8543480@N06/1437963023" target="_blank" rel="noopener">1974 SAAB 99LE engine</a>, liftarn, CC BY-SA 2.0.</p>
+  <p class="credits" id="credits">Демо-данные. Фото: <a href="https://www.flickr.com/photos/63876656@N00/469119046" target="_blank" rel="noopener">Lifted Miata in the Garage</a>, J$, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:SIGAUS_aceite.jpg" target="_blank" rel="noopener">SIGAUS aceite</a>, SIGAUS, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/42982698@N00/9163072760" target="_blank" rel="noopener">That is a sad brake rotor.</a>, cjmartin, CC BY 2.0; <a href="https://www.flickr.com/photos/26209464@N00/4120292631" target="_blank" rel="noopener">Colors</a>, simonov, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:MaxScan_OE509_img06.jpg" target="_blank" rel="noopener">MaxScan OE509 img06</a>, Arp, Public domain; <a href="https://www.flickr.com/photos/8543480@N06/1437963023" target="_blank" rel="noopener">1974 SAAB 99LE engine</a>, liftarn, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:The_Goodyear_tyre_fitting_paddock_at_the_1996_Le_Mans_(51816388598).jpg" target="_blank" rel="noopener">The Goodyear tyre fitting paddock at the 1996 Le Mans (51816</a>, Martin Lee from London, UK, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/w/index.php?curid=113443523" target="_blank" rel="noopener">Car repair shop</a>, Martin Vorel, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/53371251@N08/5618801269" target="_blank" rel="noopener">The AM-DBS-Elevator</a>, Tom Wolf | Photography, CC BY-SA 2.0; <a href="https://www.flickr.com/photos/34128007@N04/18728867604" target="_blank" rel="noopener">Empty Stage @ Fast &amp; Furious Supercharged</a>, Prayitno / Thank you for (12 millions +) view, CC BY 2.0.</p>
 </div></footer>
 
 <script>

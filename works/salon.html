@@ -41,7 +41,7 @@ p{margin:0}
 
 /* шапка-обложка */
 .mast{padding-top:18px}
-.mast h1{font-size:clamp(120px,27vw,400px);line-height:.78;letter-spacing:-.04em;margin-left:-.04em}
+.mast h1{font-size:clamp(84px,27vw,400px);line-height:.78;letter-spacing:-.04em;margin-left:-.04em}
 .mast-sub{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);padding-block:12px;margin-top:22px;font-size:15px}
 
 /* разворот */
@@ -117,6 +117,60 @@ footer .name{font:400 40px/1 var(--f-h)}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1px solid var(--line);padding-top:16px}
 @media (max-width:760px){footer .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* услуги рядом */
+.svc{padding-block:8px 72px}
+.svc-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+.svc-row a{text-decoration:none;display:block}
+.svc-row img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.svc-row h3{font-size:24px;margin-top:12px}
+.svc-row span{font-size:14.5px;color:var(--taupe)}
+.svc-row a:hover h3{text-decoration:underline;text-underline-offset:5px}
+@media (max-width:900px){.svc-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.svc-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.svc-row h3{font-size:19px;overflow-wrap:anywhere}.toc section{min-width:0;overflow-x:auto}.toc td{font-size:13.5px}.toc td+td{padding-left:4px}}
+/* предложения */
+.offers{border-top:1px solid var(--line);padding-block:64px}
+.offers h2,.sh{font-size:clamp(40px,5vw,64px);line-height:1}
+.off{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:32px;border-top:1px solid var(--ink)}
+.off div{padding:24px 24px 24px 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.off div+div{padding-left:24px}
+.off div:last-child{border-right:0}
+.off h3{font-size:28px;line-height:1.1}
+.off .v{font:400 40px/1 var(--f-h);color:var(--plum)}
+.off p{font-size:15.5px;color:var(--taupe)}
+@media (max-width:860px){.off{grid-template-columns:minmax(0,1fr)}.off div{border-right:0;border-bottom:1px solid var(--line);padding:22px 0!important}}
+/* работы */
+.works{padding-block:72px}
+.wgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:240px 240px;gap:12px;margin-top:28px}
+.wgrid figure{margin:0;position:relative}
+.wgrid figure:first-child{grid-row:span 2}
+.wgrid img{width:100%;height:100%;object-fit:cover}
+.wgrid figcaption{position:absolute;left:0;bottom:0;background:var(--white);padding:6px 10px;font-size:13.5px;margin:0;color:var(--ink)}
+@media (max-width:760px){.wgrid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.wgrid figure{aspect-ratio:1}.wgrid figure:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:16/11}}
+/* отзывы */
+.revs{background:var(--blush);padding-block:72px}
+.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:28px}
+.rgrid blockquote{margin:0;font:400 21px/1.4 var(--f-h)}
+.rgrid p{margin-top:14px;font-size:14.5px;color:var(--plum)}
+@media (max-width:860px){.rgrid{grid-template-columns:minmax(0,1fr)}}
+/* вопросы */
+.qa{padding-block:72px 24px}
+.faq{margin-top:24px;max-width:900px;border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font:400 22px/1.3 var(--f-h);display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--f-b);color:var(--plum)}
+.faq details[open] summary::after{content:"−"}
+.faq p{padding-bottom:18px;max-width:46em;color:var(--taupe)}
+/* схема */
+.where{border-top:1px solid var(--line);padding-block:64px}
+.where .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:40px;align-items:start}
+.where svg{width:100%;height:auto;display:block}
+.where dl{margin:0;display:grid;gap:14px}
+.where dt{font:400 22px/1.2 var(--f-h)}
+.where dd{margin:4px 0 0;color:var(--taupe)}
+@media (max-width:860px){.where .wrap{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -125,7 +179,7 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
 
 <div class="bar"><div class="wrap">
   <a class="mini" href="#">aura</a>
-  <nav><a href="#price">Цены</a><a href="#masters">Мастера</a><a href="#nails">Маникюр</a><a href="#contacts">Адрес</a></nav>
+  <nav><a href="#price">Цены</a><a href="#offers">Абонементы</a><a href="#masters">Мастера</a><a href="#reviews">Отзывы</a><a href="#contacts">Адрес</a></nav>
   <a class="book-link" href="#book">Записаться</a>
 </div></div>
 
@@ -142,6 +196,17 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
     <div class="next" id="next"></div>
   </div>
 </section>
+
+
+<section class="svc"><div class="wrap">
+  <div class="svc-row">
+    <a href="#price"><img src="../img/salon-scissors.jpg" alt="Стрижки" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Стрижки</h3><span>от 1 500 ₽</span></a>
+    <a href="#price"><img src="../img/salon-color.jpg" alt="Окрашивание" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Окрашивание</h3><span>от 2 800 ₽</span></a>
+    <a href="#price"><img src="../img/salon-dryer.jpg" alt="Укладки" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Укладки</h3><span>от 1 200 ₽</span></a>
+    <a href="#nails"><img src="../img/salon.jpg" alt="Маникюр" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><h3>Маникюр</h3><span>от 1 100 ₽</span></a>
+    <a href="#price"><img src="../img/salon-pedi.jpg" alt="Кресла для педикюра" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><h3>Педикюр</h3><span>2 600 ₽</span></a>
+  </div>
+</div></section>
 
 <section class="price" id="price"><div class="wrap">
   <div class="price-head"><h2>Цены</h2><p>Стоимость стрижки и окрашивания зависит от длины волос. Короткие — выше линии подбородка, средние — до плеч, длинные — ниже плеч.</p></div>
@@ -176,6 +241,16 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
   </div>
 </div></section>
 
+
+<section class="offers" id="offers"><div class="wrap">
+  <h2 class="sh">Абонементы и подарки</h2>
+  <div class="off">
+    <div><h3>Первое окрашивание</h3><span class="v">−15%</span><p>Для новых клиентов на любое окрашивание. Консультация и тест пряди бесплатно.</p></div>
+    <div><h3>Пять маникюров</h3><span class="v">9 000 ₽</span><p>Вместо 10 000 ₽. Абонемент действует три месяца, можно делить с подругой.</p></div>
+    <div><h3>Подарочный сертификат</h3><span class="v">от 2 000 ₽</span><p>На любую сумму и услугу, действует полгода. Оформим в конверте или пришлём файлом.</p></div>
+  </div>
+</div></section>
+
 <section class="masters" id="masters"><div class="wrap">
   <h2>Мастера</h2>
   <div class="mlist">
@@ -186,6 +261,18 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
   <figure class="mphoto"><img src="../img/salon-scissors.jpg" alt="Ножницы и расчёска парикмахера" onerror="this.src='../img/salon.jpg'"><figcaption>Инструменты стерилизуем в сухожаровом шкафу после каждого клиента.</figcaption></figure>
 </div></section>
 
+
+<section class="works"><div class="wrap">
+  <h2 class="sh">Студия и работы</h2>
+  <div class="wgrid">
+    <figure><img src="../img/salon-room.jpg" alt="Зал студии" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><figcaption>Зал на втором этаже</figcaption></figure>
+    <figure><img src="../img/salon-color.jpg" alt="Окрашивание в фольге" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><figcaption>Airtouch, Мария</figcaption></figure>
+    <figure><img src="../img/salon-tools.jpg" alt="Пояс с ножницами мастера" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-scissors.jpg'"><figcaption>Инструменты Анны</figcaption></figure>
+    <figure><img src="../img/salon-polish.jpg" alt="Лаки для ногтей" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><figcaption>140 оттенков гель-лака</figcaption></figure>
+    <figure><img src="../img/salon-dryer.jpg" alt="Укладка" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-scissors.jpg'"><figcaption>Укладка, Анна</figcaption></figure>
+  </div>
+</div></section>
+
 <section class="nails" id="nails">
   <img src="../img/salon.jpg" alt="Маникюр с цветным покрытием" loading="lazy">
   <div class="t">
@@ -194,6 +281,26 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
     <p style="color:var(--taupe)">Маникюр с покрытием: 1 час 40 минут, 2 000 ₽</p>
   </div>
 </section>
+
+
+<section class="revs" id="reviews"><div class="wrap">
+  <h2 class="sh">Отзывы</h2>
+  <div class="rgrid">
+    <div><blockquote>«Хожу к Анне третий год. Стрижка отрастает так, что до следующего визита можно не укладывать.»</blockquote><p>Ксения, Яндекс Карты</p></div>
+    <div><blockquote>«Мария вывела меня из чёрного в светлый за два визита и честно сказала, что за один нельзя.»</blockquote><p>Дарья, 2ГИС</p></div>
+    <div><blockquote>«Маникюр держится три недели, а записаться можно ночью через Telegram-бота.»</blockquote><p>Алина, Google</p></div>
+  </div>
+</div></section>
+
+<section class="qa"><div class="wrap">
+  <h2 class="sh">Вопросы</h2>
+  <div class="faq">
+    <details open><summary>Как узнать точную цену окрашивания?</summary><p>Приходите на бесплатную консультацию на 15 минут: мастер посмотрит длину, густоту и прошлые окрашивания и назовёт цену до начала работы.</p></details>
+    <details><summary>Можно ли перенести запись?</summary><p>Да, бесплатно, если предупредить за три часа. Перенести можно по телефону или в Telegram-боте.</p></details>
+    <details><summary>Чем вы работаете?</summary><p>Красители Wella и L’Oréal Professionnel, уход Olaplex и Kérastase, гель-лаки Luxio.</p></details>
+    <details><summary>Есть ли парковка?</summary><p>Во дворе через арку есть бесплатные места для гостей студии.</p></details>
+  </div>
+</div></section>
 
 <section class="book" id="book"><div class="wrap">
   <div><h2>Запись</h2><p>Выберите услугу, мастера и время. Мы перезвоним, чтобы подтвердить запись, и напомним о визите за два часа.</p></div>
@@ -212,11 +319,32 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1p
   </form>
 </div></section>
 
+
+<section class="where"><div class="wrap">
+  <svg viewBox="0 0 640 340" role="img" aria-label="Схема: студия на Садовой, 5, вход через арку, второй этаж">
+    <rect width="640" height="340" fill="#FBF5F6"/>
+    <rect x="30" y="30" width="250" height="110" fill="#F2E6E8"/><rect x="330" y="30" width="280" height="110" fill="#F2E6E8"/>
+    <rect x="30" y="200" width="250" height="110" fill="#F2E6E8"/><rect x="330" y="200" width="280" height="110" fill="#EBD5D9"/>
+    <path d="M0 170 H640" stroke="#fff" stroke-width="34"/><path d="M305 0 V340" stroke="#fff" stroke-width="26"/>
+    <text x="18" y="175" font-family="Manrope,sans-serif" font-size="14" fill="#7E7076">ул. Садовая</text>
+    <text x="313" y="320" font-family="Manrope,sans-serif" font-size="13" fill="#7E7076" transform="rotate(-90 313 320)">Липовый пер.</text>
+    <path d="M430 200 V188" stroke="#5B2A40" stroke-width="3"/><rect x="410" y="214" width="40" height="22" fill="#fff" stroke="#5B2A40"/><text x="430" y="230" text-anchor="middle" font-family="Manrope,sans-serif" font-size="11" fill="#5B2A40">арка</text>
+    <circle cx="520" cy="255" r="16" fill="#24161D"/><text x="520" y="260" text-anchor="middle" font-family="Prata,serif" font-size="15" fill="#fff">a</text>
+    <text x="545" y="260" font-family="Manrope,sans-serif" font-size="13" fill="#24161D">Садовая, 5</text>
+    <path d="M436 238 C 460 250, 480 255, 503 255" stroke="#24161D" stroke-width="1.6" fill="none" stroke-dasharray="3 4"/>
+  </svg>
+  <dl>
+    <div><dt>Адрес</dt><dd>ул. Садовая, 5. Пройдите через арку, вход во дворе, второй этаж.</dd></div>
+    <div><dt>Часы</dt><dd>Ежедневно с 10:00 до 21:00, последняя запись в 19:30.</dd></div>
+    <div><dt>Парковка</dt><dd>Бесплатно во дворе для гостей студии.</dd></div>
+  </dl>
+</div></section>
+
 <footer id="contacts"><div class="wrap">
   <div><div class="name">aura</div><p style="margin-top:10px;color:var(--taupe)">ул. Садовая, 5, второй этаж, вход через арку</p></div>
   <div><ul><li><a href="tel:+79000000000">+7 900 000-00-00</a></li><li>Запись в Telegram: @aura_studio_bot</li></ul></div>
   <div><ul><li>Ежедневно 10:00–21:00</li><li>Последняя запись в 19:30</li></ul></div>
-  <p class="small" id="credits">ИП Белова А. С., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/17868205@N00/8033063118" target="_blank" rel="noopener">Pro Touch</a>, Phalinn Ooi, CC BY 2.0; <a href="https://stocksnap.io/photo/scissors-comb-A5M4RVGZKE" target="_blank" rel="noopener">Scissors Comb</a>, Candace McDaniel, CC0; <a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0.</p>
+  <p class="small" id="credits">ИП Белова А. С., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/17868205@N00/8033063118" target="_blank" rel="noopener">Pro Touch</a>, Phalinn Ooi, CC BY 2.0; <a href="https://stocksnap.io/photo/scissors-comb-A5M4RVGZKE" target="_blank" rel="noopener">Scissors Comb</a>, Candace McDaniel, CC0; <a href="https://commons.wikimedia.org/wiki/File:Hair_dyes_for_hair_colouring_in_a_shelf_of_a_hair_salon_in_Germany.jpg" target="_blank" rel="noopener">Hair dyes for hair colouring in a shelf of a hair salon in G</a>, автор указан на странице файла, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Sit-down_salon_hair_dryer.jpg" target="_blank" rel="noopener">Sit-down salon hair dryer</a>, UnifiedFunctionality, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0; <a href="https://commons.wikimedia.org/wiki/File:Jenny_Bui_salon_4.jpg" target="_blank" rel="noopener">Jenny Bui salon 4</a>, Valereee, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Leather_belt_bag_with_various_tools_of_a_hairdresser_for_quick_access.jpg" target="_blank" rel="noopener">Leather belt bag with various tools of a hairdresser for qui</a>, Lisa Risager from Denmark, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Colourful_nail_polishes.jpg" target="_blank" rel="noopener">Colourful nail polishes</a>, Etsy Ketsy, CC BY-SA 2.0.</p>
 </div></footer>
 
 <script>

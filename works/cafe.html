@@ -136,6 +136,66 @@ textarea{min-height:76px;resize:vertical}
 .orderbar span{flex:1;font-weight:600}
 .orderbar small{display:block;font-weight:400;color:var(--muted);font-size:13.5px}
 .orderbar .btn{padding:12px 20px}
+
+/* плитки разделов меню */
+.cats{padding-block:72px 8px}
+.sec-t{font-size:clamp(34px,4vw,48px);color:var(--paper)}
+.sec-sub{margin-top:8px;max-width:40em}
+.cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;margin-top:28px}
+.cat a{display:block;text-decoration:none;color:var(--leaf)}
+.cat img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.cat div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0 10px;border-bottom:1px solid var(--cloth-line)}
+.cat b{font:400 26px/1.1 var(--f-h);color:var(--paper)}
+.cat span{font-size:15px;white-space:nowrap}
+.cat a:hover b{color:var(--brass)}
+@media (max-width:860px){.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.cat-grid{grid-template-columns:minmax(0,1fr)}}
+.lunch{margin-top:56px;background:var(--paper);color:var(--ink);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:28px 32px}
+.lunch h3{font-size:34px}
+.lunch p{color:var(--muted);margin-top:6px}
+.lunch ul{margin:12px 0 0;padding-left:18px;columns:2;column-gap:32px;font-size:15.5px}
+.lunch .price{font:400 54px/1 var(--f-h);color:var(--wine);white-space:nowrap;text-align:right}
+.lunch .price small{display:block;font:400 14px/1.3 var(--f-b);color:var(--muted)}
+@media (max-width:700px){.lunch{grid-template-columns:minmax(0,1fr);padding:22px}.lunch ul{columns:1}.lunch .price{text-align:left}}
+/* банкеты */
+.banq{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);background:var(--cloth-2)}
+.banq img{width:100%;height:100%;object-fit:cover;min-height:440px}
+.banq .t{padding:56px clamp(22px,5vw,64px);display:flex;flex-direction:column;gap:16px;justify-content:center}
+.banq dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:10px 18px;margin:6px 0 4px;font-size:15.5px}
+.banq dt{color:var(--brass)}
+.banq dd{margin:0}
+@media (max-width:900px){.banq{grid-template-columns:minmax(0,1fr)}.banq img{min-height:0;aspect-ratio:16/10}}
+/* галерея и отзывы */
+.people{padding-block:88px 40px}
+.gal{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:210px 210px;gap:10px;margin-top:28px}
+.gal img{width:100%;height:100%;object-fit:cover}
+.gal img:first-child{grid-row:span 2}
+@media (max-width:700px){.gal{grid-template-columns:1fr 1fr;grid-template-rows:auto}.gal img{aspect-ratio:1}.gal img:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:16/10}}
+.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:56px}
+.rev{border-top:1px solid var(--brass);padding-top:18px}
+.rev p{font-size:16.5px}
+.stars{color:var(--brass);letter-spacing:2px;font-size:15px;margin-bottom:8px}
+.who{display:flex;gap:12px;align-items:center;margin-top:16px}
+.who i{width:42px;height:42px;border-radius:50%;background:var(--cloth-line);color:var(--paper);display:grid;place-items:center;font-style:normal;font-weight:600;flex:none}
+.who b{display:block;color:var(--paper);font-weight:600;font-size:15px}
+.who span{font-size:13.5px;color:#9DB9A8}
+@media (max-width:860px){.revs{grid-template-columns:minmax(0,1fr)}}
+/* вопросы */
+.qa{padding-block:40px 72px}
+.faq{margin-top:20px;max-width:880px}
+.faq details{border-bottom:1px solid var(--cloth-line)}
+.faq summary{cursor:pointer;list-style:none;padding:17px 0;font-size:18px;color:var(--paper);display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--brass);font-size:24px;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq p{padding-bottom:18px;max-width:46em}
+/* схема проезда */
+.route{background:var(--cloth-2);padding-block:72px}
+.map{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:36px;margin-top:28px;align-items:start}
+.map svg{width:100%;height:auto;display:block}
+.how{display:grid;gap:16px;font-size:16px}
+.how b{display:block;color:var(--paper);font-weight:600}
+@media (max-width:860px){.map{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -144,7 +204,7 @@ textarea{min-height:76px;resize:vertical}
 
 <header class="top"><div class="wrap">
   <a class="logo" href="#">Горный очаг</a>
-  <nav class="nav"><a href="#menu">Меню</a><a href="#delivery">Доставка</a><a href="#book">Бронь стола</a><a href="#contacts">Как добраться</a></nav>
+  <nav class="nav"><a href="#menu">Меню</a><a href="#banquet">Банкеты</a><a href="#delivery">Доставка</a><a href="#book">Бронь стола</a><a href="#contacts">Контакты</a></nav>
   <a class="phone" href="tel:+79000000000">+7 900 000-00-00</a>
 </div></header>
 
@@ -165,6 +225,27 @@ textarea{min-height:76px;resize:vertical}
   </figure>
 </section>
 
+<section class="cats"><div class="wrap">
+  <h2 class="sec-t">Что у нас готовят</h2>
+  <p class="sec-sub">Хинкали и хачапури — весь день, мангал — с шести вечера. Нажмите на раздел, чтобы открыть его в меню.</p>
+  <div class="cat-grid">
+    <div class="cat"><a href="#menu"><img src="../img/khinkali.jpg" alt="Хинкали" loading="lazy" onerror="this.onerror=null;this.src='../img/khinkali.jpg'"><div><b>Хинкали</b><span>от 75 ₽ за штуку</span></div></a></div>
+    <div class="cat"><a href="#menu"><img src="../img/khachapuri.jpg" alt="Хачапури" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'"><div><b>Хачапури</b><span>от 290 ₽</span></div></a></div>
+    <div class="cat"><a href="#menu"><img src="../img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy" onerror="this.onerror=null;this.src='../img/shashlik.jpg'"><div><b>Мангал</b><span>от 290 ₽</span></div></a></div>
+    <div class="cat"><a href="#menu"><img src="../img/cafe-soup.jpg" alt="Суп харчо" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'"><div><b>Супы</b><span>от 310 ₽</span></div></a></div>
+    <div class="cat"><a href="#menu"><img src="../img/cafe-salad.jpg" alt="Пхали и закуски" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'"><div><b>Закуски</b><span>от 310 ₽</span></div></a></div>
+    <div class="cat"><a href="#menu"><img src="../img/cafe-dessert.jpg" alt="Чурчхела и чай" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'"><div><b>Чай и сладости</b><span>от 180 ₽</span></div></a></div>
+  </div>
+  <div class="lunch">
+    <div>
+      <h3>Бизнес-ланч по будням с 12 до 16</h3>
+      <p>Меняем каждый день, меню на неделю публикуем в Telegram в понедельник утром.</p>
+      <ul><li>суп дня: харчо, чихиртма или лобио</li><li>горячее: 3 хинкали или чашушули</li><li>салат из свежих овощей с ореховой заправкой</li><li>морс или чай с чабрецом</li></ul>
+    </div>
+    <div class="price">450 ₽<small>суп, горячее, салат и напиток</small></div>
+  </div>
+</div></section>
+
 <section class="menu-sec" id="menu"><div class="wrap">
   <div class="sheet">
     <div class="sheet-head">
@@ -184,6 +265,22 @@ textarea{min-height:76px;resize:vertical}
     <li><b>Хвостик оставить на тарелке</b>Это сухое тесто. По хвостикам за столом считают, кто сколько съел.</li>
   </ol>
 </div></section>
+
+
+<section class="banq" id="banquet">
+  <img src="../img/cafe-hall.jpg" alt="Зал кафе с деревянными столами" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
+  <div class="t">
+    <h2 class="sec-t">Банкеты и дни рождения</h2>
+    <p>Закрываем зал под ваше событие с понедельника по четверг, по выходным отдаём под банкет второй зал у камина.</p>
+    <dl>
+      <dt>Большой зал</dt><dd>до 40 гостей, свой вход и гардероб</dd>
+      <dt>Зал у камина</dt><dd>до 16 гостей</dd>
+      <dt>Банкетное меню</dt><dd>от 2 500 ₽ на гостя, без аренды зала</dd>
+      <dt>Можно своё</dt><dd>торт и вино без пробкового сбора</dd>
+    </dl>
+    <div><a class="btn btn-wine" href="#book">Обсудить банкет</a></div>
+  </div>
+</section>
 
 <section class="dual">
   <div class="wrap">
@@ -218,16 +315,68 @@ textarea{min-height:76px;resize:vertical}
   </div>
 </section>
 
-<section class="quote"><div class="wrap">
-  <blockquote>«Хинкали как у бабушки в Душети. Сидели у камина до закрытия, и никто нас не торопил.»</blockquote>
-  <p>Нино, отзыв на Яндекс Картах, сентябрь 2026</p>
+<section class="people"><div class="wrap">
+  <h2 class="sec-t">Как у нас внутри</h2>
+  <div class="gal">
+    <img src="../img/cafe-hall.jpg" alt="Зал кафе" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
+    <img src="../img/khinkali.jpg" alt="Хинкали на столе" loading="lazy" onerror="this.onerror=null;this.src='../img/khinkali.jpg'">
+    <img src="../img/cafe-tea.jpg" alt="Чай в стаканах" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'">
+    <img src="../img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy" onerror="this.onerror=null;this.src='../img/shashlik.jpg'">
+    <img src="../img/cafe-hero.jpg" alt="Огонь в камине" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
+  </div>
+  <div class="revs">
+    <div class="rev"><div class="stars">★★★★★</div><p>Хинкали как у бабушки в Душети. Сидели у камина до закрытия, и никто нас не торопил.</p><div class="who"><i>Н</i><div><b>Нино</b><span>Яндекс Карты, сентябрь 2026</span></div></div></div>
+    <div class="rev"><div class="stars">★★★★★</div><p>Отмечали день рождения на 14 человек. Заранее помогли рассчитать меню, торт разрешили принести свой.</p><div class="who"><i>А</i><div><b>Аслан</b><span>2ГИС, август 2026</span></div></div></div>
+    <div class="rev"><div class="stars">★★★★☆</div><p>Заказываем доставку по пятницам. Хинкали приезжают горячими, шашлык не пересушен. В час пик курьер опаздывал на 15 минут.</p><div class="who"><i>И</i><div><b>Игорь</b><span>Google, октябрь 2026</span></div></div></div>
+  </div>
 </div></section>
+
+<section class="qa"><div class="wrap">
+  <h2 class="sec-t">Часто спрашивают</h2>
+  <div class="faq">
+    <details open><summary>Можно прийти с детьми?</summary><p>Да. Есть детские стульчики и меню для детей: хинкали с курицей, сырники, компот. По выходным с 12 до 16 в зале работает аниматор.</p></details>
+    <details><summary>Есть ли вегетарианские блюда?</summary><p>Хинкали с грибами и с сыром, хачапури, пхали, аджапсандал и овощи на углях. Пхали и аджапсандал подходят и для постного меню.</p></details>
+    <details><summary>Где парковаться?</summary><p>Во дворе есть парковка на 8 машин для гостей. Если мест нет, рядом бесплатная парковка у ТЦ «Горный», 3 минуты пешком.</p></details>
+    <details><summary>Можно оплатить картой и по СБП?</summary><p>Да, в зале принимаем карты, СБП и наличные. В доставке оплата онлайн при заказе или картой курьеру.</p></details>
+    <details><summary>Сколько ждать заказ в зале?</summary><p>Хинкали лепим после заказа, их варят 12–15 минут. Шашлык готовится 20–25 минут, поэтому его лучше заказать сразу.</p></details>
+  </div>
+</div></section>
+
+<section class="route"><div class="wrap">
+  <h2 class="sec-t">Как нас найти</h2>
+  <div class="map">
+    <svg viewBox="0 0 640 380" role="img" aria-label="Схема проезда: кафе на улице Горной, 12, вход со двора, рядом метро Центральная">
+      <rect width="640" height="380" fill="#EDE6D3"/>
+      <rect x="40" y="40" width="200" height="110" fill="#E2D9C2"/><rect x="290" y="40" width="160" height="110" fill="#E2D9C2"/><rect x="500" y="40" width="110" height="110" fill="#E2D9C2"/>
+      <rect x="40" y="210" width="200" height="130" fill="#E2D9C2"/><rect x="290" y="210" width="160" height="130" fill="#D6CCB2"/><rect x="500" y="210" width="110" height="130" fill="#E2D9C2"/>
+      <path d="M0 180 H640" stroke="#fff" stroke-width="34"/><path d="M265 0 V380" stroke="#fff" stroke-width="26"/><path d="M475 0 V380" stroke="#fff" stroke-width="20"/>
+      <text x="20" y="186" font-family="Golos Text,sans-serif" font-size="14" fill="#6E655C">ул. Горная</text>
+      <text x="272" y="370" font-family="Golos Text,sans-serif" font-size="13" fill="#6E655C" transform="rotate(-90 272 370)">Садовая ул.</text>
+      <text x="482" y="120" font-family="Golos Text,sans-serif" font-size="13" fill="#6E655C" transform="rotate(-90 482 120)">Заречный пер.</text>
+      <rect x="320" y="250" width="70" height="44" fill="#183A2D"/><text x="355" y="277" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="13" fill="#F3EFE4">двор</text>
+      <path d="M355 250 V200" stroke="#A3242C" stroke-width="3" stroke-dasharray="6 5"/>
+      <circle cx="355" cy="228" r="14" fill="#A3242C"/><text x="355" y="233" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="13" font-weight="700" fill="#fff">12</text>
+      <circle cx="120" cy="100" r="16" fill="#C8A253"/><text x="120" y="105" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="14" font-weight="700" fill="#183A2D">М</text>
+      <text x="142" y="105" font-family="Golos Text,sans-serif" font-size="13" fill="#2A211B">Центральная</text>
+      <path d="M136 112 C 180 150, 300 150, 340 214" stroke="#2A211B" stroke-width="2" fill="none" stroke-dasharray="3 5"/>
+      <rect x="540" y="250" width="34" height="34" fill="#1B4B73"/><text x="557" y="273" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="16" font-weight="700" fill="#fff">P</text>
+      <text x="510" y="305" font-family="Golos Text,sans-serif" font-size="12" fill="#6E655C">ТЦ «Горный»</text>
+    </svg>
+    <div class="how">
+      <div><b>Адрес</b>ул. Горная, 12. Вход через арку со стороны Садовой, вывеска с очагом над дверью.</div>
+      <div><b>От метро</b>«Центральная», выход №2, 6 минут пешком по Горной.</div>
+      <div><b>На машине</b>Парковка во дворе на 8 мест, ещё одна бесплатная — у ТЦ «Горный».</div>
+      <div><a class="btn btn-line" href="https://yandex.ru/maps/" target="_blank" rel="noopener">Открыть в Яндекс Картах</a></div>
+    </div>
+  </div>
+</div></section>
+
 
 <footer class="foot" id="contacts"><div class="wrap">
   <div><h3>Горный очаг</h3><p style="margin-top:10px;max-width:24em">ул. Горная, 12. Вход со двора, у входа вывеска с очагом. Парковка на 8 машин.</p></div>
   <div><ul><li><a class="phone" href="tel:+79000000000">+7 900 000-00-00</a></li><li>Бронь и заказы в Telegram: @gorny_ochag_bot</li></ul></div>
   <div><ul><li>Пн–чт 11:00–23:00</li><li>Пт–сб 11:00–01:00</li><li>Вс 12:00–23:00</li></ul></div>
-  <p class="small">ИП Беридзе Т. Г., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Khinkali</a>, shankar s., CC BY 2.0; <a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0; <a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Grilling skewers</a>, rawpixel, CC0.</p>
+  <p class="small">ИП Беридзе Т. Г., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Another Georgian favourite, the Khinkali</a>, shankar s., CC BY 2.0; <a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0; <a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Free grilling meat skewers photo</a>, rawpixel, CC0; <a href="https://commons.wikimedia.org/wiki/File:Kharcho_meat_soup.jpg" target="_blank" rel="noopener">Kharcho meat soup</a>, A.Savin, CC BY-SA 3.0; <a href="https://commons.wikimedia.org/wiki/File:Spinach_pkhali.jpg" target="_blank" rel="noopener">Spinach pkhali</a>, Georgian Recipes at Georgia About, CC BY 3.0; <a href="https://commons.wikimedia.org/wiki/File:Churchkhela_-_grape_and_nut_dried_on_string_in_sun.jpg" target="_blank" rel="noopener">Churchkhela - grape and nut dried on string in sun</a>, Jon Gudorf Photography, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Restaurant_interior,_The_Riverhead.jpg" target="_blank" rel="noopener">Restaurant interior, The Riverhead</a>, Bjankuloski06, CC BY 4.0; <a href="https://commons.wikimedia.org/wiki/File:Glass_tea_cup.jpg" target="_blank" rel="noopener">Glass tea cup</a>, Zeynel Cebeci, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0.</p>
 </div></footer>
 
 <div class="orderbar" id="orderbar" aria-live="polite"><div class="wrap">

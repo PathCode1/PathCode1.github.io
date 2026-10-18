@@ -123,6 +123,56 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--muted);border-top:1p
 .drawer .go{border:0;background:var(--moss);color:#fff;padding:14px;font-weight:600;font-size:16px}
 .ok{display:none;background:#E5EDE2;color:#2F4A2B;padding:12px 14px;font-size:15px}
 .ok.show{display:block}
+
+/* поводы */
+.occ{padding-block:8px 64px}
+.occ h2,.sh{font-size:clamp(36px,4.6vw,56px);line-height:1}
+.occ-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin-top:24px}
+.occ-grid a{text-decoration:none;display:block}
+.occ-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%}
+.occ-grid b{display:block;text-align:center;font:400 21px/1.15 var(--f-h);margin-top:10px}
+.occ-grid span{display:block;text-align:center;font-size:13.5px;color:var(--muted)}
+.occ-grid a:hover b{color:var(--moss)}
+@media (max-width:900px){.occ-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:480px){.occ-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* акции */
+.deals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-block:1px solid var(--ink);margin-bottom:72px}
+.deals div{padding:22px 24px;border-left:1px solid var(--line)}
+.deals div:first-child{border-left:0;padding-left:0}
+.deals b{display:block;font:400 26px/1.15 var(--f-h)}
+.deals span{display:block;font-size:15px;color:var(--muted);margin-top:4px}
+@media (max-width:860px){.deals{grid-template-columns:minmax(0,1fr)}.deals div{border-left:0;padding:18px 0;border-top:1px solid var(--line)}.deals div:first-child{border-top:0}}
+/* свадьбы и компании */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--white);border-bottom:1px solid var(--line)}
+.split img{width:100%;height:100%;object-fit:cover;min-height:420px}
+.split .t{padding:56px clamp(24px,5vw,64px);display:flex;flex-direction:column;justify-content:center;gap:14px}
+.split ul{margin:6px 0 0;padding-left:18px;display:grid;gap:6px}
+.split .btn2{align-self:flex-start;border:1px solid var(--ink);padding:12px 20px;text-decoration:none;font-weight:600}
+.split .btn2:hover{background:var(--ink);color:var(--paper)}
+.split.rev .t{order:-1}
+@media (max-width:860px){.split{grid-template-columns:minmax(0,1fr)}.split img{min-height:0;aspect-ratio:16/10}.split.rev .t{order:0}}
+/* отзывы */
+.revs{padding-block:72px}
+.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:24px}
+.rgrid div{background:var(--white);padding:24px;transform:rotate(var(--r,0deg));box-shadow:0 14px 30px -22px rgba(34,48,42,.5)}
+.rgrid p{font:400 22px/1.3 var(--f-s);color:#2B3A5C}
+.rgrid small{display:block;margin-top:12px;font-size:13.5px;color:var(--muted)}
+@media (max-width:860px){.rgrid{grid-template-columns:minmax(0,1fr)}.rgrid div{transform:none}}
+/* вопросы */
+.faq{margin-top:20px;max-width:900px;border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 0;font:400 22px/1.3 var(--f-h);display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--f-b);color:var(--moss)}
+.faq details[open] summary::after{content:"−"}
+.faq p{padding-bottom:16px;color:var(--muted);max-width:46em}
+/* схема */
+.where{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:36px;margin-top:24px;align-items:start}
+.where svg{width:100%;height:auto;display:block}
+.where dl{margin:0;display:grid;gap:14px}
+.where dt{font:400 22px/1.2 var(--f-h)}
+.where dd{margin:2px 0 0;color:var(--muted)}
+@media (max-width:860px){.where{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -131,7 +181,7 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--muted);border-top:1p
 
 <header class="top"><div class="wrap">
   <a class="logo" href="#">Флёр</a>
-  <nav class="nav"><a href="#catalog">Букеты</a><a href="#card">Открытка</a><a href="#delivery">Доставка</a><a href="#contacts">Мастерская</a></nav>
+  <nav class="nav"><a href="#catalog">Букеты</a><a href="#card">Открытка</a><a href="#wedding">Свадьбы</a><a href="#business">Компаниям</a><a href="#delivery">Доставка</a></nav>
   <button class="cartb" id="cartBtn" type="button">Корзина: 0</button>
 </div></header>
 
@@ -145,10 +195,30 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--muted);border-top:1p
     <div class="tag"><span>Букет дня</span><small>розовые розы, 4 100 ₽</small></div></figure>
 </div></section>
 
+
+<section class="occ"><div class="wrap">
+  <h2 class="sh">По поводу</h2>
+  <div class="occ-grid">
+    <a href="#catalog"><img src="../img/peony-coral.jpg" alt="Яркий букет" loading="lazy" onerror="this.onerror=null;this.src='../img/peony-coral.jpg'"><b>День рождения</b><span>от 1 900 ₽</span></a>
+    <a href="#catalog"><img src="../img/roses.jpg" alt="Розы" loading="lazy" onerror="this.onerror=null;this.src='../img/roses.jpg'"><b>Любимой</b><span>от 2 600 ₽</span></a>
+    <a href="#catalog"><img src="../img/peony-mix.jpg" alt="Пионы в вазе" loading="lazy" onerror="this.onerror=null;this.src='../img/peony-mix.jpg'"><b>Маме</b><span>от 2 400 ₽</span></a>
+    <a href="#wedding"><img src="../img/flow-wed.jpg" alt="Свадебный букет" loading="lazy" onerror="this.onerror=null;this.src='../img/eustoma.jpg'"><b>Свадьба</b><span>от 4 500 ₽</span></a>
+    <a href="#business"><img src="../img/flow-box.jpg" alt="Цветы в коробке" loading="lazy" onerror="this.onerror=null;this.src='../img/tulips.jpg'"><b>Коллегам</b><span>от 1 900 ₽</span></a>
+    <a href="#catalog"><img src="../img/flow-chrys.jpg" alt="Хризантемы" loading="lazy" onerror="this.onerror=null;this.src='../img/autumn.jpg'"><b>Без повода</b><span>от 1 500 ₽</span></a>
+  </div>
+</div></section>
+
 <section class="cat" id="catalog"><div class="wrap">
   <div class="cat-head"><h2>Букеты</h2><p>Размер S помещается в одну руку, M — классический букет, L — для большого повода. Состав может немного меняться, цвет сохраняем.</p></div>
   <div class="grid" id="grid"></div>
 </div></section>
+
+
+<div class="wrap"><div class="deals">
+  <div><b>−15% на букет недели</b><span>В октябре — белые пионы, 3 900 ₽ вместо 4 600 ₽</span></div>
+  <div><b>Подписка на цветы</b><span>Сезонный букет раз в неделю от 2 900 ₽, пауза в один клик</span></div>
+  <div><b>Фото перед отправкой</b><span>Пришлём в Telegram, если не понравится — переделаем</span></div>
+</div></div>
 
 <section class="card-sec" id="card"><div class="wrap">
   <div>
@@ -162,6 +232,26 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--muted);border-top:1p
   <div class="postcard" id="postcard"><p class="msg" id="pMsg"></p><p class="from" id="pFrom"></p><span class="brand">Флёр, Липовая, 3</span></div>
 </div></section>
 
+
+<section class="split" id="wedding">
+  <img src="../img/flow-wed.jpg" alt="Свадебный букет" loading="lazy" onerror="this.onerror=null;this.src='../img/eustoma.jpg'">
+  <div class="t">
+    <h2 class="sh">Свадебная флористика</h2>
+    <p>Букет невесты, бутоньерки, оформление арки и столов. Встречаемся заранее, собираем пробный букет и фотографируем.</p>
+    <ul><li>Букет невесты — от 4 500 ₽</li><li>Бутоньерка — 700 ₽</li><li>Оформление банкета — от 25 000 ₽</li></ul>
+    <a class="btn2" href="#contacts">Обсудить свадьбу</a>
+  </div>
+</section>
+<section class="split rev" id="business">
+  <img src="../img/flow-hydr.jpg" alt="Букет гортензий" loading="lazy" onerror="this.onerror=null;this.src='../img/peony-mix.jpg'">
+  <div class="t">
+    <h2 class="sh">Для компаний</h2>
+    <p>Цветы в офис по подписке, букеты к праздникам для сотрудников и клиентов. Работаем по договору, с НДС и закрывающими документами.</p>
+    <ul><li>Еженедельное обновление цветов на ресепшене — от 6 500 ₽</li><li>Букеты к 8 Марта и Новому году — от 1 500 ₽ за штуку</li><li>Доставка по списку адресов в один день</li></ul>
+    <a class="btn2" href="#contacts">Запросить предложение</a>
+  </div>
+</section>
+
 <section class="deliv" id="delivery"><div class="wrap">
   <h2>Доставка</h2>
   <table>
@@ -172,11 +262,55 @@ footer .small{grid-column:1/-1;font-size:12.5px;color:var(--muted);border-top:1p
   </table>
 </div></section>
 
+
+<section class="revs"><div class="wrap">
+  <h2 class="sh">Что пишут получатели</h2>
+  <div class="rgrid">
+    <div style="--r:-1.2deg"><p>Мама расплакалась от открытки, а букет стоял две недели.</p><small>Анна, Яндекс Карты</small></div>
+    <div style="--r:.8deg"><p>Заказал в 17:40, в 19:30 жена уже получила пионы. Фото прислали перед отправкой.</p><small>Михаил, 2ГИС</small></div>
+    <div style="--r:-.6deg"><p>Делали нам свадьбу: букет и арку. Флорист приехала на площадку в шесть утра.</p><small>Ольга, Google</small></div>
+  </div>
+</div></section>
+
+<section class="wrap" style="padding-bottom:72px">
+  <h2 class="sh">Вопросы</h2>
+  <div class="faq">
+    <details open><summary>Сколько простоит букет?</summary><p>Розы и хризантемы — 10–14 дней, пионы — 5–7 дней. К каждому букету кладём подкормку и памятку по уходу.</p></details>
+    <details><summary>Что, если нужного цветка нет?</summary><p>Флорист позвонит и предложит замену того же цвета и размера. Без согласования ничего не меняем.</p></details>
+    <details><summary>Можно доставить анонимно?</summary><p>Да. Курьер не назовёт отправителя, а открытку подпишем так, как вы попросите, или оставим без подписи.</p></details>
+    <details><summary>Как оплатить?</summary><p>Картой или по СБП на сайте, по ссылке в Telegram, для компаний — по счёту.</p></details>
+    <details><summary>Доставляете ночью?</summary><p>Ночью принимаем заказы на утро, доставка с 8:00. Ко времени до 8 утра — по договорённости, +800 ₽.</p></details>
+  </div>
+</section>
+
+<section class="wrap" style="padding-bottom:72px">
+  <h2 class="sh">Мастерская</h2>
+  <div class="where">
+    <svg viewBox="0 0 640 340" role="img" aria-label="Схема: мастерская на Липовой, 3, вход с улицы, витрина с цветами">
+      <rect width="640" height="340" fill="#ECEEE7"/>
+      <rect x="30" y="30" width="260" height="110" fill="#E1E5DA"/><rect x="340" y="30" width="270" height="110" fill="#E1E5DA"/>
+      <rect x="30" y="200" width="260" height="110" fill="#E1E5DA"/><rect x="340" y="200" width="270" height="110" fill="#E1E5DA"/>
+      <path d="M0 170 H640" stroke="#fff" stroke-width="34"/><path d="M315 0 V340" stroke="#fff" stroke-width="24"/>
+      <text x="18" y="175" font-family="Onest,sans-serif" font-size="14" fill="#6B7570">ул. Липовая</text>
+      <text x="323" y="320" font-family="Onest,sans-serif" font-size="13" fill="#6B7570" transform="rotate(-90 323 320)">Цветочный пр.</text>
+      <rect x="380" y="140" width="90" height="14" fill="#4E6B4A"/>
+      <circle cx="425" cy="112" r="16" fill="#4E6B4A"/><text x="425" y="118" text-anchor="middle" font-family="Forum,serif" font-size="16" fill="#fff">Ф</text>
+      <text x="450" y="118" font-family="Onest,sans-serif" font-size="13" fill="#22302A">Липовая, 3, витрина</text>
+      <rect x="120" y="240" width="34" height="34" fill="#1B4B73"/><text x="137" y="263" text-anchor="middle" font-family="Onest,sans-serif" font-size="16" font-weight="700" fill="#fff">P</text>
+    </svg>
+    <dl>
+      <div><dt>Адрес</dt><dd>ул. Липовая, 3. Вход с улицы, витрина с цветами на первом этаже.</dd></div>
+      <div><dt>Часы</dt><dd>Ежедневно с 8:00 до 22:00, ночью принимаем заказы на утро.</dd></div>
+      <div><dt>Самовывоз</dt><dd>Букет будет готов через 40 минут после заказа. Парковка напротив, у сквера.</dd></div>
+    </dl>
+  </div>
+</section>
+
 <footer id="contacts"><div class="wrap">
   <div><div class="name">Флёр</div><p style="margin-top:10px;color:var(--muted)">ул. Липовая, 3, вход с улицы, витрина с цветами</p></div>
   <div><ul><li><a href="tel:+79000000000">+7 900 000-00-00</a></li><li>Заказы в Telegram: @fleur_flowers_bot</li></ul></div>
   <div><ul><li>Ежедневно 8:00–22:00</li><li>Ночью принимаем заказы на утро</li></ul></div>
-  <p class="small">ИП Цветкова М. А., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.rawpixel.com/image/5905295/photo-image-flower-public-domain-plant" target="_blank" rel="noopener">pink rose bouquet</a>, rawpixel, CC0; <a href="https://www.flickr.com/photos/89292944@N05/18653768092" target="_blank" rel="noopener">peonies bouquet</a>, Le living and co., CC BY 2.0; <a href="https://www.flickr.com/photos/53133240@N00/27249968620" target="_blank" rel="noopener">peony bouquet</a>, Muffet, CC BY 2.0; <a href="https://www.flickr.com/photos/9318123@N04/14271660110" target="_blank" rel="noopener">peony bouquet</a>, walicia76, CC BY 2.0; <a href="https://www.flickr.com/photos/45880014@N03/7099106625" target="_blank" rel="noopener">Pink Rose Bouquet</a>, Kurozumi, CC BY 2.0; <a href="https://www.flickr.com/photos/53133240@N00/112651128" target="_blank" rel="noopener">Tulips dark background</a>, Muffet, CC BY 2.0; <a href="https://www.flickr.com/photos/62938898@N00/6918197938" target="_blank" rel="noopener">Lisianthus</a>, Tatters ✾, CC BY-SA 2.0.</p>
+  <p class="small">ИП Цветкова М. А., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.rawpixel.com/image/5905295/photo-image-flower-public-domain-plant" target="_blank" rel="noopener">Free pink rose bouquet image</a>, rawpixel, CC0; <a href="https://www.flickr.com/photos/9318123@N04/14271660110" target="_blank" rel="noopener">peony bouquet</a>, walicia76, CC BY 2.0; <a href="https://www.flickr.com/photos/45880014@N03/7099106625" target="_blank" rel="noopener">Pink Rose Bouquet</a>, Kurozumi, CC BY 2.0; <a href="https://www.flickr.com/photos/53133240@N00/27249968620" target="_blank" rel="noopener">peony bouquet</a>, Muffet, CC BY 2.0; <a href="https://commons.wikimedia.org/wiki/File:Bridal_bouquet_(Unsplash).jpg" target="_blank" rel="noopener">Bridal bouquet (Unsplash)</a>, Tamara Menzi itstamaramenzi, CC0; <a href="https://commons.wikimedia.org/wiki/File:Vase_of_bigleaf_hydrangeas_(Hydrangea_macrophylla)(PPL3-Altered)_julesvernex2.jpg" target="_blank" rel="noopener">Vase of bigleaf hydrangeas (Hydrangea macrophylla)(PPL3-Alte</a>, Jules Verne Times Two, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Bouquets_of_chrysanthemums.jpg" target="_blank" rel="noopener">Bouquets of chrysanthemums</a>, Liilia Moroz, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Chrysanthemum_hydrangea.jpg" target="_blank" rel="noopener">Chrysanthemum hydrangea</a>, Vimukthi, CC BY-SA 3.0; <a href="https://www.flickr.com/photos/89292944@N05/18653768092" target="_blank" rel="noopener">peonies peony bouquet fresh flowers white 2</a>, Le living and co., CC BY 2.0; <a href="https://www.flickr.com/photos/53133240@N00/112651128" target="_blank" rel="noopener">tulips dark background</a>, Muffet, CC BY 2.0; <a href="https://www.flickr.com/photos/62938898@N00/6918197938" target="_blank" rel="noopener">Lisianthus (sorting out)</a>, Tatters ✾, CC BY-SA 2.0.</p>
 </div></footer>
 
 <aside class="drawer" id="drawer" aria-label="Корзина">
