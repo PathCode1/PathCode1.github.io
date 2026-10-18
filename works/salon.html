@@ -4,290 +4,232 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Aura</title>
-<meta name="description" content="Студия красоты: стрижки, окрашивание, маникюр. Онлайн-запись к мастеру и подарочные сертификаты.">
+<meta name="description" content="Студия волос и ногтей на Садовой, 5: стрижки, окрашивание, маникюр. Цены по длине волос, запись к своему мастеру.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-/* Журнальная раскладка: пудровый фон, глубокий сливовый текст, арки как фирменная форма */
+/* Журнал о красоте: белая полоса, огромное название студии на всю ширину, прайс как оглавление.
+   Один акцент — пудровый, только у фотографий и выбранных элементов. */
 :root{
-  --cream:#FFF8F6; --blush:#F6E6EA; --rose:#EBC7D2; --plum:#3B1E2E; --berry:#9B3D6C; --muted:#80606F; --line:#E9D3DA; --gold:#B9935A;
-  --f-h:"Tenor Sans","Didot",serif; --f-b:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; color-scheme:light;
+  --white:#FFFFFF; --ink:#24161D; --taupe:#7E7076; --line:#E6DCDF; --blush:#F2DADB; --plum:#5B2A40;
+  --f-h:"Prata",Georgia,serif; --f-b:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:76px}
-body{margin:0;background:var(--cream);color:var(--plum);font:400 16px/1.65 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--white);color:var(--ink);font:400 16.5px/1.65 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit}
-button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
-h1,h2,h3{font-family:var(--f-h);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--f-h);font-weight:400;margin:0;text-wrap:balance}
 p{margin:0}
-:focus-visible{outline:2px solid var(--berry);outline-offset:3px;border-radius:6px}
-.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.eb{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--berry)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 28px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;transition:background .15s,color .15s}
-.btn-dark{background:var(--plum);color:var(--cream)}
-.btn-dark:hover{background:var(--berry)}
-.btn-line{box-shadow:inset 0 0 0 1.5px var(--plum)}
-.btn-line:hover{background:var(--plum);color:var(--cream)}
-.demo{background:var(--plum);color:#D9BFCB;font-size:12.5px;text-align:center;padding:7px 16px}
-.demo a{color:#F6C9D9;font-weight:700;text-decoration:none}
+:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.demo{font-size:13px;color:var(--taupe);text-align:center;padding:7px 16px;border-bottom:1px solid var(--line)}
 
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,248,246,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.top .wrap{display:flex;align-items:center;gap:30px;padding-block:16px}
-.logo{font:400 30px/1 var(--f-h);text-decoration:none;letter-spacing:.02em}
-.nav{display:flex;gap:26px;margin-left:auto;font-size:14.5px;font-weight:600}
-.nav a{text-decoration:none;color:var(--muted)}.nav a:hover{color:var(--plum)}
-.top .btn{padding:11px 20px;font-size:14px}
-@media (max-width:900px){.nav{display:none}.top .btn{margin-left:auto}}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--white);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:28px;padding-block:12px;font-size:15px}
+.bar nav{display:flex;gap:24px}
+.bar nav a{text-decoration:none}
+.bar nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.bar .mini{font:400 22px/1 var(--f-h);text-decoration:none;display:none}
+.bar .book-link{margin-left:auto;background:var(--ink);color:var(--white);text-decoration:none;padding:10px 18px;font-weight:600}
+.bar .book-link:hover{background:var(--plum)}
+@media (max-width:760px){.bar nav{display:none}}
 
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:48px;align-items:end;padding-block:48px 72px}
-.hero h1{font-size:clamp(64px,11.5vw,168px);line-height:.86;letter-spacing:-.03em;margin:22px 0 30px}
-.hero h1 i{font-style:normal;color:var(--berry)}
-.hero .lead{font-size:clamp(16px,1.5vw,19px);color:var(--muted);max-width:28em}
-.hero .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
-.arch{position:relative}
-.arch img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:999px 999px 28px 28px}
-.arch .badge{position:absolute;left:-30px;bottom:40px;background:#fff;border-radius:20px;padding:16px 18px;box-shadow:0 26px 50px -26px rgba(59,30,46,.5);display:grid;gap:2px;font-size:13px}
-.arch .badge b{font-size:18px}
-.arch .seal{position:absolute;right:-12px;top:30px;width:112px;height:112px;border-radius:50%;background:var(--plum);color:var(--cream);display:grid;place-items:center;text-align:center;font:400 15px/1.2 var(--f-h);transform:rotate(8deg)}
-@media (max-width:900px){.hero .wrap{grid-template-columns:minmax(0,1fr);padding-block:28px 56px}.arch{max-width:420px}.arch .badge{left:12px}.arch .seal{right:8px;width:92px;height:92px;font-size:13px}}
+/* шапка-обложка */
+.mast{padding-top:18px}
+.mast h1{font-size:clamp(120px,27vw,400px);line-height:.78;letter-spacing:-.04em;margin-left:-.04em}
+.mast-sub{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);padding-block:12px;margin-top:22px;font-size:15px}
 
-.award{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;padding:8px 14px 8px 8px;border:1px solid var(--line);border-radius:999px;font-size:13px;color:var(--muted)}
-.award b{background:var(--plum);color:var(--cream);border-radius:999px;padding:5px 10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
-.facts4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--blush);border-bottom:1px solid var(--line)}
-.facts4 div{padding:24px 22px;border-left:1px solid var(--line)}
-.facts4 div:first-child{border-left:0}
-.facts4 small{display:block;font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--berry);margin-bottom:6px}
-.facts4 p{font-size:15px}
-@media (max-width:900px){.facts4{grid-template-columns:repeat(2,minmax(0,1fr))}.facts4 div:nth-child(3){border-left:0}.facts4 div:nth-child(n+3){border-top:1px solid var(--line)}.facts4 div{padding:18px 16px}}
-.hits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:56px;background:#fff}
-.hit{padding:26px;border-left:1px solid var(--line);display:grid;gap:8px;align-content:start}
-.hit:first-child{border-left:0}
-.hit small{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
-.hit h3{font-size:30px;line-height:1.05}
-.hit p{color:var(--muted);font-size:14.5px}
-.hit b{margin-top:8px;font-size:15px}
-@media (max-width:900px){.hits{grid-template-columns:minmax(0,1fr)}.hit{border-left:0;border-top:1px solid var(--line)}.hit:first-child{border-top:0}}
-.marquee{background:var(--plum);color:var(--cream);overflow:hidden;white-space:nowrap;padding-block:18px}
-.marquee div{display:inline-flex;gap:40px;font:400 22px/1 var(--f-h);animation:run 28s linear infinite;padding-left:40px}
-.marquee span::after{content:"✦";margin-left:40px;color:var(--rose)}
-@keyframes run{to{transform:translateX(-50%)}}
+/* разворот */
+.spread{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:36px;padding-block:44px 80px}
+.spread figure{grid-column:1 / span 7;margin:0}
+.spread figure img{width:100%;aspect-ratio:4/3.1;object-fit:cover}
+figcaption{font-size:13.5px;color:var(--taupe);margin-top:8px}
+.spread .txt{grid-column:8 / span 5;display:flex;flex-direction:column;gap:26px}
+.spread .big{font:400 clamp(24px,2.3vw,32px)/1.35 var(--f-h)}
+.next{border-top:1px solid var(--line)}
+.next div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.next b{font-weight:600}
+.next span{color:var(--taupe)}
+@media (max-width:860px){.spread{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:28px 56px}.spread figure,.spread .txt{grid-column:1}}
 
-.sec{padding-block:100px}
-.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px 48px;flex-wrap:wrap;margin-bottom:44px}
-.sec-h h2{font-size:clamp(40px,5.4vw,76px);line-height:.95;margin-top:14px}
-.sec-h p{max-width:28em;color:var(--muted)}
-@media (max-width:900px){.sec{padding-block:68px}}
+/* прайс-оглавление */
+.price{border-top:1px solid var(--ink);padding-block:56px 80px}
+.price-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:end;margin-bottom:36px}
+.price-head h2{font-size:clamp(48px,6vw,84px);line-height:.95}
+.price-head p{color:var(--taupe);max-width:30em}
+.toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 72px}
+.toc section{margin-bottom:28px}
+.toc h3{font-size:28px;margin-bottom:6px}
+.toc table{width:100%;border-collapse:collapse;font-size:16px}
+.toc th{font-weight:500;color:var(--taupe);font-size:13.5px;text-align:right;padding:4px 0 6px 12px;white-space:nowrap}
+.toc th:first-child{text-align:left;padding-left:0}
+.toc td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
+.toc td+td{text-align:right;white-space:nowrap;padding-left:12px;font-variant-numeric:tabular-nums}
+.toc td small{display:block;color:var(--taupe);font-size:13.5px}
+@media (max-width:860px){.price-head,.toc{grid-template-columns:minmax(0,1fr)}.toc{gap:0}}
 
-.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:8px}
-.tab{padding:14px 18px;font-weight:700;font-size:15px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
-.tab[aria-selected="true"]{color:var(--plum);border-color:var(--plum)}
-.plist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
-.prow{display:flex;align-items:baseline;gap:12px;padding:20px 0;border-bottom:1px solid var(--line)}
-.prow span:first-child{font-size:17px;font-weight:600}
-.prow small{display:block;font-size:13.5px;color:var(--muted);font-weight:400}
-.prow i{flex:1;border-bottom:1.5px dotted var(--rose);min-width:20px}
-.prow b{font:400 22px/1 var(--f-h);white-space:nowrap}
-@media (max-width:800px){.plist{grid-template-columns:minmax(0,1fr)}}
+/* мастера */
+.masters{background:var(--blush);padding-block:72px}
+.masters .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:36px}
+.masters h2{grid-column:1/-1;font-size:clamp(40px,5vw,64px)}
+.mlist{grid-column:1 / span 8}
+.m{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px 32px;padding:24px 0;border-top:1px solid rgba(36,22,29,.25)}
+.m h3{font-size:34px;line-height:1.05}
+.m h3 small{display:block;font:500 15px/1.4 var(--f-b);color:var(--plum);margin-top:6px}
+.m p{font-size:16px}
+.m .days{color:var(--taupe);font-size:14.5px;margin-top:6px}
+.mphoto{grid-column:9 / span 4;margin:0;align-self:start}
+.mphoto img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+@media (max-width:860px){.masters .wrap{grid-template-columns:minmax(0,1fr)}.mlist,.mphoto{grid-column:1}.m{grid-template-columns:minmax(0,1fr)}.mphoto img{aspect-ratio:16/10}}
 
-.masters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.m{display:grid;gap:10px;justify-items:start}
-.m .ph{width:100%;aspect-ratio:3/3.6;border-radius:999px 999px 24px 24px;background:var(--g);display:grid;place-items:center;font:400 72px/1 var(--f-h);color:rgba(255,255,255,.92)}
-.m h3{font-size:28px;margin-top:8px}
-.m small{color:var(--muted);font-size:14.5px}
-.m button{margin-top:4px;font-weight:700;font-size:14.5px;border-bottom:1.5px solid var(--plum);padding-bottom:2px}
-@media (max-width:800px){.masters{grid-template-columns:minmax(0,1fr)}.m .ph{aspect-ratio:16/10;border-radius:200px 200px 24px 24px}}
+/* маникюр */
+.nails{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch}
+.nails img{width:100%;height:100%;object-fit:cover;min-height:420px}
+.nails .t{padding:64px clamp(24px,5vw,72px);display:flex;flex-direction:column;justify-content:center;gap:18px;border-bottom:1px solid var(--line)}
+.nails h2{font-size:clamp(36px,4vw,54px);line-height:1.05}
+.nails .t p{max-width:30em}
+@media (max-width:860px){.nails{grid-template-columns:minmax(0,1fr)}.nails img{min-height:0;aspect-ratio:16/11}.nails .t{padding:40px 20px}}
 
-.booking{background:var(--blush)}
-.wizard{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:22px;align-items:start}
-.stepcard{background:#fff;border-radius:28px;padding:30px;display:grid;gap:26px}
-.prog{display:flex;gap:8px}
-.prog span{flex:1;height:4px;border-radius:4px;background:var(--line)}
-.prog span.on{background:var(--berry)}
-.stepcard h3{font-size:34px}
-.lbl{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.choices{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.choice{text-align:left;padding:16px 18px;border-radius:18px;border:1.5px solid var(--line);display:grid;gap:2px}
-.choice b{font-size:16px}
-.choice small{font-size:13px;color:var(--muted)}
-.choice[aria-pressed="true"]{border-color:var(--plum);background:var(--plum);color:var(--cream)}
-.choice[aria-pressed="true"] small{color:var(--rose)}
-.nav2{display:flex;justify-content:space-between;gap:10px}
-.ticket{background:var(--plum);color:var(--cream);border-radius:28px;padding:28px;display:grid;gap:16px;position:sticky;top:92px}
-.ticket h3{font-size:30px}
-.ticket dl{margin:0}
-.ticket dl div{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed rgba(255,248,246,.25);font-size:15px}
-.ticket dt{opacity:.65}.ticket dd{margin:0;font-weight:700;text-align:right}
-.ticket .btn{background:var(--rose);color:var(--plum)}
-.ok{display:none;background:rgba(255,248,246,.12);border-radius:14px;padding:14px 16px;font-size:14.5px}
+/* запись */
+.book{padding-block:80px}
+.book .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:56px}
+.book h2{font-size:clamp(40px,5vw,64px);line-height:1}
+.book .wrap>div>p{color:var(--taupe);margin-top:14px;max-width:26em}
+form{display:grid;gap:16px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:grid;gap:6px;font-size:14px;color:var(--taupe)}
+select,input{width:100%;border:0;border-bottom:1.5px solid var(--ink);padding:10px 0;background:transparent;font-size:17px;color:var(--ink);border-radius:0}
+form button{justify-self:start;background:var(--ink);color:var(--white);border:0;padding:15px 28px;font-weight:600;font-size:16px}
+form button:hover{background:var(--plum)}
+.ok{display:none;background:var(--blush);padding:14px 16px;font-size:15.5px}
 .ok.show{display:block}
-@media (max-width:900px){.wizard{grid-template-columns:minmax(0,1fr)}.ticket{position:static}.stepcard{padding:22px}}
+@media (max-width:860px){.book .wrap{grid-template-columns:minmax(0,1fr);gap:28px}}
+@media (max-width:440px){.r2{grid-template-columns:1fr}.toc table{font-size:14px}.toc th{font-size:11.5px;padding-left:6px}.toc td+td{padding-left:6px}}
 
-.gift{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
-.card{aspect-ratio:1.6;max-width:100%;border-radius:26px;background:radial-gradient(circle at 85% 15%,rgba(255,255,255,.35),transparent 40%),linear-gradient(135deg,#C46A93,#3B1E2E);color:var(--cream);padding:30px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 40px 70px -40px rgba(59,30,46,.7)}
-.card .t{display:flex;justify-content:space-between;font:400 30px/1 var(--f-h)}
-.card .t small{font:700 11px/1 var(--f-b);letter-spacing:.2em;text-transform:uppercase;opacity:.8}
-.card b{font:400 clamp(44px,6vw,72px)/1 var(--f-h)}
-.amounts{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 26px}
-.amt{padding:12px 18px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;font-variant-numeric:tabular-nums}
-.amt[aria-pressed="true"]{background:var(--plum);color:var(--cream);border-color:var(--plum)}
-@media (max-width:900px){.gift{grid-template-columns:minmax(0,1fr);gap:32px}}
-
-.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.q{border-top:1.5px solid var(--plum);padding-top:20px}
-.q p{font:400 22px/1.35 var(--f-h)}
-.q b{display:block;margin-top:14px;font-size:13.5px;color:var(--muted)}
-@media (max-width:900px){.quotes{grid-template-columns:minmax(0,1fr)}}
-
-footer{background:var(--plum);color:var(--cream)}
-footer .wrap{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:36px;padding-block:64px 28px}
-footer .logo{font-size:56px}
-footer h4{margin:0 0 10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose)}
-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px;opacity:.85}
-.credits{grid-column:1/-1;font-size:12px;opacity:.55;border-top:1px solid rgba(255,248,246,.15);padding-top:20px}
-@media (max-width:900px){footer .wrap{grid-template-columns:minmax(0,1fr)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+footer{border-top:1px solid var(--ink);padding-block:36px 28px;font-size:15px}
+footer .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:28px}
+footer .name{font:400 40px/1 var(--f-h)}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:760px){footer .wrap{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<div class="demo">Демо-сайт, студия вымышленная. Сделано в PathCode · <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">заказать такой сайт →</a></div>
-<header class="top"><div class="wrap">
-  <a class="logo" href="#">aura</a>
-  <nav class="nav"><a href="#services">Услуги</a><a href="#masters">Мастера</a><a href="#booking">Запись</a><a href="#gift">Сертификаты</a><a href="#contacts">Контакты</a></nav>
-  <a class="btn btn-dark" href="#booking">Записаться</a>
-</div></header>
+<div class="demo">Демо-сайт от PathCode, студия вымышленная. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
 
-<section class="hero"><div class="wrap">
-  <div>
-    <span class="award"><b>Салон года</b>лучший интерьер · 2025</span><br>
-    <span class="eb">Студия красоты на Садовой</span>
-    <h1>время<br>для <i>себя</i></h1>
-    <p class="lead">Стрижки, окрашивание и маникюр без спешки. Кофе, тишина и мастера, к которым возвращаются годами.</p>
-    <div class="acts"><a class="btn btn-dark" href="#booking">Записаться онлайн</a><a class="btn btn-line" href="#services">Прайс</a></div>
-  </div>
-  <div class="arch">
-    <img src="../img/salon.jpg" alt="Маникюр с цветным покрытием">
-    <div class="seal">с 2018<br>на Садовой</div>
-    <div class="badge"><span style="color:var(--muted)">ближайшее окно</span><b>Сегодня, 16:30</b><span>Ева · маникюр</span></div>
-  </div>
-</div></section>
-
-<div class="marquee" aria-hidden="true"><div>
-  <span>Стрижки</span><span>Окрашивание</span><span>Airtouch</span><span>Маникюр</span><span>Педикюр</span><span>Брови</span><span>Уход для волос</span>
-  <span>Стрижки</span><span>Окрашивание</span><span>Airtouch</span><span>Маникюр</span><span>Педикюр</span><span>Брови</span><span>Уход для волос</span>
+<div class="bar"><div class="wrap">
+  <a class="mini" href="#">aura</a>
+  <nav><a href="#price">Цены</a><a href="#masters">Мастера</a><a href="#nails">Маникюр</a><a href="#contacts">Адрес</a></nav>
+  <a class="book-link" href="#book">Записаться</a>
 </div></div>
 
-<div class="facts4" aria-label="Коротко о студии">
-  <div><small>Где</small><p>ул. Садовая, 5, 2 этаж. Вход со двора, парковка рядом</p></div>
-  <div><small>Открыто</small><p>Ежедневно 10:00–21:00, без перерыва</p></div>
-  <div><small>Известны за</small><p>Airtouch, естественный блонд и маникюр, который держится 3 недели</p></div>
-  <div><small>Запись</small><p>К конкретному мастеру онлайн, ответ за 5 минут</p></div>
-</div>
+<header class="mast"><div class="wrap">
+  <h1>aura</h1>
+  <div class="mast-sub"><span>Студия волос и ногтей на Садовой, 5</span><span>Ежедневно с 10 до 21</span></div>
+</div></header>
 
-<section class="sec" id="services"><div class="wrap">
-  <div class="hits">
-    <div class="hit"><small>Хит студии</small><h3>Airtouch</h3><p>Мягкий переход цвета, который отрастает незаметно. Освежать раз в 4–5 месяцев.</p><b>от 7 000 ₽ · 4 часа</b></div>
-    <div class="hit"><small>Окрашивание</small><h3>Тонирование</h3><p>Возвращаем блеск и убираем желтизну за один визит.</p><b>от 2 800 ₽ · 1,5 часа</b></div>
-    <div class="hit"><small>Ногти</small><h3>Маникюр «3 недели»</h3><p>Выравнивание, гель-лак и уход за кутикулой. Сколы исправим бесплатно.</p><b>1 800 ₽ · 1,5 часа</b></div>
+<section class="wrap spread">
+  <figure><img src="../img/salon-room.jpg" alt="Зал студии с креслами и зеркалами" onerror="this.src='../img/salon.jpg'"><figcaption>Зал на втором этаже: шесть кресел, у каждого своё окно.</figcaption></figure>
+  <div class="txt">
+    <p class="big">Мы записываем клиентов так, чтобы между ними оставалось пятнадцать минут. Никто не ждёт на диване, и мастер не торопится.</p>
+    <p>Работаем с волосами любой длины и сложными окрашиваниями. Перед первым окрашиванием мастер бесплатно смотрит волосы и называет точную цену.</p>
+    <div class="next" id="next"></div>
   </div>
-  <div class="sec-h"><div><span class="eb">Прайс</span><h2>Услуги и цены</h2></div><p>Цена окрашивания зависит от длины и густоты волос. Мастер назовёт точную на консультации, она бесплатная.</p></div>
-  <div class="tabs" role="tablist" id="tabs"></div>
-  <div class="plist" id="plist"></div>
+</section>
+
+<section class="price" id="price"><div class="wrap">
+  <div class="price-head"><h2>Цены</h2><p>Стоимость стрижки и окрашивания зависит от длины волос. Короткие — выше линии подбородка, средние — до плеч, длинные — ниже плеч.</p></div>
+  <div class="toc">
+    <section><h3>Стрижки</h3><table>
+      <tr><th></th><th>короткие</th><th>средние</th><th>длинные</th></tr>
+      <tr><td>Женская стрижка<small>с мытьём и укладкой</small></td><td>1 900</td><td>2 300</td><td>2 700</td></tr>
+      <tr><td>Подравнивание кончиков</td><td>1 200</td><td>1 400</td><td>1 600</td></tr>
+      <tr><td>Мужская стрижка</td><td>1 500</td><td>—</td><td>—</td></tr>
+      <tr><td>Укладка</td><td>1 200</td><td>1 600</td><td>2 000</td></tr>
+    </table></section>
+    <section><h3>Окрашивание</h3><table>
+      <tr><th></th><th>короткие</th><th>средние</th><th>длинные</th></tr>
+      <tr><td>В один тон<small>корни до 3 см</small></td><td>3 500</td><td>4 500</td><td>5 500</td></tr>
+      <tr><td>Тонирование</td><td>2 800</td><td>3 400</td><td>4 200</td></tr>
+      <tr><td>Airtouch, балаяж<small>от 4 часов</small></td><td>7 000</td><td>9 500</td><td>12 000</td></tr>
+      <tr><td>Уход Olaplex</td><td>1 800</td><td>2 200</td><td>2 600</td></tr>
+    </table></section>
+    <section><h3>Ногти</h3><table>
+      <tr><th></th><th>цена</th></tr>
+      <tr><td>Маникюр с покрытием гель-лаком<small>снятие включено</small></td><td>2 000</td></tr>
+      <tr><td>Маникюр без покрытия</td><td>1 100</td></tr>
+      <tr><td>Педикюр с покрытием</td><td>2 600</td></tr>
+      <tr><td>Дизайн, один ноготь</td><td>100</td></tr>
+    </table></section>
+    <section><h3>Брови и ресницы</h3><table>
+      <tr><th></th><th>цена</th></tr>
+      <tr><td>Коррекция бровей</td><td>800</td></tr>
+      <tr><td>Окрашивание бровей хной</td><td>900</td></tr>
+      <tr><td>Ламинирование ресниц<small>с окрашиванием</small></td><td>2 400</td></tr>
+    </table></section>
+  </div>
 </div></section>
 
-<section class="sec" id="masters" style="padding-top:0"><div class="wrap">
-  <div class="sec-h"><div><span class="eb">Команда</span><h2>Мастера</h2></div><p>Можно выбрать конкретного мастера или записаться к любому свободному.</p></div>
-  <div class="masters" id="masters-list"></div>
+<section class="masters" id="masters"><div class="wrap">
+  <h2>Мастера</h2>
+  <div class="mlist">
+    <div class="m"><h3>Анна Белова<small>стилист, в Aura с 2018 года</small></h3><div><p>Стрижки на средние и длинные волосы, которые хорошо отрастают. Подскажет, как укладывать дома за десять минут.</p><p class="days">Работает во вторник, четверг и субботу</p></div></div>
+    <div class="m"><h3>Мария Ким<small>колорист, в Aura с 2020 года</small></h3><div><p>Холодный блонд, Airtouch, выход из чёрного. Перед окрашиванием делает тест пряди.</p><p class="days">Работает в понедельник, среду и пятницу</p></div></div>
+    <div class="m"><h3>Ева Соколова<small>мастер маникюра, в Aura с 2021 года</small></h3><div><p>Аккуратный маникюр без порезов, однотонные покрытия и френч. Работает только с одноразовыми пилками.</p><p class="days">Работает каждый день, кроме воскресенья</p></div></div>
+  </div>
+  <figure class="mphoto"><img src="../img/salon-scissors.jpg" alt="Ножницы и расчёска парикмахера" onerror="this.src='../img/salon.jpg'"><figcaption>Инструменты стерилизуем в сухожаровом шкафу после каждого клиента.</figcaption></figure>
 </div></section>
 
-<section class="sec booking" id="booking"><div class="wrap">
-  <div class="sec-h"><div><span class="eb">Онлайн-запись</span><h2>Запись за минуту</h2></div><p>Три шага, без звонков. Напоминание придёт в Telegram за 2 часа до визита.</p></div>
-  <form class="wizard" id="wiz" novalidate>
-    <div class="stepcard">
-      <div class="prog"><span></span><span></span><span></span></div>
-      <div><span class="lbl" id="wStep"></span><h3 id="wTitle" style="margin-top:8px"></h3></div>
-      <div class="choices" id="wChoices"></div>
-      <div class="nav2"><button type="button" class="btn btn-line" id="wBack">Назад</button><button type="button" class="btn btn-dark" id="wNext">Дальше</button></div>
+<section class="nails" id="nails">
+  <img src="../img/salon.jpg" alt="Маникюр с цветным покрытием" loading="lazy">
+  <div class="t">
+    <h2>Маникюр, который держится три недели</h2>
+    <p>Выравниваем ногтевую пластину под покрытие, поэтому гель-лак не отслаивается у кутикулы. Если в первую неделю появился скол, исправим бесплатно.</p>
+    <p style="color:var(--taupe)">Маникюр с покрытием: 1 час 40 минут, 2 000 ₽</p>
+  </div>
+</section>
+
+<section class="book" id="book"><div class="wrap">
+  <div><h2>Запись</h2><p>Выберите услугу, мастера и время. Мы перезвоним, чтобы подтвердить запись, и напомним о визите за два часа.</p></div>
+  <form id="bookForm" novalidate>
+    <label>Услуга<select id="fSvc"><option>Женская стрижка</option><option>Окрашивание</option><option>Маникюр с покрытием</option><option>Брови</option></select></label>
+    <div class="r2">
+      <label>Мастер<select id="fMaster"><option>Анна Белова</option><option>Мария Ким</option><option>Ева Соколова</option><option>Любой свободный</option></select></label>
+      <label>Когда<select id="fWhen"></select></label>
     </div>
-    <div class="ticket">
-      <h3>Ваш визит</h3>
-      <dl><div><dt>Услуга</dt><dd id="tSvc">не выбрана</dd></div><div><dt>Мастер</dt><dd id="tMaster">не выбран</dd></div><div><dt>Время</dt><dd id="tTime">не выбрано</dd></div><div><dt>Стоимость</dt><dd id="tPrice">—</dd></div></dl>
-      <button class="btn" type="submit">Подтвердить запись</button>
-      <div class="ok" id="ok" aria-live="polite"></div>
+    <div class="r2">
+      <label>Имя<input id="fName" autocomplete="off"></label>
+      <label>Телефон<input id="fPhone" type="tel" inputmode="tel" placeholder="+7" autocomplete="off"></label>
     </div>
+    <button type="submit">Записаться</button>
+    <div class="ok" id="ok" aria-live="polite"></div>
   </form>
 </div></section>
 
-<section class="sec" id="gift"><div class="wrap gift">
-  <div class="card"><div class="t">aura<small>подарочный сертификат</small></div><b id="giftAmt">5 000 ₽</b><span style="font-size:13px;opacity:.8">действует 6 месяцев на любые услуги</span></div>
-  <div>
-    <span class="eb">Подарок</span>
-    <h2 style="font-size:clamp(40px,5vw,66px);line-height:.95;margin-top:14px">Сертификат, который точно пригодится</h2>
-    <div class="amounts" id="amounts"></div>
-    <a class="btn btn-dark" href="#booking">Оформить сертификат</a>
-  </div>
-</div></section>
-
-<section class="sec" style="padding-top:0"><div class="wrap">
-  <div class="quotes">
-    <div class="q"><p>«Анна поняла с полуслова, какую стрижку я хочу. Хожу к ней третий год.»</p><b>Ксения · Яндекс Карты</b></div>
-    <div class="q"><p>«Маникюр держится три недели, а записаться можно ночью через сайт.»</p><b>Дарья · 2ГИС</b></div>
-    <div class="q"><p>«Очень спокойно и красиво. Подарила маме сертификат, она в восторге.»</p><b>Алина · Google</b></div>
-  </div>
-</div></section>
-
 <footer id="contacts"><div class="wrap">
-  <div><span class="logo">aura</span><p style="margin-top:12px;opacity:.75;max-width:24em">Студия красоты. Волосы, ногти, брови и уход.</p></div>
-  <div><h4>Адрес</h4><ul><li>ул. Садовая, 5, 2 этаж</li><li>Ежедневно 10:00–21:00</li></ul></div>
-  <div><h4>Связь</h4><ul><li>Telegram: @aura_studio_bot</li><li>Запись онлайн 24/7</li></ul></div>
-  <div class="credits">Фото: <a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener" style="color:inherit">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0</div>
+  <div><div class="name">aura</div><p style="margin-top:10px;color:var(--taupe)">ул. Садовая, 5, второй этаж, вход через арку</p></div>
+  <div><ul><li><a href="tel:+79000000000">+7 900 000-00-00</a></li><li>Запись в Telegram: @aura_studio_bot</li></ul></div>
+  <div><ul><li>Ежедневно 10:00–21:00</li><li>Последняя запись в 19:30</li></ul></div>
+  <p class="small" id="credits">ИП Белова А. С., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/17868205@N00/8033063118" target="_blank" rel="noopener">Pro Touch</a>, Phalinn Ooi, CC BY 2.0; <a href="https://stocksnap.io/photo/scissors-comb-A5M4RVGZKE" target="_blank" rel="noopener">Scissors Comb</a>, Candace McDaniel, CC0; <a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0.</p>
 </div></footer>
 
 <script>
 (function(){
 const $=s=>document.querySelector(s);
-const rub=n=>n.toLocaleString("ru-RU").replace(/ /g," ")+" ₽";
-const PRICE={
- "Волосы":[["Женская стрижка","мытьё и укладка включены",1800],["Мужская стрижка","",1500],["Окрашивание в один тон","короткие волосы",3500],["Airtouch, шатуш","сложные техники",7000],["Укладка","вечерняя или повседневная",1500],["Уход Kerastase","восстановление, 40 минут",2200]],
- "Ногти":[["Маникюр с покрытием","гель-лак, снятие включено",1800],["Маникюр без покрытия","",1000],["Педикюр с покрытием","",2400],["Дизайн","1 ноготь",100]],
- "Брови и ресницы":[["Коррекция бровей","воск или пинцет",700],["Окрашивание бровей","хна или краска",800],["Ламинирование ресниц","с окрашиванием",2200]],
- "Уход":[["Чистка лица","комбинированная",3200],["Массаж лица","45 минут",2500],["Пилинг","подбор по типу кожи",2800]]
-};
-let tab="Волосы";
-function renderTabs(){$("#tabs").innerHTML=Object.keys(PRICE).map(k=>`<button class="tab" role="tab" type="button" aria-selected="${k===tab}">${k}</button>`).join("");
-  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{tab=b.textContent;renderTabs();renderList()})}
-function renderList(){$("#plist").innerHTML=PRICE[tab].map(p=>`<div class="prow"><span>${p[0]}${p[1]?`<small>${p[1]}</small>`:""}</span><i></i><b>${p[0].startsWith("Окраш")||p[0].startsWith("Airtouch")?"от ":""}${rub(p[2])}</b></div>`).join("")}
-renderTabs();renderList();
-const MASTERS=[["Анна","топ-стилист, стаж 9 лет","linear-gradient(160deg,#EBC7D2,#9B3D6C)"],["Мария","колорист, стаж 6 лет","linear-gradient(160deg,#E2D3F0,#7D5BA6)"],["Ева","мастер маникюра, стаж 5 лет","linear-gradient(160deg,#F5D7C4,#B9775A)"]];
-$("#masters-list").innerHTML=MASTERS.map((m,i)=>`<div class="m"><div class="ph" style="--g:${m[2]}">${m[0][0]}</div><h3>${m[0]}</h3><small>${m[1]}</small><button type="button" data-i="${i}">Записаться к ${m[0]==="Анна"?"Анне":m[0]==="Мария"?"Марии":"Еве"} →</button></div>`).join("");
-const STEPS=[
- {k:"svc",t:"Что делаем?",opts:[["Стрижка","от 1 800 ₽",1800],["Окрашивание","от 3 500 ₽",3500],["Маникюр","1 800 ₽",1800],["Брови","700 ₽",700]]},
- {k:"master",t:"К кому записать?",opts:[["Анна","топ-стилист"],["Мария","колорист"],["Ева","маникюр"],["Любой мастер","ближайшее окно"]]},
- {k:"time",t:"Когда удобно?",opts:[["Сегодня, 16:30","свободно"],["Сегодня, 19:00","свободно"],["Завтра, 11:00","свободно"],["Завтра, 14:30","свободно"],["Сб, 12:00","свободно"],["Сб, 17:30","свободно"]]}
-];
-let step=0;const sel={svc:null,master:null,time:null};
-function renderWiz(){const s=STEPS[step];
-  $("#wStep").textContent=`Шаг ${step+1} из 3`;$("#wTitle").textContent=s.t;
-  document.querySelectorAll(".prog span").forEach((p,i)=>p.classList.toggle("on",i<=step));
-  $("#wChoices").innerHTML=s.opts.map((o,i)=>`<button type="button" class="choice" aria-pressed="${sel[s.k]===i}"><b>${o[0]}</b><small>${o[1]}</small></button>`).join("");
-  document.querySelectorAll(".choice").forEach((c,i)=>c.onclick=()=>{sel[s.k]=i;renderWiz();if(step<2)setTimeout(()=>{step++;renderWiz()},250)});
-  $("#wBack").style.visibility=step?"visible":"hidden";$("#wNext").textContent=step<2?"Дальше":"Готово";
-  $("#tSvc").textContent=sel.svc!=null?STEPS[0].opts[sel.svc][0]:"не выбрана";
-  $("#tMaster").textContent=sel.master!=null?STEPS[1].opts[sel.master][0]:"не выбран";
-  $("#tTime").textContent=sel.time!=null?STEPS[2].opts[sel.time][0]:"не выбрано";
-  $("#tPrice").textContent=sel.svc!=null?STEPS[0].opts[sel.svc][1]:"—";
-}
-$("#wBack").onclick=()=>{if(step){step--;renderWiz()}};
-$("#wNext").onclick=()=>{if(step<2){step++;renderWiz()}};
-document.querySelectorAll(".m button").forEach(b=>b.onclick=()=>{sel.master=+b.dataset.i;step=sel.svc==null?0:2;renderWiz();$("#booking").scrollIntoView()});
-$("#wiz").addEventListener("submit",e=>{e.preventDefault();const ok=$("#ok");
-  ok.textContent=sel.svc==null||sel.master==null||sel.time==null?"Выберите услугу, мастера и время, это три клика.":`Это демо. Запись «${$("#tSvc").textContent}» к мастеру ${$("#tMaster").textContent}, ${$("#tTime").textContent.toLowerCase()} ушла бы в расписание, а напоминание пришло бы за 2 часа.`;ok.classList.add("show")});
-renderWiz();
-const AMTS=[3000,5000,7000,10000];let amt=1;
-function renderAmt(){$("#amounts").innerHTML=AMTS.map((a,i)=>`<button type="button" class="amt" aria-pressed="${i===amt}">${rub(a)}</button>`).join("");
-  document.querySelectorAll(".amt").forEach((b,i)=>b.onclick=()=>{amt=i;renderAmt()});$("#giftAmt").textContent=rub(AMTS[amt])}
-renderAmt();
+const now=new Date();const day=i=>{const d=new Date(now);d.setDate(d.getDate()+i);return d};
+const lab=(i)=>i===0?"Сегодня":i===1?"Завтра":day(i).toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"}).replace(/^./,c=>c.toUpperCase());
+const NEXT=[[0,"16:30","Ева, маникюр"],[0,"18:00","Анна, стрижка"],[1,"11:00","Мария, окрашивание"],[1,"14:30","Анна, стрижка"]];
+$("#next").innerHTML=`<div><b>Свободное время</b><span>ближайшие окна</span></div>`+NEXT.map(n=>`<div><span>${lab(n[0])}, ${n[1]}</span><b>${n[2]}</b></div>`).join("");
+const opts=[];for(let i=0;i<4;i++)for(const t of ["11:00","14:30","18:00"])opts.push(`${lab(i)}, ${t}`);
+$("#fWhen").innerHTML=opts.map(o=>`<option>${o}</option>`).join("");
+$("#bookForm").addEventListener("submit",e=>{e.preventDefault();const ok=$("#ok");
+  ok.textContent=`Это демо. Запись «${$("#fSvc").value}» к мастеру ${$("#fMaster").value}, ${$("#fWhen").value.toLowerCase()} ушла бы администратору студии.`;ok.classList.add("show")});
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>
