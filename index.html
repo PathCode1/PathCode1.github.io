@@ -108,9 +108,38 @@ p{margin:0}
 .dir small{font:500 12px/1 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
 .dir[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .dir[aria-pressed="true"] small{color:inherit;opacity:.65}
-.groups{display:grid;gap:36px}
-.group h3{display:flex;align-items:baseline;gap:12px;font:700 18px/1.2 var(--f-display);letter-spacing:-.01em;margin-bottom:14px}
-.group h3 span{font:400 14px/1.3 var(--f-body);color:var(--muted)}
+.groups{display:grid;border-top:1px solid var(--line)}
+.group{display:grid;grid-template-columns:240px minmax(0,1fr);gap:10px 32px;padding:22px 0;border-bottom:1px solid var(--line)}
+.group h3{display:flex;align-items:center;gap:10px;font:700 18px/1.2 var(--f-display);letter-spacing:-.01em}
+.group h3::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--dot);flex:none}
+.group-note{display:block;font-size:14px;color:var(--muted);margin-top:6px;line-height:1.35}
+.tchips{display:flex;flex-wrap:wrap;gap:6px}
+.tchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font:500 13.5px/1.2 var(--f-mono);transition:border-color .15s,background .15s,color .15s}
+.tchip:hover{border-color:var(--dot)}
+.tchip.core::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.tchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.tchip[aria-pressed="true"].core::after{background:var(--mark)}
+.tdesc{margin-top:10px;font-size:14.5px;color:var(--muted);min-height:1.5em}
+.tdesc b{color:var(--ink);font:600 14px/1.4 var(--f-mono)}
+.tdesc em{font-style:normal;font:500 10.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 6px;border-radius:5px;margin-left:8px;vertical-align:1px}
+.stack-key{margin-top:16px;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stack-key i{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+@media (max-width:820px){.group{grid-template-columns:minmax(0,1fr)}
+  .dirs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;margin-bottom:20px}
+  .dirs::-webkit-scrollbar{display:none}.dir{flex:none}}
+
+/* переключатель темы */
+.th-bt{width:40px;height:40px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:0;transition:border-color .15s,transform .15s}
+.th-bt:hover{border-color:var(--ink)}
+.th-bt:active{transform:scale(.92)}
+.th-bt svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;grid-area:1/1;transition:transform .5s cubic-bezier(.3,1.4,.4,1),opacity .3s}
+.th-moon{fill:currentColor!important;stroke:none!important}
+.th-sun{opacity:0;transform:rotate(-90deg) scale(.5)}
+.th-dark .th-sun{opacity:1;transform:none}
+.th-dark .th-moon{opacity:0;transform:rotate(90deg) scale(.5)}
+@media (max-width:820px){.top .wrap{gap:10px}.th-bt{margin-left:auto}.top .wrap>.btn{margin-left:0}}
+@media (max-width:440px){.top .wrap>.btn{display:none}}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 .techs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .tech{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
 .tech b{display:flex;align-items:center;gap:8px;font:600 15.5px/1.3 var(--f-mono);letter-spacing:-.01em}
@@ -523,12 +552,14 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
 </style>
 </head>
 <body>
+<script>try{const t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#top" aria-label="PathCode, наверх"><span class="logo-mark">&lt;/&gt;</span><span>Path<b>Code</b></span></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#stack">Стек</a><a href="#works">Работы</a><a href="#services">Услуги и цены</a><a href="#process">Как работаю</a><a href="#contact">Контакты</a>
     </nav>
+    <button class="th-bt" type="button" aria-label="Сменить тему"><svg class="th-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="th-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg></button>
     <a class="btn btn--main" href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Написать</a>
     <button class="fx-bt" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="fxSh"><i></i><i></i></button>
   </div>
@@ -573,10 +604,11 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Направления и стек</span><h2>Чем пишу и что умею</h2></div>
-      <p>Каждая технология ниже с пометкой, для чего я её беру. Выберите направление, чтобы оставить только нужное.</p>
+      <p>Наведите или нажмите на технологию, чтобы прочитать, для чего я её беру. Фильтр оставит только нужное направление.</p>
     </div>
     <div class="dirs" id="dirs" role="group" aria-label="Фильтр по направлению"></div>
     <div class="groups" id="groups"></div>
+    <p class="stack-key"><i></i>основной инструмент в направлении</p>
   </div>
 </section>
 
@@ -825,11 +857,20 @@ function renderStack(){
   const mk=(id,name,n)=>`<button class="dir" aria-pressed="${dirSel===id}" data-dir="${id}">${esc(name)} <small>${n}</small></button>`;
   dirs.innerHTML=mk("all","Все",TECH.length)+DIRS.map(d=>mk(d.id,d.name,TECH.filter(t=>t[0]===d.id).length)).join("");
   dirs.querySelectorAll(".dir").forEach(b=>b.onclick=()=>{dirSel=b.dataset.dir;renderStack()});
-  $("#groups").innerHTML=DIRS.filter(d=>dirSel==="all"||d.id===dirSel).map(d=>
-    `<div class="group" style="--dot:${d.c}"><h3>${esc(d.name)} <span>${esc(d.note)}</span></h3><div class="techs">`+
-    TECH.filter(t=>t[0]===d.id).map(t=>`<div class="tech${t[3]?" core":""}"><b>${esc(t[1])}</b><p>${esc(t[2])}</p></div>`).join("")+
-    `</div></div>`).join("");
+  /* компактно: в каждой группе чипы технологий, описание выбранной строкой ниже */
+  $("#groups").innerHTML=DIRS.filter(d=>dirSel==="all"||d.id===dirSel).map(d=>{
+    const ts=TECH.filter(t=>t[0]===d.id),first=Math.max(0,ts.findIndex(t=>t[3]));
+    return `<div class="group" style="--dot:${d.c}"><div><h3>${esc(d.name)}</h3><span class="group-note">${esc(d.note)}</span></div><div>`+
+      `<div class="tchips" role="group" aria-label="${esc(d.name)}">`+
+      ts.map((t,i)=>`<button type="button" class="tchip${t[3]?" core":""}" aria-pressed="${i===first}" data-t="${esc(t[1])}">${esc(t[1])}</button>`).join("")+
+      `</div><p class="tdesc" aria-live="polite"></p></div></div>`}).join("");
+  document.querySelectorAll("#groups .group").forEach(g=>{const chips=[...g.querySelectorAll(".tchip")];chips.forEach(c=>{
+    const pick=()=>{chips.forEach(x=>x.setAttribute("aria-pressed",x===c));showTech(g,c.dataset.t)};
+    c.addEventListener("click",pick);c.addEventListener("mouseenter",pick);c.addEventListener("focus",pick)});
+    showTech(g,g.querySelector('.tchip[aria-pressed="true"]').dataset.t)});
 }
+function showTech(g,name){const t=TECH.find(x=>x[1]===name);
+  g.querySelector(".tdesc").innerHTML=`<b>${esc(t[1])}</b>${t[3]?"<em>основное</em>":""} — ${esc(t[2])}`}
 renderStack();
 
 /* ---------- works tabs ---------- */
@@ -1236,6 +1277,20 @@ let tk=0;
 addEventListener("scroll",()=>{if(!tk){tk=1;requestAnimationFrame(()=>{tk=0;tick()})}},{passive:true});
 addEventListener("resize",tick);
 tick();
+
+/* переключатель темы: запоминается, по умолчанию как в системе */
+const thb=d.querySelector(".th-bt"),sysDark=matchMedia("(prefers-color-scheme: dark)");
+const isDark=()=>h.dataset.theme?h.dataset.theme==="dark":sysDark.matches;
+function thSync(){const dk=isDark();h.classList.toggle("th-dark",dk);thb.setAttribute("aria-label",dk?"Включить светлую тему":"Включить тёмную тему")}
+thSync();sysDark.addEventListener("change",thSync);
+thb.addEventListener("click",()=>{
+  const next=isDark()?"light":"dark",apply=()=>{h.dataset.theme=next;thSync()};
+  try{localStorage.setItem("theme",next)}catch(e){}
+  if(RM||!d.startViewTransition){apply();return}
+  const r=thb.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+  d.startViewTransition(apply).ready.then(()=>h.animate({clipPath:[`circle(0 at ${x}px ${y}px)`,`circle(${R}px at ${x}px ${y}px)`]},
+    {duration:650,easing:"cubic-bezier(.7,0,.2,1)",pseudoElement:"::view-transition-new(root)"}));
+});
 
 /* подсветка карточек за курсором */
 d.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".step,.tech");if(!c)return;
