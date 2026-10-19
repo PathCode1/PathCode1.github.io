@@ -18,7 +18,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:20px}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit}
@@ -159,10 +159,42 @@ footer .about-f p{opacity:.75;font-size:13px;margin-top:14px}
 .modal .x{justify-self:end;background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;margin-bottom:-6px}
 .modal .ok{color:#0B5FB0;background:var(--soft)}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* закреплённая панель: выезжает, когда шапка ушла за верх экрана */
+.stick{position:fixed;top:0;left:0;right:0;z-index:38;transform:translateY(-110%);transition:transform .3s ease;padding-top:env(safe-area-inset-top,0px)}
+.stick.on{transform:none}
+.stick .wrap{display:flex;align-items:center;gap:26px;min-height:64px}
+.s-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex:none}
+.s-nav{display:flex;gap:24px;margin-left:auto;white-space:nowrap}
+.s-nav a{text-decoration:none;color:inherit}
+.s-tel{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;white-space:nowrap;font-weight:600}
+.s-tel svg,.s-burger svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.s-cta{flex:none;cursor:pointer;text-decoration:none;white-space:nowrap}
+.s-burger{display:none;width:44px;height:44px;border:0;cursor:pointer;place-items:center;flex:none;padding:0}
+.s-drop{display:none;flex-direction:column;gap:2px;padding:6px 20px 16px}
+.s-drop.open{display:flex}
+.s-drop a{text-decoration:none;color:inherit;padding:10px 0;border-bottom:1px solid currentColor;border-color:rgba(128,128,128,.22)}
+@media (prefers-reduced-motion:reduce){.stick{transition:none}}
+
+.stick{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px -18px rgba(15,27,51,.45);color:var(--ink);font-family:var(--f-b)}
+.s-mk{width:38px;height:38px;border-radius:50%;background:var(--grad);display:grid;place-items:center}
+.s-mk svg{width:21px;height:21px;fill:none;stroke:#fff;stroke-width:1.8}
+.s-logo b{font:700 15px/1 var(--f-b)}
+.s-nav{font-size:13.5px;font-weight:600}
+.s-nav a:hover{color:var(--blue)}
+.s-tel{font-size:14px}.s-tel svg{color:var(--blue)}
+.s-cta{height:42px;padding:0 20px;border:0;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:14px;box-shadow:0 10px 22px -12px rgba(10,108,255,.8)}
+.s-burger{border-radius:12px;background:var(--soft);color:var(--blue)}
+.s-drop{background:#fff;font-weight:600}
+@media (max-width:1180px){.stick .s-tel span{display:none}}
+@media (max-width:980px){.stick .s-nav{display:none}.stick .s-tel{margin-left:auto}.s-burger{display:grid}.stick .wrap{gap:12px}}
+@media (max-width:400px){.stick .s-cta{padding:0 14px;font-size:13px}.s-logo b{font-size:14px}}
+@media (max-width:350px){.stick .s-cta{display:none}}
 </style>
 </head>
 <body>
 <div class="demo">Демо-сайт от PathCode, клиника вымышленная. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
+<div class="stick" id="stick"><div class="wrap"><a class="s-logo" href="#top" aria-label="Наверх"><i class="s-mk"><svg viewBox="0 0 24 24"><path d="M8 3C5.5 3 4 5 4 7.3c0 2 1 3.4 1.5 5.4.6 2.3.8 4.6 1.6 6.6.4 1.1 1.8 1 2.1-.1l1-4c.3-1.1 2.3-1.1 2.6 0l1 4c.3 1.1 1.7 1.2 2.1.1.8-2 1-4.3 1.6-6.6.5-2 1.5-3.4 1.5-5.4C19 5 17.5 3 15 3c-1.6 0-2.5.9-3.5.9S9.6 3 8 3z"/></svg></i><b>Белая линия</b></a><nav class="s-nav" aria-label="Разделы"><a href="#top">Главная</a><a href="#about">О нас</a><a href="#services">Услуги</a><a href="#offer">Акция</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav><a class="s-tel" href="tel:+79000000000" aria-label="Позвонить"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>+7 (900) 000-00-00</span></a><button class="s-cta" type="button" data-open>Записаться</button><button class="s-burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="sDrop"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><nav class="s-drop" id="sDrop" aria-label="Меню"><a href="#top">Главная</a><a href="#about">О нас</a><a href="#services">Услуги</a><a href="#offer">Акция</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav></div>
 
 <header class="hero" id="top"><div class="wrap">
   <div class="top">
@@ -309,6 +341,16 @@ function send(form,phone,ok,text,agree){form.addEventListener("submit",e=>{e.pre
   o.textContent=text();o.classList.add("show")})}
 send($("#mForm"),"#mPhone","#mOk",()=>`Это демо. Запись «${$("#mSvc").value.split(",")[0]}» ушла бы администратору клиники, он перезвонил бы в течение 15 минут.`);
 send($("#oForm"),"#oPhone","#oOk",()=>"Это демо. Заявка на гигиену за 2 990 ₽ ушла бы администратору клиники.","#oAgree");
+})();
+</script>
+<script>
+(()=>{const s=document.getElementById("stick"),t=document.querySelector('.top'),d=document.getElementById("sDrop"),b=s.querySelector(".s-burger");
+const show=v=>{s.classList.toggle("on",v);s.toggleAttribute("inert",!v);if(!v&&d){d.classList.remove("open");b.setAttribute("aria-expanded","false")}};
+let q=0;const chk=()=>show(t.getBoundingClientRect().bottom<=0);
+addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(()=>{q=0;chk()})}},{passive:true});
+addEventListener("resize",chk);addEventListener("load",chk);show(false);chk();
+b.onclick=()=>{const o=d.classList.toggle("open");b.setAttribute("aria-expanded",o)};
+if(d)d.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{d.classList.remove("open");b.setAttribute("aria-expanded","false")}));
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>

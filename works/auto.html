@@ -204,10 +204,41 @@ p{margin:0}
 .ok{display:none;background:rgba(60,203,134,.12);color:#8FE3B8;border-radius:12px;padding:12px 14px;font-size:14.5px}
 .ok.show{display:block}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* закреплённая панель: выезжает, когда шапка ушла за верх экрана */
+.stick{position:fixed;top:0;left:0;right:0;z-index:38;transform:translateY(-110%);transition:transform .3s ease;padding-top:env(safe-area-inset-top,0px)}
+.stick.on{transform:none}
+.stick .wrap{display:flex;align-items:center;gap:26px;min-height:64px}
+.s-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex:none}
+.s-nav{display:flex;gap:24px;margin-left:auto;white-space:nowrap}
+.s-nav a{text-decoration:none;color:inherit}
+.s-tel{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;white-space:nowrap;font-weight:600}
+.s-tel svg,.s-burger svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.s-cta{flex:none;cursor:pointer;text-decoration:none;white-space:nowrap}
+.s-burger{display:none;width:44px;height:44px;border:0;cursor:pointer;place-items:center;flex:none;padding:0}
+.s-drop{display:none;flex-direction:column;gap:2px;padding:6px 20px 16px}
+.s-drop.open{display:flex}
+.s-drop a{text-decoration:none;color:inherit;padding:10px 0;border-bottom:1px solid currentColor;border-color:rgba(128,128,128,.22)}
+@media (prefers-reduced-motion:reduce){.stick{transition:none}}
+
+.stick{background:rgba(18,21,28,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);color:var(--fg);font-family:var(--f-b)}
+.s-mk{width:36px;height:36px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font:800 12px/1 var(--f-h);font-style:normal;color:#fff}
+.s-logo b{font:700 15px/1 var(--f-h)}
+.s-tel{color:var(--fg)}.s-tel svg{color:var(--or-1)}
+.s-cta{height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--grad);color:#fff;font-weight:700;font-size:14px}
+.s-burger{border-radius:12px;background:var(--grad);color:#fff}
+.s-drop{background:rgba(18,21,28,.98);font-weight:600}
+/* на ПК меню автосервиса и так прилипает — панель нужна только на телефоне */
+@media (min-width:981px){.stick{display:none}}
+.stick .s-nav{display:none}
+.stick .s-tel{margin-left:auto}.stick .s-tel span{display:none}
+.s-burger{display:grid}
+@media (max-width:400px){.stick .s-cta{display:none}}
 </style>
 </head>
 <body>
 <div class="demo">Демо-сайт от PathCode, автосервис вымышленный. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
+<div class="stick" id="stick"><div class="wrap"><a class="s-logo" href="#top" aria-label="Наверх"><i class="s-mk">ПМ</i><b>ПроМотор</b></a><nav class="s-nav" aria-label="Разделы"><a href="#services">Услуги</a><a href="#calc">Стоимость</a><a href="#about">О сервисе</a><a href="#faq">Вопросы</a><a href="#promo">Акции</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav><a class="s-tel" href="tel:+79000000000" aria-label="Позвонить"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>+7 (900) 000-00-00</span></a><button class="s-cta" type="button" data-open>Заявка</button><button class="s-burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="sDrop"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><nav class="s-drop" id="sDrop" aria-label="Меню"><a href="#services">Услуги</a><a href="#calc">Стоимость</a><a href="#about">О сервисе</a><a href="#faq">Вопросы</a><a href="#promo">Акции</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav></div>
 
 <header class="head"><div class="wrap">
   <a class="logo" href="#"><i>ПМ</i><span><b>ПроМотор</b><span>Автосервис</span></span></a>
@@ -426,6 +457,16 @@ modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("o
 addEventListener("keydown",e=>{if(e.key==="Escape")modal.classList.remove("open")});
 $("#mForm").addEventListener("submit",e=>{e.preventDefault();const ok=$("#mOk");
   ok.textContent=`Это демо. Заявка «${$("#mSvc").value}»${$("#mName").value?` от ${$("#mName").value}`:""} ушла бы мастеру-приёмщику, он перезвонил бы в течение 15 минут.`;ok.classList.add("show")});
+})();
+</script>
+<script>
+(()=>{const s=document.getElementById("stick"),t=document.querySelector('.head'),d=document.getElementById("sDrop"),b=s.querySelector(".s-burger");
+const show=v=>{s.classList.toggle("on",v);s.toggleAttribute("inert",!v);if(!v&&d){d.classList.remove("open");b.setAttribute("aria-expanded","false")}};
+let q=0;const chk=()=>show(t.getBoundingClientRect().bottom<=0);
+addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(()=>{q=0;chk()})}},{passive:true});
+addEventListener("resize",chk);addEventListener("load",chk);show(false);chk();
+b.onclick=()=>{const o=d.classList.toggle("open");b.setAttribute("aria-expanded",o)};
+if(d)d.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{d.classList.remove("open");b.setAttribute("aria-expanded","false")}));
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>

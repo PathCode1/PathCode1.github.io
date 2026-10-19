@@ -18,7 +18,7 @@
   --f:"Ubuntu",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:12px}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
 body{margin:0;background:#fff;color:var(--ink);font:400 15px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -270,10 +270,41 @@ footer h2{font:700 clamp(54px,8vw,104px)/.92 var(--f);text-transform:uppercase;m
   .st{gap:8px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* закреплённая панель: выезжает, когда шапка ушла за верх экрана */
+.stick{position:fixed;top:0;left:0;right:0;z-index:38;transform:translateY(-110%);transition:transform .3s ease;padding-top:env(safe-area-inset-top,0px)}
+.stick.on{transform:none}
+.stick .wrap{display:flex;align-items:center;gap:26px;min-height:64px}
+.s-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex:none}
+.s-nav{display:flex;gap:24px;margin-left:auto;white-space:nowrap}
+.s-nav a{text-decoration:none;color:inherit}
+.s-tel{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;white-space:nowrap;font-weight:600}
+.s-tel svg,.s-burger svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.s-cta{flex:none;cursor:pointer;text-decoration:none;white-space:nowrap}
+.s-burger{display:none;width:44px;height:44px;border:0;cursor:pointer;place-items:center;flex:none;padding:0}
+.s-drop{display:none;flex-direction:column;gap:2px;padding:6px 20px 16px}
+.s-drop.open{display:flex}
+.s-drop a{text-decoration:none;color:inherit;padding:10px 0;border-bottom:1px solid currentColor;border-color:rgba(128,128,128,.22)}
+@media (prefers-reduced-motion:reduce){.stick{transition:none}}
+
+.stick{background:rgba(23,20,63,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-family:var(--f);box-shadow:0 12px 30px -20px rgba(23,20,63,.9)}
+.s-logo{flex-direction:column;align-items:flex-start;gap:0}
+.s-logo b{font-weight:700;font-size:18px;line-height:1.1}
+.s-logo small{font-size:11px;opacity:.7}
+.s-nav{font-size:13.5px}
+.s-nav a:hover{color:#FF9DBB}
+.s-tel{font-size:14px;font-weight:500}.s-tel svg{color:#FF9DBB}
+.s-cta{height:42px;padding:0 22px;border:0;border-radius:999px;background:var(--grad);color:#fff;font-weight:500;font-size:14px;box-shadow:0 10px 24px -10px rgba(242,38,106,.8)}
+.s-burger{border-radius:50%;background:var(--green);color:#fff}
+@media (max-width:1180px){.stick .s-tel span{display:none}}
+@media (max-width:1000px){.stick .s-nav{display:none}.stick .s-tel{margin-left:auto}.s-burger{display:grid}.stick .wrap{gap:12px}}
+@media (max-width:400px){.stick .s-cta{padding:0 16px}.s-logo small{display:none}}
+@media (max-width:340px){.stick .s-cta{display:none}}
 </style>
 </head>
 <body>
 <div class="demo">Демо-сайт от PathCode, мастерская вымышленная. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
+<div class="stick" id="stick"><div class="wrap"><a class="s-logo" href="#top" aria-label="Наверх"><b>Флёр</b><small>цветочная мастерская</small></a><nav class="s-nav" aria-label="Разделы"><a href="#about">О нас</a><a href="#catalog">Каталог</a><a href="#best">Доставка</a><a href="#clients">Клиентам</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav><a class="s-tel" href="tel:+79000000000" aria-label="Позвонить"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>+7 (900) 000-00-00</span></a><button class="s-cta" type="button" data-order="">Заказать</button><button class="s-burger" type="button" aria-label="Меню" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div></div>
 
 <nav class="menu" id="menu" aria-label="Меню">
   <button class="x" type="button" id="menuClose" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
@@ -531,6 +562,16 @@ qf.addEventListener("submit",e=>{e.preventDefault();const ok=qf.querySelector(".
   const n=qf.name.value.trim();ok.textContent=`${n?n+", с":"С"}пасибо! Флорист перезвонит в ближайшее время. Это демо: заявка никуда не отправляется.`;ok.classList.add("show");qf.phone.value=""});
 
 $("#up").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+})();
+</script>
+<script>
+(()=>{const s=document.getElementById("stick"),t=document.querySelector('.top'),d=document.getElementById("sDrop"),b=s.querySelector(".s-burger");
+const show=v=>{s.classList.toggle("on",v);s.toggleAttribute("inert",!v);if(!v&&d){d.classList.remove("open");b.setAttribute("aria-expanded","false")}};
+let q=0;const chk=()=>show(t.getBoundingClientRect().bottom<=0);
+addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(()=>{q=0;chk()})}},{passive:true});
+addEventListener("resize",chk);addEventListener("load",chk);show(false);chk();
+b.onclick=()=>document.getElementById("burger").click();
+if(d)d.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{d.classList.remove("open");b.setAttribute("aria-expanded","false")}));
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>
