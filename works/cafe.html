@@ -4,429 +4,330 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Горный очаг</title>
-<meta name="description" content="Хинкальная на Горной улице: хинкали ручной лепки поштучно, хачапури, мангал на виноградной лозе. Доставка и бронь стола.">
+<meta name="description" content="Ресторан грузинской кухни у живого огня: хинкали ручной лепки, хачапури, мангал на виноградной лозе. Онлайн-бронирование стола.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kurale&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,400&family=Comfortaa:wght@300;400;500;600;700&display=swap">
 <style>
-/* Бумажное меню хинкальной на зелёной скатерти.
-   Скатерть — фон страницы, меню — лист бумаги поверх неё, цены набраны как в настоящем меню: блюдо, вес, цена. */
+/* По референсу: чёрный фон, золото, тонкая антиква в заголовках, округлый гротеск в тексте.
+   Логотип по центру шапки, секции в три колонки: подпись слева, фото, текст. */
 :root{
-  --cloth:#183A2D; --cloth-2:#21473A; --cloth-line:#2E5A4A;
-  --paper:#F3EFE4; --ink:#2A211B; --muted:#6E655C; --rule:#D8D0BE;
-  --wine:#A3242C; --brass:#C8A253; --leaf:#CFE0D3;
-  --f-h:"Kurale",Georgia,serif; --f-b:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
+  --bg:#0E0D0C; --panel:#171512; --line:#2B2823; --fg:#ECE6DA; --muted:#9E978B;
+  --gold:#C9A45C; --gold-2:#E2C27F; --grad:linear-gradient(180deg,#D9B873,#B48C47);
+  --f-h:"Cormorant",Georgia,serif; --f-b:"Comfortaa",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{margin:0;background:var(--cloth);color:var(--leaf);font:400 17px/1.6 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.75 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit}
-button,input,select,textarea{font:inherit;color:inherit}
+button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 h1,h2,h3{font-family:var(--f-h);font-weight:400;margin:0;text-wrap:balance}
 p{margin:0}
-:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:3px}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.demo{background:#060606;color:#7E786E;font-size:12.5px;text-align:center;padding:7px 16px}
+.demo a{color:var(--gold)}
 
-.demo{background:#0F261D;color:#9DB9A8;font-size:13px;text-align:center;padding:7px 16px}
-.demo a{color:var(--brass);font-weight:600}
+.gbtn{display:inline-flex;align-items:center;justify-content:center;padding:13px 26px;border-radius:8px;background:var(--grad);color:#1A140A;font-weight:700;font-size:13.5px;text-decoration:none;border:0;box-shadow:0 10px 26px -10px rgba(201,164,92,.7)}
+.gbtn:hover{filter:brightness(1.08)}
 
-/* шапка */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--cloth);border-bottom:1px solid var(--cloth-line)}
-.top .wrap{display:flex;align-items:center;gap:32px;padding-block:14px}
-.logo{font:400 26px/1 var(--f-h);color:var(--paper);text-decoration:none}
-.nav{display:flex;gap:26px;margin-left:auto;font-size:15px}
-.nav a{text-decoration:none;color:var(--leaf)}
-.nav a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:5px}
-.phone{font-weight:600;color:var(--paper);text-decoration:none;white-space:nowrap}
-@media (max-width:860px){.nav{display:none}.phone{margin-left:auto;font-size:15px}}
+/* шапка: адрес слева, логотип по центру, телефон справа */
+.head .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding-block:0}
+.head .addr{font-size:13px;line-height:1.5}
+.head .addr b{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13.5px}
+.logo{display:grid;justify-items:center;gap:8px;text-decoration:none;background:#1A1815;border-radius:0 0 14px 14px;padding:22px 34px 18px}
+.logo svg{width:56px;height:56px;stroke:var(--gold);fill:none;stroke-width:2}
+.logo b{font:400 22px/1 var(--f-h);letter-spacing:.02em}
+.logo span{font-size:12px;color:var(--muted)}
+.head .tel{justify-self:end;text-align:right;position:relative}
+.head .tel a{font-weight:700;font-size:16px;text-decoration:none}
+.head .tel button{display:block;margin-left:auto;background:none;border:0;font-size:12.5px;color:var(--muted);padding:2px 0}
+.head .tel button::after{content:" ▾"}
+.dd{position:absolute;right:0;top:calc(100% + 8px);z-index:40;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13px;text-align:left;min-width:230px;display:none}
+.dd.open{display:block}
+.dd div{display:flex;justify-content:space-between;gap:16px;padding:4px 0}
+.burger{display:none;position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:16px;width:42px;height:42px;border-radius:8px;border:0;background:var(--grad)}
+.burger svg{width:20px;height:20px;stroke:#1A140A;fill:none;stroke-width:2.2;stroke-linecap:round}
+.nav{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:22px}
+.nav .wrap{display:flex;justify-content:center;gap:34px;padding-block:14px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.nav a{text-decoration:none;color:var(--fg)}
+.nav a:hover{color:var(--gold)}
+@media (max-width:860px){
+  .head{position:relative}
+  .head .wrap{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:14px;padding-bottom:18px}
+  .head .addr{order:2}.head .tel{order:3;justify-self:center;text-align:center}.head .tel button{margin:0 auto}.dd{right:50%;transform:translateX(50%)}
+  .burger{display:grid;place-items:center}
+  .nav{display:none;margin-top:0}.nav.open{display:block}.nav .wrap{flex-direction:column;align-items:center;gap:16px}
+}
 
-/* первый экран: вывеска слева, хинкали справа до края */
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:620px}
-.hero-text{padding:72px max(20px,env(safe-area-inset-left,0px)) 64px;padding-left:max(20px,calc((100vw - 1180px)/2 + 20px));display:flex;flex-direction:column;justify-content:center;gap:28px}
-.hero h1{font-size:clamp(46px,6.2vw,88px);line-height:.98;color:var(--paper)}
-.hero p{font-size:19px;max-width:30em;color:var(--leaf)}
-.hours{border-top:1px solid var(--cloth-line);max-width:420px}
-.hours div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--cloth-line);font-size:15.5px}
-.hours div.today{color:var(--paper);font-weight:600}
-.hours div.today span:first-child::after{content:" (сегодня)";font-weight:400;color:var(--brass)}
-.acts{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 24px;border-radius:4px;font-weight:600;font-size:16px;text-decoration:none;border:0}
-.btn-wine{background:var(--wine);color:#fff}
-.btn-wine:hover{background:#8C1D24}
-.btn-line{box-shadow:inset 0 0 0 1.5px var(--leaf);color:var(--paper)}
-.btn-line:hover{background:var(--cloth-2)}
-.hero-photo{position:relative;min-height:420px}
-.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero-photo figcaption{position:absolute;left:24px;bottom:22px;background:var(--paper);color:var(--ink);padding:10px 14px;font-size:14.5px;max-width:260px;line-height:1.4}
-@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);min-height:0}.hero-text{padding:48px max(20px,env(safe-area-inset-left,0px)) 40px}.hero-photo{min-height:340px}}
-
-/* лист меню */
-.menu-sec{padding-block:88px 72px}
-.sheet{background:var(--paper);color:var(--ink);max-width:1080px;margin:0 auto;padding:56px clamp(22px,5vw,64px) 48px;box-shadow:0 2px 0 #0E261D,0 30px 60px -30px rgba(0,0,0,.6);position:relative}
-.sheet-head{text-align:center;border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:36px}
-.sheet-head h2{font-size:clamp(44px,6vw,72px);line-height:1}
-.sheet-head p{color:var(--muted);margin-top:10px;font-size:16px}
-.cols{columns:2;column-gap:64px}
-.grp{break-inside:avoid;margin-bottom:38px}
-.grp h3{font-size:30px;margin-bottom:6px;display:flex;align-items:baseline;gap:12px}
-.grp h3 small{font:400 14px/1.3 var(--f-b);color:var(--muted)}
-.grp figure{margin:12px 0 14px}
-.grp figure img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.dish{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 14px;align-items:baseline;padding:10px 0;border-bottom:1px dotted var(--rule)}
-.dish b{font-weight:600;font-size:17px}
-.dish .w{grid-column:1;font-size:14px;color:var(--muted)}
-.dish .p{grid-row:1;grid-column:2;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.dish .add{grid-row:1 / span 2;grid-column:3;align-self:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;font-size:20px;line-height:1;color:var(--ink)}
-.dish .add:hover{background:var(--ink);color:var(--paper)}
-.dish .add.on{background:var(--wine);border-color:var(--wine);color:#fff}
-.sheet-foot{border-top:2px solid var(--ink);padding-top:16px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-@media (max-width:760px){.cols{columns:1}.sheet{padding-top:40px}}
-
-/* как едят хинкали */
-.howto{padding-block:24px 88px}
-.howto h2{font-size:clamp(34px,4vw,48px);color:var(--paper);margin-bottom:28px}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;list-style:none;margin:0;padding:0;counter-reset:s}
-.steps li{border-top:1px solid var(--brass);padding-top:18px;counter-increment:s;font-size:16.5px}
-.steps li::before{content:counter(s);display:block;font:400 44px/1 var(--f-h);color:var(--brass);margin-bottom:10px}
-.steps b{display:block;color:var(--paper);font-weight:600;margin-bottom:4px}
-@media (max-width:760px){.steps{grid-template-columns:minmax(0,1fr);gap:22px}}
-
-/* доставка и бронь */
-.dual{background:var(--cloth-2);padding-block:80px}
-.dual .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
-.dual h2{font-size:clamp(34px,4vw,48px);color:var(--paper);margin-bottom:14px}
-.zones{width:100%;border-collapse:collapse;margin-top:22px;font-size:15.5px}
-.zones th{text-align:left;font-weight:500;color:var(--brass);padding:8px 0;border-bottom:1px solid var(--cloth-line)}
-.zones td{padding:12px 0;border-bottom:1px solid var(--cloth-line);vertical-align:top}
-.zones td:nth-child(n+2),.zones th:nth-child(n+2){text-align:right;white-space:nowrap;padding-left:14px}
-.note{font-size:15px;margin-top:16px}
-form.book{display:grid;gap:14px;margin-top:22px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:grid;gap:6px;font-size:14.5px;color:var(--leaf)}
-input,select,textarea{width:100%;background:var(--cloth);border:1px solid var(--cloth-line);border-radius:4px;padding:13px 14px;color:var(--paper);font-size:16px}
-textarea{min-height:76px;resize:vertical}
-.stepper{display:flex;align-items:center;border:1px solid var(--cloth-line);border-radius:4px;background:var(--cloth)}
-.stepper button{width:46px;height:46px;border:0;background:transparent;font-size:20px;color:var(--paper)}
-.stepper output{flex:1;text-align:center;font-weight:600;color:var(--paper)}
-.ok{display:none;background:var(--paper);color:var(--ink);padding:14px 16px;border-radius:4px;font-size:15.5px}
+/* первый экран */
+.hero{position:relative;min-height:560px;display:grid;place-items:center;text-align:center;padding:64px 0 56px;
+  background:linear-gradient(180deg,rgba(14,13,12,.55),rgba(14,13,12,.75) 60%,var(--bg)),url(../img/cafe-hall.jpg) center/cover}
+.hero h1{font-size:clamp(56px,9vw,128px);line-height:.9;font-weight:300;letter-spacing:-.01em}
+.hero .sub{font:italic 400 clamp(18px,2vw,24px)/1.2 var(--f-h);color:#D9D1C2;margin-top:6px}
+.hero h2{font-size:clamp(28px,3.2vw,40px);margin-top:44px}
+.hero .note{font:italic 400 17px/1.3 var(--f-h);color:#CFC7B8;margin-top:2px}
+.bform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;max-width:720px;margin:22px auto 0}
+.bform input{width:100%;background:rgba(23,21,18,.85);border:1px solid #3A362F;border-radius:8px;padding:13px 14px;font-size:16px;color:var(--fg)}
+.bform input::placeholder{color:#8E877B}
+.consent{font-size:11.5px;color:#BDB5A6;margin-top:10px;display:flex;gap:8px;justify-content:center;align-items:center}
+.consent input{width:14px;height:14px;accent-color:var(--gold)}
+.ok{display:none;max-width:720px;margin:12px auto 0;background:rgba(201,164,92,.14);color:var(--gold-2);border-radius:8px;padding:10px 14px;font-size:13.5px}
 .ok.show{display:block}
-@media (max-width:900px){.dual .wrap{grid-template-columns:minmax(0,1fr);gap:56px}}
-@media (max-width:440px){.row{grid-template-columns:1fr}.zones{font-size:14px}.zones td:nth-child(n+2),.zones th:nth-child(n+2){white-space:normal;padding-left:8px}}
+@media (max-width:760px){.bform{grid-template-columns:minmax(0,1fr)}.hero{min-height:0}}
 
-/* отзыв */
-.quote{padding-block:96px;text-align:center}
-.quote blockquote{margin:0 auto;max-width:30em;font:400 clamp(26px,3.2vw,38px)/1.3 var(--f-h);color:var(--paper)}
-.quote p{margin-top:18px;color:var(--brass);font-size:15px}
+/* секции в три колонки */
+.row{display:grid;grid-template-columns:180px 220px minmax(0,1fr);gap:40px;padding-block:56px;align-items:start}
+.row.plus{grid-template-columns:180px 220px minmax(0,1fr) 220px}
+.lbl{font:400 15px/1.4 var(--f-b);color:var(--gold);padding-top:6px}
+.media{display:grid;gap:14px}
+.ph{position:relative;border-radius:10px;overflow:hidden;background:var(--panel)}
+.ph img{width:100%;aspect-ratio:4/3.4;object-fit:cover}
+.ph.tall img{aspect-ratio:3/5}
+.ph .gbtn{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);padding:10px 20px;font-size:12.5px}
+.txt p{color:#CFC8BB}
+.txt p+p{margin-top:12px}
+.txt ul{margin:16px 0;padding-left:18px;display:grid;gap:4px}
+.hours{display:flex;gap:12px;margin-top:16px;font:italic 400 15px/1.5 var(--f-h);color:#CFC8BB}
+.hours svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.6;flex:none;margin-top:16px}
+.right{display:flex;justify-content:flex-end;margin-top:22px}
+.h2{font-size:clamp(28px,3vw,38px);line-height:1.1;margin-bottom:14px}
+@media (max-width:1000px){.row,.row.plus{grid-template-columns:200px minmax(0,1fr)}.row .lbl{grid-column:1/-1}.row.plus>.ph.tall{display:none}}
+@media (max-width:640px){.row,.row.plus{grid-template-columns:minmax(0,1fr);gap:20px;padding-block:40px}.media{grid-template-columns:1fr 1fr}.media .ph img{aspect-ratio:1}}
+.sep{border-top:1px solid var(--line)}
 
-/* подвал */
-.foot{border-top:1px solid var(--cloth-line);padding-block:48px 28px;font-size:15px}
-.foot .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(2,minmax(0,1fr));gap:32px}
-.foot h3{font-size:28px;color:var(--paper)}
-.foot ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px}
-.foot .small{grid-column:1/-1;border-top:1px solid var(--cloth-line);padding-top:18px;font-size:12.5px;color:#86A595}
-@media (max-width:760px){.foot .wrap{grid-template-columns:minmax(0,1fr)}}
+/* плитки меню */
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px;margin-top:20px}
+.cats a{text-decoration:none}
+.cats b{display:block;font:400 22px/1.2 var(--f-h);margin-bottom:8px}
+.cats img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;transition:opacity .2s}
+.cats a:hover img{opacity:.85}
+.cats a:hover b{color:var(--gold)}
+.book{margin-top:34px}
+.book h3{font-size:34px;margin-bottom:8px}
+.book ul{margin:0 0 14px;padding-left:18px}
+.book small{display:block;color:var(--muted);font-size:12.5px}
+.book .ph-num{color:var(--gold-2);font-weight:600;text-decoration:none;font-size:15px}
+.soc{display:flex;gap:8px;margin-top:10px}
+.soc a{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff;text-decoration:none}
 
-/* строка заказа внизу */
-.orderbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--paper);color:var(--ink);box-shadow:0 -10px 30px -10px rgba(0,0,0,.4);transform:translateY(110%);transition:transform .25s ease}
-.orderbar.show{transform:none}
-.orderbar .wrap{display:flex;align-items:center;gap:16px;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px))}
-.orderbar span{flex:1;font-weight:600}
-.orderbar small{display:block;font-weight:400;color:var(--muted);font-size:13.5px}
-.orderbar .btn{padding:12px 20px}
+/* рекомендуем */
+.dish{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.dish img{width:100%;aspect-ratio:4/3.2;object-fit:cover;border-radius:8px}
+.dish h3{font-size:22px;margin-bottom:6px}
+.dish p{font-size:13.5px;color:#BDB6A9}
+.dish p b{color:var(--fg);font-weight:700}
+.dish .pr{display:block;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.dish .pr strong{font-size:16px;color:var(--gold-2);font-weight:700;margin:0 4px}
+@media (max-width:520px){.dish{grid-template-columns:110px minmax(0,1fr);gap:14px}}
 
-/* плитки разделов меню */
-.cats{padding-block:72px 8px}
-.sec-t{font-size:clamp(34px,4vw,48px);color:var(--paper)}
-.sec-sub{margin-top:8px;max-width:40em}
-.cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;margin-top:28px}
-.cat a{display:block;text-decoration:none;color:var(--leaf)}
-.cat img{width:100%;aspect-ratio:4/3;object-fit:cover}
-.cat div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0 10px;border-bottom:1px solid var(--cloth-line)}
-.cat b{font:400 26px/1.1 var(--f-h);color:var(--paper)}
-.cat span{font-size:15px;white-space:nowrap}
-.cat a:hover b{color:var(--brass)}
-@media (max-width:860px){.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:480px){.cat-grid{grid-template-columns:minmax(0,1fr)}}
-.lunch{margin-top:56px;background:var(--paper);color:var(--ink);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:28px 32px}
-.lunch h3{font-size:34px}
-.lunch p{color:var(--muted);margin-top:6px}
-.lunch ul{margin:12px 0 0;padding-left:18px;columns:2;column-gap:32px;font-size:15.5px}
-.lunch .price{font:400 54px/1 var(--f-h);color:var(--wine);white-space:nowrap;text-align:right}
-.lunch .price small{display:block;font:400 14px/1.3 var(--f-b);color:var(--muted)}
-@media (max-width:700px){.lunch{grid-template-columns:minmax(0,1fr);padding:22px}.lunch ul{columns:1}.lunch .price{text-align:left}}
-/* банкеты */
-.banq{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);background:var(--cloth-2)}
-.banq img{width:100%;height:100%;object-fit:cover;min-height:440px}
-.banq .t{padding:56px clamp(22px,5vw,64px);display:flex;flex-direction:column;gap:16px;justify-content:center}
-.banq dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:10px 18px;margin:6px 0 4px;font-size:15.5px}
-.banq dt{color:var(--brass)}
-.banq dd{margin:0}
-@media (max-width:900px){.banq{grid-template-columns:minmax(0,1fr)}.banq img{min-height:0;aspect-ratio:16/10}}
-/* галерея и отзывы */
-.people{padding-block:88px 40px}
-.gal{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:210px 210px;gap:10px;margin-top:28px}
-.gal img{width:100%;height:100%;object-fit:cover}
-.gal img:first-child{grid-row:span 2}
-@media (max-width:700px){.gal{grid-template-columns:1fr 1fr;grid-template-rows:auto}.gal img{aspect-ratio:1}.gal img:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:16/10}}
-.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:56px}
-.rev{border-top:1px solid var(--brass);padding-top:18px}
-.rev p{font-size:16.5px}
-.stars{color:var(--brass);letter-spacing:2px;font-size:15px;margin-bottom:8px}
-.who{display:flex;gap:12px;align-items:center;margin-top:16px}
-.who i{width:42px;height:42px;border-radius:50%;background:var(--cloth-line);color:var(--paper);display:grid;place-items:center;font-style:normal;font-weight:600;flex:none}
-.who b{display:block;color:var(--paper);font-weight:600;font-size:15px}
-.who span{font-size:13.5px;color:#9DB9A8}
+/* отзывы */
+.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.rev{border-top:1px solid var(--gold);padding-top:16px}
+.rev p{font:italic 400 19px/1.4 var(--f-h);color:#E3DCCE}
+.rev small{display:block;margin-top:12px;font-size:12.5px;color:var(--muted)}
 @media (max-width:860px){.revs{grid-template-columns:minmax(0,1fr)}}
-/* вопросы */
-.qa{padding-block:40px 72px}
-.faq{margin-top:20px;max-width:880px}
-.faq details{border-bottom:1px solid var(--cloth-line)}
-.faq summary{cursor:pointer;list-style:none;padding:17px 0;font-size:18px;color:var(--paper);display:flex;justify-content:space-between;gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";color:var(--brass);font-size:24px;line-height:1}
-.faq details[open] summary::after{content:"−"}
-.faq p{padding-bottom:18px;max-width:46em}
-/* схема проезда */
-.route{background:var(--cloth-2);padding-block:72px}
-.map{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:36px;margin-top:28px;align-items:start}
-.map svg{width:100%;height:auto;display:block}
-.how{display:grid;gap:16px;font-size:16px}
-.how b{display:block;color:var(--paper);font-weight:600}
-@media (max-width:860px){.map{grid-template-columns:minmax(0,1fr)}}
+
+/* особенности и карта */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:20px 30px;margin:20px 0 26px}
+.feat h3{display:flex;align-items:center;gap:12px;font-size:20px;margin-bottom:6px}
+.feat svg{width:34px;height:34px;padding:5px;border:1px solid #4A4335;border-radius:6px;stroke:var(--gold);fill:none;stroke-width:1.6;flex:none}
+.feat p{font-size:13px;color:#BDB6A9}
+.addrline{border-top:1px solid var(--line);padding-top:16px;font-size:16px;margin-bottom:16px}
+.map{border-radius:10px;overflow:hidden;background:#191816;aspect-ratio:8/3}
+.map svg{width:100%;height:100%}
+@media (max-width:640px){.feat{grid-template-columns:minmax(0,1fr)}}
+
+footer{border-top:1px solid var(--line);margin-top:20px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:26px;font-size:12.5px;color:var(--muted)}
+footer .credits{flex-basis:100%;font-size:11.5px}
+.up{position:fixed;left:max(20px,env(safe-area-inset-left,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;width:36px;height:36px;border-radius:6px;background:var(--grad);display:grid;place-items:center;text-decoration:none;color:#1A140A;font-weight:700}
+
+/* меню во всплывающем окне */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.mbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;width:min(760px,100%);max-height:88vh;overflow:auto;padding:28px}
+.mtop{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.mtop h2{font-size:40px}
+.mtop button{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 8px}
+.tabs button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 14px;font-size:12.5px}
+.tabs button[aria-selected="true"]{background:var(--grad);border-color:transparent;color:#1A140A;font-weight:700}
+.mrow{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.mrow span:first-child small{display:block;color:var(--muted);font-size:12px}
+.mrow b{color:var(--gold-2);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="demo">Демо-сайт от PathCode, заведение вымышленное. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
+<div class="demo">Демо-сайт от PathCode, ресторан вымышленный. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
 
-<header class="top"><div class="wrap">
-  <a class="logo" href="#">Горный очаг</a>
-  <nav class="nav"><a href="#menu">Меню</a><a href="#banquet">Банкеты</a><a href="#delivery">Доставка</a><a href="#book">Бронь стола</a><a href="#contacts">Контакты</a></nav>
-  <a class="phone" href="tel:+79000000000">+7 900 000-00-00</a>
-</div></header>
-
-<section class="hero">
-  <div class="hero-text">
-    <h1>Хинкальная на Горной улице</h1>
-    <p>Лепим хинкали руками с одиннадцати утра, пока не закончится тесто. С шести вечера разжигаем мангал на виноградной лозе.</p>
-    <div class="hours" id="hours">
-      <div data-d="1,2,3,4"><span>Пн–чт</span><span>11:00–23:00</span></div>
-      <div data-d="5,6"><span>Пт–сб</span><span>11:00–01:00</span></div>
-      <div data-d="0"><span>Вс</span><span>12:00–23:00</span></div>
-    </div>
-    <div class="acts"><a class="btn btn-wine" href="#menu">Заказать с доставкой</a><a class="btn btn-line" href="#book">Забронировать стол</a></div>
-  </div>
-  <figure class="hero-photo" style="margin:0">
-    <img src="../img/khinkali.jpg" alt="Хинкали на блюде">
-    <figcaption>Хинкали с бараниной: тесто тоньше миллиметра, внутри бульон</figcaption>
-  </figure>
-</section>
-
-<section class="cats"><div class="wrap">
-  <h2 class="sec-t">Что у нас готовят</h2>
-  <p class="sec-sub">Хинкали и хачапури — весь день, мангал — с шести вечера. Нажмите на раздел, чтобы открыть его в меню.</p>
-  <div class="cat-grid">
-    <div class="cat"><a href="#menu"><img src="../img/khinkali.jpg" alt="Хинкали" loading="lazy" onerror="this.onerror=null;this.src='../img/khinkali.jpg'"><div><b>Хинкали</b><span>от 75 ₽ за штуку</span></div></a></div>
-    <div class="cat"><a href="#menu"><img src="../img/khachapuri.jpg" alt="Хачапури" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'"><div><b>Хачапури</b><span>от 290 ₽</span></div></a></div>
-    <div class="cat"><a href="#menu"><img src="../img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy" onerror="this.onerror=null;this.src='../img/shashlik.jpg'"><div><b>Мангал</b><span>от 290 ₽</span></div></a></div>
-    <div class="cat"><a href="#menu"><img src="../img/cafe-soup.jpg" alt="Суп харчо" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'"><div><b>Супы</b><span>от 310 ₽</span></div></a></div>
-    <div class="cat"><a href="#menu"><img src="../img/cafe-salad.jpg" alt="Пхали и закуски" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'"><div><b>Закуски</b><span>от 310 ₽</span></div></a></div>
-    <div class="cat"><a href="#menu"><img src="../img/cafe-dessert.jpg" alt="Чурчхела и чай" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'"><div><b>Чай и сладости</b><span>от 180 ₽</span></div></a></div>
-  </div>
-  <div class="lunch">
-    <div>
-      <h3>Бизнес-ланч по будням с 12 до 16</h3>
-      <p>Меняем каждый день, меню на неделю публикуем в Telegram в понедельник утром.</p>
-      <ul><li>суп дня: харчо, чихиртма или лобио</li><li>горячее: 3 хинкали или чашушули</li><li>салат из свежих овощей с ореховой заправкой</li><li>морс или чай с чабрецом</li></ul>
-    </div>
-    <div class="price">450 ₽<small>суп, горячее, салат и напиток</small></div>
-  </div>
-</div></section>
-
-<section class="menu-sec" id="menu"><div class="wrap">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h2>Меню</h2>
-      <p>Хинкали продаём поштучно, заказывайте от пяти. Нажмите «+», чтобы добавить блюдо в доставку.</p>
-    </div>
-    <div class="cols" id="cols"></div>
-    <div class="sheet-foot"><span>Вес указан на одну порцию или штуку</span><span>Цены действуют с 1 октября 2026 года</span></div>
-  </div>
-</div></section>
-
-<section class="howto"><div class="wrap">
-  <h2>Как едят хинкали</h2>
-  <ol class="steps">
-    <li><b>Руками, за хвостик</b>Вилка и нож проткнут тесто, и бульон вытечет на тарелку.</li>
-    <li><b>Сначала надкусить и выпить бульон</b>Аккуратно, он горячий. Посыпьте чёрным перцем, если любите острее.</li>
-    <li><b>Хвостик оставить на тарелке</b>Это сухое тесто. По хвостикам за столом считают, кто сколько съел.</li>
-  </ol>
-</div></section>
-
-
-<section class="banq" id="banquet">
-  <img src="../img/cafe-hall.jpg" alt="Зал кафе с деревянными столами" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
-  <div class="t">
-    <h2 class="sec-t">Банкеты и дни рождения</h2>
-    <p>Закрываем зал под ваше событие с понедельника по четверг, по выходным отдаём под банкет второй зал у камина.</p>
-    <dl>
-      <dt>Большой зал</dt><dd>до 40 гостей, свой вход и гардероб</dd>
-      <dt>Зал у камина</dt><dd>до 16 гостей</dd>
-      <dt>Банкетное меню</dt><dd>от 2 500 ₽ на гостя, без аренды зала</dd>
-      <dt>Можно своё</dt><dd>торт и вино без пробкового сбора</dd>
-    </dl>
-    <div><a class="btn btn-wine" href="#book">Обсудить банкет</a></div>
-  </div>
-</section>
-
-<section class="dual">
+<header class="head" id="top">
   <div class="wrap">
-    <div id="delivery">
-      <h2>Доставка</h2>
-      <p>Хинкали лепим после заказа и везём в термосумке. Курьер позвонит за десять минут.</p>
-      <table class="zones">
-        <tr><th>Район</th><th>Время</th><th>Доставка</th></tr>
-        <tr><td>Центр, Горная, Заречье</td><td>45–60 мин</td><td>бесплатно от 1 500 ₽</td></tr>
-        <tr><td>Северный, Южный</td><td>60–75 мин</td><td>190 ₽</td></tr>
-        <tr><td>Пригород до 10 км</td><td>до 90 мин</td><td>350 ₽</td></tr>
-      </table>
-      <p class="note">Хаши готовим только по субботам и воскресеньям с 9 утра, в доставку не отправляем.</p>
-    </div>
-    <div id="book">
-      <h2>Бронь стола</h2>
-      <p>Подтвердим бронь сообщением в течение 15 минут. Стол держим 20 минут после назначенного времени.</p>
-      <form class="book" id="bookForm" novalidate>
-        <div class="row">
-          <label>День<input type="date" id="bDate" required></label>
-          <label>Время<select id="bTime"></select></label>
-        </div>
-        <div class="row">
-          <label>Гостей<div class="stepper"><button type="button" id="gMinus" aria-label="Меньше гостей">−</button><output id="gCount">2</output><button type="button" id="gPlus" aria-label="Больше гостей">+</button></div></label>
-          <label>Телефон<input type="tel" id="bPhone" placeholder="+7" inputmode="tel" autocomplete="off"></label>
-        </div>
-        <label>Пожелания<textarea id="bNote" placeholder="Например: стол у камина, будет детский стульчик"></textarea></label>
-        <button class="btn btn-wine" type="submit">Забронировать</button>
-        <div class="ok" id="bookOk" aria-live="polite"></div>
-      </form>
+    <div class="addr"><b>Москва</b>ул. Горная, 12, вход со двора</div>
+    <a class="logo" href="#top" aria-label="Горный очаг, на главную">
+      <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M28 6 C 18 18, 14 26, 14 34 a14 14 0 0 0 28 0 C 42 26, 38 18, 28 6 Z"/><path d="M28 22 C 23 29, 22 33, 22 36 a6 6 0 0 0 12 0 C 34 33, 33 29, 28 22 Z"/><path d="M10 50 H46"/></svg>
+      <b>Горный очаг</b><span>ресторан грузинской кухни</span>
+    </a>
+    <div class="tel"><a href="tel:+79000000000">+7 (900) 000-00-00</a><button type="button" id="ddBtn" aria-expanded="false">Контактная информация</button>
+      <div class="dd" id="dd"><div><span>Пн–чт</span><span>12:00–23:00</span></div><div><span>Пт–сб</span><span>12:00–01:00</span></div><div><span>Вс</span><span>12:00–22:00</span></div><div><span>Telegram</span><span>@gorny_ochag_bot</span></div></div>
     </div>
   </div>
-</section>
+  <button class="burger" id="burger" type="button" aria-label="Открыть меню"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <nav class="nav" id="nav"><div class="wrap"><a href="#top">Главная</a><a href="#about">О нас</a><a href="#menu">Меню</a><a href="#booking">Бронирование</a><a href="#contacts">Контакты</a></div></nav>
+</header>
 
-<section class="people"><div class="wrap">
-  <h2 class="sec-t">Как у нас внутри</h2>
-  <div class="gal">
-    <img src="../img/cafe-hall.jpg" alt="Зал кафе" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
-    <img src="../img/khinkali.jpg" alt="Хинкали на столе" loading="lazy" onerror="this.onerror=null;this.src='../img/khinkali.jpg'">
-    <img src="../img/cafe-tea.jpg" alt="Чай в стаканах" loading="lazy" onerror="this.onerror=null;this.src='../img/khachapuri.jpg'">
-    <img src="../img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy" onerror="this.onerror=null;this.src='../img/shashlik.jpg'">
-    <img src="../img/cafe-hero.jpg" alt="Огонь в камине" loading="lazy" onerror="this.onerror=null;this.src='../img/cafe-hero.jpg'">
-  </div>
-  <div class="revs">
-    <div class="rev"><div class="stars">★★★★★</div><p>Хинкали как у бабушки в Душети. Сидели у камина до закрытия, и никто нас не торопил.</p><div class="who"><i>Н</i><div><b>Нино</b><span>Яндекс Карты, сентябрь 2026</span></div></div></div>
-    <div class="rev"><div class="stars">★★★★★</div><p>Отмечали день рождения на 14 человек. Заранее помогли рассчитать меню, торт разрешили принести свой.</p><div class="who"><i>А</i><div><b>Аслан</b><span>2ГИС, август 2026</span></div></div></div>
-    <div class="rev"><div class="stars">★★★★☆</div><p>Заказываем доставку по пятницам. Хинкали приезжают горячими, шашлык не пересушен. В час пик курьер опаздывал на 15 минут.</p><div class="who"><i>И</i><div><b>Игорь</b><span>Google, октябрь 2026</span></div></div></div>
-  </div>
+<section class="hero"><div class="wrap">
+  <h1>Горный очаг</h1>
+  <p class="sub">Грузинская кухня у живого огня</p>
+  <h2>Онлайн-бронирование</h2>
+  <p class="note">Администратор перезвонит в течение 5 минут</p>
+  <form class="bform" id="bForm" novalidate>
+    <input id="bName" placeholder="Имя" autocomplete="off" aria-label="Имя">
+    <input id="bPhone" type="tel" inputmode="tel" placeholder="Телефон *" autocomplete="off" aria-label="Телефон">
+    <input id="bDate" type="text" placeholder="Дата и время" autocomplete="off" aria-label="Дата и время" onfocus="this.type='datetime-local'">
+    <button class="gbtn" type="submit">Отправить</button>
+  </form>
+  <label class="consent"><input type="checkbox" id="bAgree" checked>Согласен(а) на обработку личных данных</label>
+  <div class="ok" id="bOk" aria-live="polite"></div>
 </div></section>
 
-<section class="qa"><div class="wrap">
-  <h2 class="sec-t">Часто спрашивают</h2>
-  <div class="faq">
-    <details open><summary>Можно прийти с детьми?</summary><p>Да. Есть детские стульчики и меню для детей: хинкали с курицей, сырники, компот. По выходным с 12 до 16 в зале работает аниматор.</p></details>
-    <details><summary>Есть ли вегетарианские блюда?</summary><p>Хинкали с грибами и с сыром, хачапури, пхали, аджапсандал и овощи на углях. Пхали и аджапсандал подходят и для постного меню.</p></details>
-    <details><summary>Где парковаться?</summary><p>Во дворе есть парковка на 8 машин для гостей. Если мест нет, рядом бесплатная парковка у ТЦ «Горный», 3 минуты пешком.</p></details>
-    <details><summary>Можно оплатить картой и по СБП?</summary><p>Да, в зале принимаем карты, СБП и наличные. В доставке оплата онлайн при заказе или картой курьеру.</p></details>
-    <details><summary>Сколько ждать заказ в зале?</summary><p>Хинкали лепим после заказа, их варят 12–15 минут. Шашлык готовится 20–25 минут, поэтому его лучше заказать сразу.</p></details>
-  </div>
-</div></section>
-
-<section class="route"><div class="wrap">
-  <h2 class="sec-t">Как нас найти</h2>
-  <div class="map">
-    <svg viewBox="0 0 640 380" role="img" aria-label="Схема проезда: кафе на улице Горной, 12, вход со двора, рядом метро Центральная">
-      <rect width="640" height="380" fill="#EDE6D3"/>
-      <rect x="40" y="40" width="200" height="110" fill="#E2D9C2"/><rect x="290" y="40" width="160" height="110" fill="#E2D9C2"/><rect x="500" y="40" width="110" height="110" fill="#E2D9C2"/>
-      <rect x="40" y="210" width="200" height="130" fill="#E2D9C2"/><rect x="290" y="210" width="160" height="130" fill="#D6CCB2"/><rect x="500" y="210" width="110" height="130" fill="#E2D9C2"/>
-      <path d="M0 180 H640" stroke="#fff" stroke-width="34"/><path d="M265 0 V380" stroke="#fff" stroke-width="26"/><path d="M475 0 V380" stroke="#fff" stroke-width="20"/>
-      <text x="20" y="186" font-family="Golos Text,sans-serif" font-size="14" fill="#6E655C">ул. Горная</text>
-      <text x="272" y="370" font-family="Golos Text,sans-serif" font-size="13" fill="#6E655C" transform="rotate(-90 272 370)">Садовая ул.</text>
-      <text x="482" y="120" font-family="Golos Text,sans-serif" font-size="13" fill="#6E655C" transform="rotate(-90 482 120)">Заречный пер.</text>
-      <rect x="320" y="250" width="70" height="44" fill="#183A2D"/><text x="355" y="277" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="13" fill="#F3EFE4">двор</text>
-      <path d="M355 250 V200" stroke="#A3242C" stroke-width="3" stroke-dasharray="6 5"/>
-      <circle cx="355" cy="228" r="14" fill="#A3242C"/><text x="355" y="233" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="13" font-weight="700" fill="#fff">12</text>
-      <circle cx="120" cy="100" r="16" fill="#C8A253"/><text x="120" y="105" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="14" font-weight="700" fill="#183A2D">М</text>
-      <text x="142" y="105" font-family="Golos Text,sans-serif" font-size="13" fill="#2A211B">Центральная</text>
-      <path d="M136 112 C 180 150, 300 150, 340 214" stroke="#2A211B" stroke-width="2" fill="none" stroke-dasharray="3 5"/>
-      <rect x="540" y="250" width="34" height="34" fill="#1B4B73"/><text x="557" y="273" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="16" font-weight="700" fill="#fff">P</text>
-      <text x="510" y="305" font-family="Golos Text,sans-serif" font-size="12" fill="#6E655C">ТЦ «Горный»</text>
-    </svg>
-    <div class="how">
-      <div><b>Адрес</b>ул. Горная, 12. Вход через арку со стороны Садовой, вывеска с очагом над дверью.</div>
-      <div><b>От метро</b>«Центральная», выход №2, 6 минут пешком по Горной.</div>
-      <div><b>На машине</b>Парковка во дворе на 8 мест, ещё одна бесплатная — у ТЦ «Горный».</div>
-      <div><a class="btn btn-line" href="https://yandex.ru/maps/" target="_blank" rel="noopener">Открыть в Яндекс Картах</a></div>
+<main class="wrap">
+  <section class="row plus" id="about">
+    <p class="lbl">Уют у камина</p>
+    <div class="media"><div class="ph"><img src="../img/cafe-hero.jpg" alt="Огонь в камине" loading="lazy"><a class="gbtn" href="#gallery">Интерьер</a></div></div>
+    <div class="txt">
+      <p>«Горный очаг» — место, где ужинают неторопливо. Зал на сорок гостей с живым камином, тёплый свет и тихая грузинская музыка. Хинкали лепим руками каждое утро, мясо готовим на углях из виноградной лозы.</p>
+      <ul><li>Удобное онлайн-бронирование стола</li><li>Большой зал и отдельный зал у камина на 16 гостей</li><li>Живая музыка по пятницам и гастрономические ужины</li></ul>
+      <div class="hours"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p>Пн–Чт: 12:00–23:00<br>Пт–Сб: 12:00–01:00<br>Вс: 12:00–22:00</p></div>
+      <div class="right"><button class="gbtn" type="button" data-menu>Посмотреть меню</button></div>
     </div>
-  </div>
-</div></section>
+    <div class="ph tall"><img src="../img/cafe-tea.jpg" alt="Чай в армуду" loading="lazy"></div>
+  </section>
 
+  <section class="row sep" id="menu">
+    <p class="lbl">Вкусные предложения от шеф-повара</p>
+    <div class="media"><div class="ph"><img src="../img/khachapuri.jpg" alt="Хачапури по-аджарски" loading="lazy"></div><div class="ph"><img src="../img/shashlik.jpg" alt="Шашлык на мангале" loading="lazy"></div><div class="ph"><img src="../img/cafe-soup.jpg" alt="Харчо" loading="lazy"></div></div>
+    <div class="txt">
+      <p>Шеф Тамаз двадцать лет готовит по рецептам своей бабушки из Душети. В меню классика и авторские блюда: каждый гость найдёт свой идеальный ужин.</p>
+      <div class="cats">
+        <a href="#" data-menu data-tab="0"><b>Хинкали</b><img src="../img/khinkali.jpg" alt="Хинкали" loading="lazy"></a>
+        <a href="#" data-menu data-tab="1"><b>С мангала</b><img src="../img/shashlik.jpg" alt="Мясо на углях" loading="lazy"></a>
+        <a href="#" data-menu data-tab="3"><b>Десерты</b><img src="../img/cafe-dessert.jpg" alt="Чурчхела" loading="lazy"></a>
+        <a href="#" data-menu data-tab="4"><b>Напитки</b><img src="../img/cafe-tea.jpg" alt="Чай" loading="lazy"></a>
+      </div>
+      <div class="book" id="booking">
+        <h3>Как забронировать?</h3>
+        <ul><li>Выберите дату и время</li><li>Укажите количество гостей</li><li>Оставьте контакты, администратор подтвердит бронь</li></ul>
+        <small>Телефон для брони</small>
+        <a class="ph-num" href="tel:+79000000000">+7 (900) 000-00-00</a>
+        <div class="soc"><a href="#" style="background:#27B33E" aria-label="WhatsApp">WA</a><a href="#" style="background:#2A9DD8" aria-label="Telegram">TG</a><a href="#" style="background:#4C75A3" aria-label="ВКонтакте">VK</a></div>
+      </div>
+    </div>
+  </section>
 
-<footer class="foot" id="contacts"><div class="wrap">
-  <div><h3>Горный очаг</h3><p style="margin-top:10px;max-width:24em">ул. Горная, 12. Вход со двора, у входа вывеска с очагом. Парковка на 8 машин.</p></div>
-  <div><ul><li><a class="phone" href="tel:+79000000000">+7 900 000-00-00</a></li><li>Бронь и заказы в Telegram: @gorny_ochag_bot</li></ul></div>
-  <div><ul><li>Пн–чт 11:00–23:00</li><li>Пт–сб 11:00–01:00</li><li>Вс 12:00–23:00</li></ul></div>
-  <p class="small">ИП Беридзе Т. Г., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Another Georgian favourite, the Khinkali</a>, shankar s., CC BY 2.0; <a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0; <a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Free grilling meat skewers photo</a>, rawpixel, CC0; <a href="https://commons.wikimedia.org/wiki/File:Kharcho_meat_soup.jpg" target="_blank" rel="noopener">Kharcho meat soup</a>, A.Savin, CC BY-SA 3.0; <a href="https://commons.wikimedia.org/wiki/File:Spinach_pkhali.jpg" target="_blank" rel="noopener">Spinach pkhali</a>, Georgian Recipes at Georgia About, CC BY 3.0; <a href="https://commons.wikimedia.org/wiki/File:Churchkhela_-_grape_and_nut_dried_on_string_in_sun.jpg" target="_blank" rel="noopener">Churchkhela - grape and nut dried on string in sun</a>, Jon Gudorf Photography, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Restaurant_interior,_The_Riverhead.jpg" target="_blank" rel="noopener">Restaurant interior, The Riverhead</a>, Bjankuloski06, CC BY 4.0; <a href="https://commons.wikimedia.org/wiki/File:Glass_tea_cup.jpg" target="_blank" rel="noopener">Glass tea cup</a>, Zeynel Cebeci, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0.</p>
+  <section class="row sep" id="gallery">
+    <p class="lbl">Рекомендуем попробовать</p>
+    <div class="media"><div class="ph"><img src="../img/cafe-hall.jpg" alt="Зал ресторана" loading="lazy"></div><div class="ph"><img src="../img/cafe-salad.jpg" alt="Пхали" loading="lazy"><a class="gbtn" href="#reviews">Отзывы</a></div></div>
+    <div class="txt">
+      <p>Блюда, которые гости заказывают чаще всего и ради которых возвращаются.</p>
+      <div id="dishes"></div>
+      <div class="right"><button class="gbtn" type="button" data-menu>Посмотреть меню</button></div>
+    </div>
+  </section>
+
+  <section class="row sep" id="reviews">
+    <p class="lbl">Отзывы гостей</p>
+    <div class="revs" style="grid-column:2/-1">
+      <div class="rev"><p>«Хинкали как в Тбилиси, бульон не вытекает. Сидели у камина до закрытия, и никто нас не торопил.»</p><small>Нино, Яндекс Карты</small></div>
+      <div class="rev"><p>«Отмечали юбилей в зале у камина на 14 человек. Помогли с меню заранее, торт разрешили свой.»</p><small>Аслан, 2ГИС</small></div>
+      <div class="rev"><p>«Шашлык на лозе — лучший в городе. Бронировал на сайте, перезвонили через три минуты.»</p><small>Игорь, Google</small></div>
+    </div>
+  </section>
+
+  <section class="row sep" id="contacts">
+    <p class="lbl">Ваши впечатления</p>
+    <div class="media"><div class="ph"><img src="../img/cafe-hall.jpg" alt="Вечерний зал" loading="lazy"></div></div>
+    <div class="txt">
+      <h2 class="h2">Особенности «Горного очага»</h2>
+      <p>Интерьер из тёмного дерева, тёплый свет камина, живая музыка и внимательный сервис помогут насладиться каждым моментом.</p>
+      <div class="feat">
+        <div><h3><svg viewBox="0 0 24 24"><path d="M12 3c-3 4-5 6-5 10a5 5 0 0 0 10 0c0-4-2-6-5-10z"/></svg>Живой камин</h3><p>Столы у огня бронируйте заранее: их всего шесть</p></div>
+        <div><h3><svg viewBox="0 0 24 24"><path d="M4 18h16M6 18l2-8h8l2 8M9 10V6m3 4V5m3 5V6"/></svg>Мангал на лозе</h3><p>Разжигаем каждый вечер с 18:00, мясо снимаем с огня перед подачей</p></div>
+        <div><h3><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Удобное расположение</h3><p>В центре города, с парковкой во дворе и рядом с метро</p></div>
+        <div><h3><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4m6-4v4"/></svg>Банкеты</h3><p>Зал у камина до 16 гостей, банкетное меню от 3 500 ₽ на гостя</p></div>
+      </div>
+      <p class="addrline">г. Москва, ул. Горная, 12</p>
+      <div class="map"><svg viewBox="0 0 800 300" role="img" aria-label="Схема: ресторан на улице Горной, 12, рядом с метро Центральная" style="display:block;width:100%;height:100%">
+        <rect width="800" height="300" fill="#191816"/>
+        <g fill="#211F1C"><rect x="20" y="20" width="170" height="90" rx="4"/><rect x="230" y="20" width="200" height="90" rx="4"/><rect x="470" y="20" width="140" height="90" rx="4"/><rect x="650" y="20" width="130" height="90" rx="4"/>
+        <rect x="20" y="170" width="170" height="110" rx="4"/><rect x="230" y="170" width="200" height="110" rx="4"/><rect x="470" y="170" width="140" height="110" rx="4"/><rect x="650" y="170" width="130" height="110" rx="4"/></g>
+        <rect x="490" y="190" width="100" height="70" rx="6" fill="#1F2A1F"/>
+        <g stroke="#3A3631" fill="none"><path d="M0 140 H800" stroke-width="26"/><path d="M210 0 V300" stroke-width="18"/><path d="M450 0 V300" stroke-width="18"/><path d="M630 0 V300" stroke-width="14"/><path d="M0 40 C 200 70, 520 0, 800 60" stroke-width="10"/></g>
+        <g font-family="Comfortaa,sans-serif" font-size="11" fill="#8C857A"><text x="24" y="136">ул. Горная</text><text x="218" y="290" transform="rotate(-90 218 290)">Садовая ул.</text><text x="505" y="230">сквер</text><text x="660" y="132">Заречный пер.</text></g>
+        <circle cx="120" cy="65" r="11" fill="#2A2723" stroke="#C9A45C"/><text x="120" y="69" text-anchor="middle" font-family="Comfortaa,sans-serif" font-size="11" font-weight="700" fill="#C9A45C">М</text>
+        <text x="138" y="69" font-family="Comfortaa,sans-serif" font-size="11" fill="#B9B1A4">Центральная</text>
+        <path d="M132 74 C 200 120, 300 120, 330 128" stroke="#C9A45C" stroke-width="1.5" stroke-dasharray="3 5" fill="none"/>
+        <g transform="translate(340 150)"><circle r="22" fill="#C9A45C" fill-opacity=".15"/><circle r="12" fill="#E2C27F"/><circle r="4" fill="#191816"/></g>
+        <rect x="364" y="160" width="118" height="26" rx="6" fill="#0E0D0C" stroke="#3A3631"/><text x="423" y="177" text-anchor="middle" font-family="Cormorant,serif" font-size="15" fill="#ECE6DA">Горный очаг</text>
+      </svg></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 Горный очаг. ИП Беридзе Т. Г., ИНН 000000000000 (демо-данные)</span>
+  <span>+7 (900) 000-00-00 · ежедневно с 12:00</span>
+  <p class="credits">Фото: <a href="https://commons.wikimedia.org/wiki/File:Restaurant_interior,_The_Riverhead.jpg" target="_blank" rel="noopener">Restaurant interior, The Riverhead</a>, Bjankuloski06, CC BY 4.0; <a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Glass_tea_cup.jpg" target="_blank" rel="noopener">Glass tea cup</a>, Zeynel Cebeci, CC BY-SA 4.0; <a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0; <a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Free grilling meat skewers photo</a>, rawpixel, CC0; <a href="https://commons.wikimedia.org/wiki/File:Kharcho_meat_soup.jpg" target="_blank" rel="noopener">Kharcho meat soup</a>, A.Savin, CC BY-SA 3.0; <a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Another Georgian favourite, the Khinkali</a>, shankar s., CC BY 2.0; <a href="https://commons.wikimedia.org/wiki/File:Churchkhela_-_grape_and_nut_dried_on_string_in_sun.jpg" target="_blank" rel="noopener">Churchkhela - grape and nut dried on string in sun</a>, Jon Gudorf Photography, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Spinach_pkhali.jpg" target="_blank" rel="noopener">Spinach pkhali</a>, Georgian Recipes at Georgia About, CC BY 3.0.</p>
 </div></footer>
+<a class="up" href="#top" aria-label="Наверх">↑</a>
 
-<div class="orderbar" id="orderbar" aria-live="polite"><div class="wrap">
-  <span id="obText"></span>
-  <button class="btn btn-wine" type="button" id="obGo">Оформить доставку</button>
-</div></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="mbox">
+    <div class="mtop"><h2 id="mTitle">Меню</h2><button type="button" id="mClose">закрыть</button></div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div id="mList"></div>
+  </div>
+</div>
 
 <script>
 (function(){
 const $=s=>document.querySelector(s);
-const rub=n=>n.toLocaleString("ru-RU").replace(/ /g," ")+" ₽";
-const MENU=[
- {t:"Хинкали",n:"поштучно, от 5 шт.",items:[["С бараниной и зеленью","60 г",85],["Говядина и свинина","60 г",75],["С сулугуни","55 г",80],["С грибами и луком","55 г",75]]},
- {t:"Хачапури",img:["../img/khachapuri.jpg","Хачапури по-аджарски с желтком"],items:[["По-аджарски, с желтком","460 г",520],["По-мегрельски","600 г",640],["Пеновани, слоёный","250 г",290]]},
- {t:"С мангала",n:"с 18:00",img:["../img/shashlik.jpg","Шашлык на мангале"],items:[["Свиная шея","200 г",520],["Корейка ягнёнка","250 г",790],["Люля-кебаб из говядины","180 г",430],["Овощи на углях","250 г",290]]},
- {t:"Супы",items:[["Харчо с говядиной","350 мл",340],["Чихиртма на курице","350 мл",310]]},
- {t:"Закуски",items:[["Пхали, три вида","180 г",390],["Аджапсандал","250 г",360],["Сулугуни на кеци","150 г",310]]},
- {t:"Напитки",items:[["Тархун домашний","0,5 л",220],["Боржоми","0,5 л",240],["Чай с чабрецом, чайник","0,6 л",250]]}
-];
-const cart=new Map();
-$("#cols").innerHTML=MENU.map((g,gi)=>`<div class="grp"><h3>${g.t}${g.n?`<small>${g.n}</small>`:""}</h3>${g.img?`<figure><img src="${g.img[0]}" alt="${g.img[1]}" loading="lazy"></figure>`:""}${g.items.map((d,di)=>`<div class="dish"><b>${d[0]}</b><span class="w">${d[1]}</span><span class="p">${rub(d[2])}</span><button class="add" type="button" data-k="${gi}-${di}" aria-label="Добавить: ${d[0]}">+</button></div>`).join("")}</div>`).join("");
-function plural(n){const a=n%10,b=n%100;return a===1&&b!==11?"позиция":a>=2&&a<=4&&(b<12||b>14)?"позиции":"позиций"}
-function update(){
-  let n=cart.size,s=0;cart.forEach((q,k)=>{const [g,d]=k.split("-").map(Number);s+=q*MENU[g].items[d][2]});
-  $("#orderbar").classList.toggle("show",n>0);
-  const free=s>=1500?"доставка бесплатно":`до бесплатной доставки ${rub(1500-s)}`;
-  $("#obText").innerHTML=`${n} ${plural(n)} на ${rub(s)}<small>${free}</small>`;
-}
-document.querySelectorAll(".add").forEach(b=>b.onclick=()=>{
-  const k=b.dataset.k,[g]=k.split("-").map(Number);
-  const step=MENU[g].t==="Хинкали"?5:1;
-  cart.set(k,(cart.get(k)||0)+step);
-  b.classList.add("on");b.textContent=cart.get(k);
-  update();
-});
-$("#obGo").onclick=()=>{$("#obText").innerHTML=`Это демо: на настоящем сайте заказ ушёл бы на кухню, а администратор получил бы его в Telegram.<small>Можно продолжать добавлять блюда</small>`};
-// часы работы: подсветить сегодняшний день
-const d=new Date().getDay();
-document.querySelectorAll("#hours div").forEach(r=>{if(r.dataset.d.split(",").includes(String(d)))r.classList.add("today")});
+const rub=n=>n.toLocaleString("ru-RU").replace(/ /g," ");
+$("#burger").onclick=()=>$("#nav").classList.toggle("open");
+$("#ddBtn").onclick=e=>{const o=$("#dd").classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o)};
+document.addEventListener("click",e=>{if(!e.target.closest(".tel"))$("#dd").classList.remove("open")});
 // бронь
-const date=$("#bDate"),today=new Date();date.min=today.toISOString().slice(0,10);date.value=date.min;
-const times=[];for(let h=12;h<=22;h++){times.push(`${h}:00`);if(h<22)times.push(`${h}:30`)}
-$("#bTime").innerHTML=times.map(t=>`<option${t==="19:30"?" selected":""}>${t}</option>`).join("");
-let guests=2;const g=$("#gCount");
-$("#gMinus").onclick=()=>{guests=Math.max(1,guests-1);g.textContent=guests};
-$("#gPlus").onclick=()=>{guests=Math.min(20,guests+1);g.textContent=guests};
-$("#bookForm").addEventListener("submit",e=>{e.preventDefault();
-  const ok=$("#bookOk"),dd=new Date(date.value).toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
-  ok.textContent=`Это демо. Бронь на ${dd}, ${$("#bTime").value}, гостей: ${guests} ушла бы администратору, а вам пришло бы подтверждение.`;
-  ok.classList.add("show")});
+$("#bForm").addEventListener("submit",e=>{e.preventDefault();const ok=$("#bOk");
+  if(!$("#bPhone").value.trim()){ok.textContent="Укажите телефон, чтобы администратор мог подтвердить бронь.";ok.classList.add("show");$("#bPhone").focus();return}
+  if(!$("#bAgree").checked){ok.textContent="Отметьте согласие на обработку личных данных.";ok.classList.add("show");return}
+  ok.textContent=`Это демо. Заявка на бронь${$("#bName").value?` от ${$("#bName").value}`:""} ушла бы администратору, он перезвонил бы в течение 5 минут.`;ok.classList.add("show")});
+// рекомендуем
+const DISHES=[
+ ["Хинкали с бараниной","../img/khinkali.jpg","Тонкое тесто ручной лепки, внутри сочный фарш и горячий бульон. Подаём с чёрным перцем.","95","за штуку"],
+ ["Хачапури по-аджарски","../img/khachapuri.jpg","Лодочка из теста на мацони с сулугуни, имеретинским сыром, сливочным маслом и желтком.","590",""],
+ ["Харчо с говядиной","../img/cafe-soup.jpg","Густой суп на костном бульоне с рисом, ткемали и грецким орехом. Подаём с лавашом из тандыра.","420",""],
+ ["Корейка ягнёнка на лозе","../img/shashlik.jpg","Маринуем сутки в специях и вине, готовим на углях виноградной лозы. С овощами на мангале.","1 290",""]];
+$("#dishes").innerHTML=DISHES.map(d=>`<div class="dish"><img src="${d[1]}" alt="${d[0]}" loading="lazy"><div><h3>${d[0]}</h3><p><b>Описание:</b> ${d[2]}</p><span class="pr">от<strong>${d[3]}</strong>рублей${d[4]?" "+d[4]:""}</span></div></div>`).join("");
+// меню
+const MENU=[
+ ["Хинкали",[["С бараниной и зеленью","60 г, поштучно",95],["Говядина и свинина","60 г",85],["С сулугуни","55 г",90],["С грибами","55 г",85]]],
+ ["С мангала",[["Свиная шея на лозе","200 г",690],["Корейка ягнёнка","250 г",1290],["Люля-кебаб из говядины","180 г",590],["Овощи на углях","250 г",390]]],
+ ["Хачапури и закуски",[["Хачапури по-аджарски","460 г",590],["Хачапури по-мегрельски","600 г",720],["Пхали, три вида","180 г",450],["Харчо с говядиной","350 мл",420]]],
+ ["Десерты",[["Чурчхела домашняя","1 шт",250],["Пеламуши с орехами","150 г",320],["Медовик «Очаг»","140 г",390]]],
+ ["Напитки",[["Чай с чабрецом, чайник","0,6 л",350],["Тархун домашний","0,5 л",290],["Боржоми","0,5 л",320]]]];
+let tab=0;
+function render(){$("#tabs").innerHTML=MENU.map((m,i)=>`<button type="button" role="tab" aria-selected="${i===tab}">${m[0]}</button>`).join("");
+  document.querySelectorAll("#tabs button").forEach((b,i)=>b.onclick=()=>{tab=i;render()});
+  $("#mList").innerHTML=MENU[tab][1].map(r=>`<div class="mrow"><span>${r[0]}<small>${r[1]}</small></span><b>${rub(r[2])} ₽</b></div>`).join("")}
+const modal=$("#modal");
+document.querySelectorAll("[data-menu]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();tab=b.dataset.tab?+b.dataset.tab:0;render();modal.classList.add("open")}));
+$("#mClose").onclick=()=>modal.classList.remove("open");
+modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("open")});
+addEventListener("keydown",e=>{if(e.key==="Escape")modal.classList.remove("open")});
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>
