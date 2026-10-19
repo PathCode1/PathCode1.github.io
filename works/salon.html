@@ -4,360 +4,463 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Aura</title>
-<meta name="description" content="Студия волос и ногтей на Садовой, 5: стрижки, окрашивание, маникюр. Цены по длине волос, запись к своему мастеру.">
+<meta name="description" content="Студия красоты Aura на Садовой, 5: стрижки и укладки, окрашивание, косметология, визаж, маникюр и массаж. Онлайн-запись к мастеру.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&display=swap">
 <style>
-/* Журнал о красоте: белая полоса, огромное название студии на всю ширину, прайс как оглавление.
-   Один акцент — пудровый, только у фотографий и выбранных элементов. */
+/* По референсу: чёрный фон, тонкие заглавные заголовки, бежевый акцент,
+   шапка-плашка поверх фото, карточки с фото, прайс строками, контурные кнопки-капсулы. */
 :root{
-  --white:#FFFFFF; --ink:#24161D; --taupe:#7E7076; --line:#E6DCDF; --blush:#F2DADB; --plum:#5B2A40;
-  --f-h:"Prata",Georgia,serif; --f-b:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
+  --bg:#050505; --bg2:#0E0E0E; --panel:#161616; --line:rgba(255,255,255,.16);
+  --fg:#F3EFEA; --muted:#A39D96; --dim:#77716B; --gold:#CDAA82;
+  --taupe:linear-gradient(160deg,#8E7A69,#5B4C41);
+  --f:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{margin:0;background:var(--white);color:var(--ink);font:400 16.5px/1.65 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;display:block}
-a{color:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
 button,input,select{font:inherit;color:inherit}
-button{cursor:pointer}
-h1,h2,h3{font-family:var(--f-h);font-weight:400;margin:0;text-wrap:balance}
-p{margin:0}
-:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
+:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.demo{font-size:13px;color:var(--taupe);text-align:center;padding:7px 16px;border-bottom:1px solid var(--line)}
+.demo{background:#000;color:var(--dim);font-size:13px;text-align:center;padding:7px 16px;border-bottom:1px solid #151515}
+.demo a{color:var(--gold)}
 
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--white);border-bottom:1px solid var(--line)}
-.bar .wrap{display:flex;align-items:center;gap:28px;padding-block:12px;font-size:15px}
-.bar nav{display:flex;gap:24px}
-.bar nav a{text-decoration:none}
-.bar nav a:hover{text-decoration:underline;text-underline-offset:5px}
-.bar .mini{font:400 22px/1 var(--f-h);text-decoration:none;display:none}
-.bar .book-link{margin-left:auto;background:var(--ink);color:var(--white);text-decoration:none;padding:10px 18px;font-weight:600}
-.bar .book-link:hover{background:var(--plum)}
-@media (max-width:760px){.bar nav{display:none}}
+.h2{font:200 clamp(34px,6.2vw,84px)/1 var(--f);text-transform:uppercase;letter-spacing:.01em;text-align:center;margin:0}
+.sub{display:table;margin:14px auto 0;background:#262626;color:#CFC9C2;font-size:12px;line-height:1;padding:5px 12px;border-radius:99px}
+.sec{padding-block:clamp(56px,8vw,104px)}
+.block{background:var(--bg2);border-radius:clamp(0px,3vw,32px);max-width:1320px;margin:0 auto}
+.btn-o{display:flex;align-items:center;justify-content:center;gap:12px;height:64px;padding:0 34px;border:1px solid rgba(255,255,255,.5);border-radius:999px;background:transparent;font-weight:300;font-size:19px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.btn-o:hover{background:var(--fg);color:#0A0A0A;border-color:var(--fg)}
+.btn-s{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 26px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:transparent;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.btn-s:hover{background:var(--fg);color:#0A0A0A}
 
-/* шапка-обложка */
-.mast{padding-top:18px}
-.mast h1{font-size:clamp(84px,27vw,400px);line-height:.78;letter-spacing:-.04em;margin-left:-.04em}
-.mast-sub{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);padding-block:12px;margin-top:22px;font-size:15px}
+/* ---------- первый экран ---------- */
+.hero{position:relative;overflow:hidden;background:#000;isolation:isolate}
+.hero-ph{position:absolute;top:0;right:0;bottom:0;width:60%;z-index:-1}
+.hero-ph img{width:100%;height:100%;object-fit:cover;object-position:62% 30%;filter:sepia(.55) saturate(1.5) brightness(1.08) contrast(1.05)}
+.hero-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.55) 30%,rgba(0,0,0,0) 62%),linear-gradient(0deg,#000 0%,rgba(0,0,0,0) 26%)}
+.topnav{display:flex;flex-wrap:wrap;gap:6px 26px;padding:16px 0 12px;font-size:13px;color:#D9D3CC}
+.topnav a:hover{color:var(--gold)}
+.bar{display:flex;align-items:center;gap:18px;border:1px solid var(--line);border-radius:22px;padding:9px 12px 9px 10px;background:rgba(8,8,8,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.logo{display:flex;align-items:center;gap:12px;min-width:0}
+.logo svg{flex:none;width:48px;height:48px}
+.logo b{display:block;font-weight:500;font-size:18px;line-height:1.1}
+.logo small{display:block;color:var(--muted);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.soc{display:flex;gap:6px;margin-left:auto}
+.soc a{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;transition:background .2s}
+.soc a:hover{background:rgba(255,255,255,.1)}
+.soc svg{width:18px;height:18px;fill:var(--fg)}
+.phone{display:flex;align-items:center;gap:12px;padding-left:16px;border-left:1px solid var(--line)}
+.phone .ic{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none}
+.phone .ic svg{width:17px;height:17px;stroke:var(--fg);fill:none;stroke-width:1.6}
+.phone b{display:block;font-weight:600;font-size:15px;white-space:nowrap}
+.phone small{display:block;color:var(--muted);font-size:12px;white-space:nowrap}
+.burger{display:none;position:fixed;top:12px;right:12px;z-index:30;width:52px;height:52px;border-radius:14px;border:0;background:#D9C6A8;cursor:pointer;place-items:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.burger svg{width:24px;height:24px;stroke:#2A2219;stroke-width:1.8;fill:none}
+.hero-body{padding:clamp(40px,6vw,84px) 0 clamp(48px,6vw,80px);max-width:640px}
+.pill{display:inline-block;background:rgba(255,255,255,.14);border-radius:8px;padding:3px 11px;font-size:13px}
+.hero h1{font:200 clamp(46px,8.6vw,122px)/.94 var(--f);text-transform:uppercase;letter-spacing:-.005em;margin:20px 0 28px}
+.hero h1 .k{color:var(--gold)}
+.hero .lead{font-size:16px;line-height:1.5;margin:0 0 18px;color:#E6E0D9}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:34px}
+.tags span{background:rgba(255,255,255,.12);border-radius:8px;padding:3px 11px;font-size:13px}
+.hero .btn-o{width:min(100%,540px)}
 
-/* разворот */
-.spread{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:36px;padding-block:44px 80px}
-.spread figure{grid-column:1 / span 7;margin:0}
-.spread figure img{width:100%;aspect-ratio:4/3.1;object-fit:cover}
-figcaption{font-size:13.5px;color:var(--taupe);margin-top:8px}
-.spread .txt{grid-column:8 / span 5;display:flex;flex-direction:column;gap:26px}
-.spread .big{font:400 clamp(24px,2.3vw,32px)/1.35 var(--f-h)}
-.next{border-top:1px solid var(--line)}
-.next div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
-.next b{font-weight:600}
-.next span{color:var(--taupe)}
-@media (max-width:860px){.spread{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:28px 56px}.spread figure,.spread .txt{grid-column:1}}
+/* ---------- предложения ---------- */
+.rail-wrap{position:relative;margin-top:clamp(32px,4vw,52px)}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px)/4);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+.rail::-webkit-scrollbar{display:none}
+.card{position:relative;scroll-snap-align:start;border-radius:26px;overflow:hidden;aspect-ratio:3/4.1;background:#1A1A1A;isolation:isolate;cursor:pointer;text-align:left;border:0;padding:0}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;transition:transform .6s}
+.card:hover img{transform:scale(1.05)}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,0) 55%,rgba(0,0,0,.82) 100%)}
+.card h3{position:absolute;left:20px;top:18px;right:20px;margin:0;font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.02em}
+.card .meta{position:absolute;right:20px;bottom:18px;left:20px;text-align:right;font-size:12px;color:#DDD7D0;line-height:1.4}
+.card .meta b{display:block;margin-top:8px;font-weight:500;font-size:15px;color:var(--fg)}
+.arrows{display:flex;justify-content:center;gap:10px;margin-top:22px}
+.arrows button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center}
+.arrows button:hover{border-color:var(--fg)}
+.arrows svg{width:18px;height:18px;stroke:var(--fg);fill:none;stroke-width:1.6}
 
-/* прайс-оглавление */
-.price{border-top:1px solid var(--ink);padding-block:56px 80px}
-.price-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:end;margin-bottom:36px}
-.price-head h2{font-size:clamp(48px,6vw,84px);line-height:.95}
-.price-head p{color:var(--taupe);max-width:30em}
-.toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 72px}
-.toc section{margin-bottom:28px}
-.toc h3{font-size:28px;margin-bottom:6px}
-.toc table{width:100%;border-collapse:collapse;font-size:16px}
-.toc th{font-weight:500;color:var(--taupe);font-size:13.5px;text-align:right;padding:4px 0 6px 12px;white-space:nowrap}
-.toc th:first-child{text-align:left;padding-left:0}
-.toc td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
-.toc td+td{text-align:right;white-space:nowrap;padding-left:12px;font-variant-numeric:tabular-nums}
-.toc td small{display:block;color:var(--taupe);font-size:13.5px}
-@media (max-width:860px){.price-head,.toc{grid-template-columns:minmax(0,1fr)}.toc{gap:0}}
+/* ---------- лучшие предложения ---------- */
+.best{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 44px;margin-top:clamp(32px,4vw,52px)}
+.bi{display:grid;grid-template-columns:clamp(130px,15vw,190px) minmax(0,1fr);gap:22px;align-items:center}
+.bi img{aspect-ratio:1;object-fit:cover;border-radius:18px;width:100%}
+.bi img.dim{filter:brightness(.72) contrast(1.05)}
+.bi h3{margin:0 0 6px;font-weight:500;font-size:18px}
+.bi p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.45}
+.bi .btn-s{min-width:min(100%,190px)}
 
-/* мастера */
-.masters{background:var(--blush);padding-block:72px}
-.masters .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:36px}
-.masters h2{grid-column:1/-1;font-size:clamp(40px,5vw,64px)}
-.mlist{grid-column:1 / span 8}
-.m{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px 32px;padding:24px 0;border-top:1px solid rgba(36,22,29,.25)}
-.m h3{font-size:34px;line-height:1.05}
-.m h3 small{display:block;font:500 15px/1.4 var(--f-b);color:var(--plum);margin-top:6px}
-.m p{font-size:16px}
-.m .days{color:var(--taupe);font-size:14.5px;margin-top:6px}
-.mphoto{grid-column:9 / span 4;margin:0;align-self:start}
-.mphoto img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(1) contrast(1.05)}
-@media (max-width:860px){.masters .wrap{grid-template-columns:minmax(0,1fr)}.mlist,.mphoto{grid-column:1}.m{grid-template-columns:minmax(0,1fr)}.mphoto img{aspect-ratio:16/10}}
+/* ---------- прайс ---------- */
+.prices{display:grid;gap:8px;margin-top:clamp(28px,3vw,40px)}
+.pr{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.6fr) auto auto;gap:20px;align-items:center;padding:9px 9px 9px 20px;border-radius:13px;background:linear-gradient(90deg,#222 0%,#181818 100%);border:1px solid rgba(255,255,255,.05)}
+.pr .n{font-size:15px}
+.pr .d{font-size:13px;color:var(--muted)}
+.pr .p{font-size:15px;white-space:nowrap;text-align:right;min-width:84px}
+.pr .btn-s{height:34px;padding:0 18px;font-size:10.5px}
+.price-note{margin:16px 0 0;color:var(--dim);font-size:13px;text-align:center}
 
-/* маникюр */
-.nails{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch}
-.nails img{width:100%;height:100%;object-fit:cover;min-height:420px}
-.nails .t{padding:64px clamp(24px,5vw,72px);display:flex;flex-direction:column;justify-content:center;gap:18px;border-bottom:1px solid var(--line)}
-.nails h2{font-size:clamp(36px,4vw,54px);line-height:1.05}
-.nails .t p{max-width:30em}
-@media (max-width:860px){.nails{grid-template-columns:minmax(0,1fr)}.nails img{min-height:0;aspect-ratio:16/11}.nails .t{padding:40px 20px}}
+/* ---------- почему мы ---------- */
+.why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:clamp(32px,4vw,52px)}
+.wc{position:relative;min-height:230px;border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end}
+.wc .ic{position:absolute;top:16px;right:16px;width:50px;height:50px;border-radius:50%;background:#1D1D1D;display:grid;place-items:center}
+.wc .ic svg{width:22px;height:22px;stroke:var(--fg);fill:none;stroke-width:1.4}
+.wc h3{margin:0 0 6px;font-weight:500;font-size:18px}
+.wc p{margin:0;color:var(--muted);font-size:13px;line-height:1.45;max-width:26em}
 
-/* запись */
-.book{padding-block:80px}
-.book .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:56px}
-.book h2{font-size:clamp(40px,5vw,64px);line-height:1}
-.book .wrap>div>p{color:var(--taupe);margin-top:14px;max-width:26em}
-form{display:grid;gap:16px}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-label{display:grid;gap:6px;font-size:14px;color:var(--taupe)}
-select,input{width:100%;border:0;border-bottom:1.5px solid var(--ink);padding:10px 0;background:transparent;font-size:17px;color:var(--ink);border-radius:0}
-form button{justify-self:start;background:var(--ink);color:var(--white);border:0;padding:15px 28px;font-weight:600;font-size:16px}
-form button:hover{background:var(--plum)}
-.ok{display:none;background:var(--blush);padding:14px 16px;font-size:15.5px}
+/* ---------- о студии ---------- */
+.about-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.about h2{font:200 clamp(40px,6.4vw,84px)/1 var(--f);text-transform:uppercase;margin:0}
+.about-l{display:flex;flex-direction:column;justify-content:space-between;gap:28px;align-self:stretch}
+.about-ph{position:relative}
+.about-ph img{width:100%;aspect-ratio:16/10.5;object-fit:cover;border-radius:22px}
+.badge{position:absolute;right:16px;bottom:16px;width:clamp(96px,11vw,128px);aspect-ratio:1/1.12;border-radius:12px;background:var(--taupe);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;box-shadow:0 18px 40px -16px rgba(0,0,0,.8)}
+.badge b{font-weight:300;font-size:clamp(40px,4.4vw,56px);line-height:1}
+.badge small{font-size:11px;line-height:1.25;margin-top:6px;color:#F1E9E0}
+.about-big{font-weight:300;font-size:clamp(20px,2.3vw,30px);line-height:1.32;margin:0;max-width:21em}
+.about-side{margin:28px 0 0 auto;width:min(100%,520px)}
+.about-side p{margin:0 0 14px;font-size:15px;line-height:1.5}
+.about-side p.s{color:var(--dim);font-size:13px}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.nums div{border-top:1px solid var(--line);padding-top:12px}
+.nums b{display:block;font-weight:200;font-size:clamp(24px,3vw,38px);line-height:1;white-space:nowrap}
+.nums small{color:var(--muted);font-size:12px}
+
+/* ---------- отзывы ---------- */
+.revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:clamp(32px,4vw,52px)}
+.rv{border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px;background:rgba(255,255,255,.015)}
+.rv-h{display:flex;align-items:center;gap:12px}
+.ava{width:44px;height:44px;border-radius:50%;background:var(--taupe);display:grid;place-items:center;font-weight:500;flex:none}
+.rv-h b{display:block;font-weight:500}
+.rv-h small{color:var(--dim);font-size:12px}
+.stars{margin-left:auto;color:var(--gold);letter-spacing:2px;font-size:13px}
+.rv p{margin:0;color:#D5CFC8;font-size:14px;line-height:1.55}
+.rv .svc{margin-top:auto;font-size:12px;color:var(--dim)}
+
+/* ---------- запись и контакты ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:start}
+.book h2{font:200 clamp(38px,5.6vw,76px)/1 var(--f);text-transform:uppercase;margin:0 0 16px}
+.book .intro{color:var(--muted);margin:0 0 26px;max-width:30em}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form .full{grid-column:1/-1}
+.fld{display:grid;gap:6px}
+.fld span{font-size:12px;color:var(--muted)}
+.fld input,.fld select{height:52px;border-radius:14px;border:1px solid var(--line);background:#111;padding:0 16px;outline:none;width:100%;min-width:0;transition:border-color .2s}
+.fld input:focus,.fld select:focus{border-color:var(--gold)}
+.fld.err input{border-color:#C9665A}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--muted);line-height:1.4}
+.chk input{margin:2px 0 0;accent-color:var(--gold);width:16px;height:16px;flex:none}
+.form .btn-o{height:58px;font-size:16px}
+.ok{display:none;border:1px solid var(--gold);border-radius:14px;padding:14px 16px;color:var(--fg);font-size:14px}
 .ok.show{display:block}
-@media (max-width:860px){.book .wrap{grid-template-columns:minmax(0,1fr);gap:28px}}
-@media (max-width:440px){.r2{grid-template-columns:1fr}.toc table{font-size:14px}.toc th{font-size:11.5px;padding-left:6px}.toc td+td{padding-left:6px}}
+.cts{display:grid;gap:12px}
+.ct{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.ct .ic{width:42px;height:42px;border-radius:50%;background:#1D1D1D;display:grid;place-items:center;flex:none}
+.ct .ic svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.ct small{display:block;color:var(--dim);font-size:12px}
+.ct b{font-weight:500}
+.map{height:290px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#141414}
+.map iframe{width:100%;height:100%;border:0;display:block}
 
-footer{border-top:1px solid var(--ink);padding-block:36px 28px;font-size:15px}
-footer .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:28px}
-footer .name{font:400 40px/1 var(--f-h)}
-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-footer .small{grid-column:1/-1;font-size:12.5px;color:var(--taupe);border-top:1px solid var(--line);padding-top:16px}
-@media (max-width:760px){footer .wrap{grid-template-columns:minmax(0,1fr)}}
+footer{border-top:1px solid #161616;padding:36px 0 30px;color:var(--dim);font-size:13px}
+.f-top{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.f-nav{display:flex;flex-wrap:wrap;gap:8px 22px;color:#CFC9C2}
+.f-nav a:hover{color:var(--gold)}
+footer p{margin:6px 0}
+.credits{font-size:11.5px;line-height:1.6}
+.credits a{text-decoration:underline;text-underline-offset:2px}
 
-/* услуги рядом */
-.svc{padding-block:8px 72px}
-.svc-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
-.svc-row a{text-decoration:none;display:block}
-.svc-row img{width:100%;aspect-ratio:3/4;object-fit:cover}
-.svc-row h3{font-size:24px;margin-top:12px}
-.svc-row span{font-size:14.5px;color:var(--taupe)}
-.svc-row a:hover h3{text-decoration:underline;text-underline-offset:5px}
-@media (max-width:900px){.svc-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:560px){.svc-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:440px){.svc-row h3{font-size:19px;overflow-wrap:anywhere}.toc section{min-width:0;overflow-x:auto}.toc td{font-size:13.5px}.toc td+td{padding-left:4px}}
-/* предложения */
-.offers{border-top:1px solid var(--line);padding-block:64px}
-.offers h2,.sh{font-size:clamp(40px,5vw,64px);line-height:1}
-.off{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:32px;border-top:1px solid var(--ink)}
-.off div{padding:24px 24px 24px 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
-.off div+div{padding-left:24px}
-.off div:last-child{border-right:0}
-.off h3{font-size:28px;line-height:1.1}
-.off .v{font:400 40px/1 var(--f-h);color:var(--plum)}
-.off p{font-size:15.5px;color:var(--taupe)}
-@media (max-width:860px){.off{grid-template-columns:minmax(0,1fr)}.off div{border-right:0;border-bottom:1px solid var(--line);padding:22px 0!important}}
-/* работы */
-.works{padding-block:72px}
-.wgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:240px 240px;gap:12px;margin-top:28px}
-.wgrid figure{margin:0;position:relative}
-.wgrid figure:first-child{grid-row:span 2}
-.wgrid img{width:100%;height:100%;object-fit:cover}
-.wgrid figcaption{position:absolute;left:0;bottom:0;background:var(--white);padding:6px 10px;font-size:13.5px;margin:0;color:var(--ink)}
-@media (max-width:760px){.wgrid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.wgrid figure{aspect-ratio:1}.wgrid figure:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:16/11}}
-/* отзывы */
-.revs{background:var(--blush);padding-block:72px}
-.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:28px}
-.rgrid blockquote{margin:0;font:400 21px/1.4 var(--f-h)}
-.rgrid p{margin-top:14px;font-size:14.5px;color:var(--plum)}
-@media (max-width:860px){.rgrid{grid-template-columns:minmax(0,1fr)}}
-/* вопросы */
-.qa{padding-block:72px 24px}
-.faq{margin-top:24px;max-width:900px;border-top:1px solid var(--ink)}
-.faq details{border-bottom:1px solid var(--line)}
-.faq summary{cursor:pointer;list-style:none;padding:18px 0;font:400 22px/1.3 var(--f-h);display:flex;justify-content:space-between;gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-family:var(--f-b);color:var(--plum)}
-.faq details[open] summary::after{content:"−"}
-.faq p{padding-bottom:18px;max-width:46em;color:var(--taupe)}
-/* схема */
-.where{border-top:1px solid var(--line);padding-block:64px}
-.where .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:40px;align-items:start}
-.where svg{width:100%;height:auto;display:block}
-.where dl{margin:0;display:grid;gap:14px}
-.where dt{font:400 22px/1.2 var(--f-h)}
-.where dd{margin:4px 0 0;color:var(--taupe)}
-@media (max-width:860px){.where .wrap{grid-template-columns:minmax(0,1fr)}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ---------- окно заявки и мобильное меню ---------- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.m-box{position:relative;width:min(100%,460px);max-height:calc(100dvh - 32px);overflow:auto;background:#101010;border:1px solid var(--line);border-radius:24px;padding:30px 24px 24px}
+.m-box h3{font:200 34px/1 var(--f);text-transform:uppercase;margin:0 0 8px}
+.m-box > p{color:var(--muted);margin:0 0 20px;font-size:14px}
+.m-box .form{grid-template-columns:1fr}
+.x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center}
+.x svg{width:16px;height:16px;stroke:var(--fg);stroke-width:1.6}
+.menu{position:fixed;inset:0;z-index:40;background:rgba(5,5,5,.97);display:none;flex-direction:column;justify-content:center;gap:6px;padding:80px 28px 40px}
+.menu.open{display:flex}
+.menu a{font:200 34px/1.25 var(--f);text-transform:uppercase}
+.menu .m-ph{margin-top:22px;font-size:16px;color:var(--gold)}
+
+/* ---------- адаптив ---------- */
+@media (max-width:1080px){
+  .phone{display:none}
+  .rail{grid-auto-columns:calc((100% - 32px)/3)}
+}
+@media (max-width:860px){
+  .topnav{display:none}
+  .demo{padding-right:76px;text-align:left}
+  .burger{display:grid}
+  .hero{padding-top:12px}
+  .bar{flex-direction:column;gap:12px;padding:16px 14px 14px;margin-right:62px;align-items:stretch;background:rgba(6,6,6,.5)}
+  .logo{justify-content:flex-start}
+  .soc{margin:0;justify-content:center}
+  .phone{display:flex;border:0;padding:0;justify-content:center}
+  .hero-ph{width:100%}
+  .hero-ph::after{background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.9) 100%)}
+  .hero-ph img{object-position:58% 20%}
+  .hero-body{padding:34px 0 40px}
+  .tags{flex-direction:column;align-items:flex-start;gap:6px}
+  .hero .btn-o{width:100%}
+  .rail{grid-auto-columns:46%}
+  .best{grid-template-columns:1fr}
+  .pr{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n p" "d d" "b b";gap:6px 14px;padding:14px 14px 14px 16px}
+  .pr .n{grid-area:n}.pr .d{grid-area:d}.pr .p{grid-area:p}.pr .btn-s{grid-area:b;margin-top:6px}
+  .why,.revs{grid-template-columns:1fr}
+  .wc{min-height:170px}
+  .about-top,.book{grid-template-columns:1fr}
+  .about-side{margin-left:0}
+}
+@media (max-width:560px){
+  .hero h1{font-size:14.5vw}
+  .h2{font-size:10.4vw}
+  .about h2,.book h2{font-size:12vw}
+  .rail{grid-auto-columns:78%}
+  .bi{grid-template-columns:118px minmax(0,1fr);gap:16px}
+  .bi .btn-s{padding:0 16px;min-width:0}
+  .form{grid-template-columns:1fr}
+  .btn-o{font-size:16px;height:58px;padding:0 20px}
+  .nums small{font-size:11px}
+}
+@media (max-width:360px){
+  .bar{margin-right:58px;padding:14px 10px 12px}
+  .logo svg{width:40px;height:40px}
+  .logo b{font-size:16px}
+  .phone .ic{width:38px;height:38px}
+  .burger{width:46px;height:46px;top:10px;right:10px}
+  .bi{grid-template-columns:96px minmax(0,1fr)}
+  .card h3{font-size:13.5px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="demo">Демо-сайт от PathCode, студия вымышленная. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такой сайт</a></div>
 
-<div class="bar"><div class="wrap">
-  <a class="mini" href="#">aura</a>
-  <nav><a href="#price">Цены</a><a href="#offers">Абонементы</a><a href="#masters">Мастера</a><a href="#reviews">Отзывы</a><a href="#contacts">Адрес</a></nav>
-  <a class="book-link" href="#book">Записаться</a>
-</div></div>
+<button class="burger" type="button" aria-label="Меню" aria-expanded="false" id="burger"><svg viewBox="0 0 24 24"><path d="M4 7h16M8 12h12M4 17h16"/></svg></button>
+<nav class="menu" id="menu" aria-label="Меню">
+  <a href="#offers">Услуги</a><a href="#prices">Цены</a><a href="#why">Преимущества</a><a href="#about">О студии</a><a href="#reviews">Отзывы</a><a href="#book">Контакты</a>
+  <a class="m-ph" href="tel:+79000000000">+7 (900) 000-00-00</a>
+</nav>
 
-<header class="mast"><div class="wrap">
-  <h1>aura</h1>
-  <div class="mast-sub"><span>Студия волос и ногтей на Садовой, 5</span><span>Ежедневно с 10 до 21</span></div>
-</div></header>
+<header class="hero" id="top">
+  <div class="hero-ph"><img src="../img/salon-hero.jpg" alt="Девушка с длинными светлыми волосами на тёмном фоне" fetchpriority="high"></div>
+  <div class="wrap">
+    <nav class="topnav" aria-label="Разделы">
+      <a href="#top">Главная</a><a href="#about">О студии</a><a href="#offers">Услуги</a><a href="#prices">Цены</a><a href="#why">Преимущества</a><a href="#reviews">Отзывы</a><a href="#book">Контакты</a>
+    </nav>
+    <div class="bar">
+      <a class="logo" href="#top" aria-label="Aura — на главную">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="none" stroke="#F3EFEA" stroke-opacity=".7"/><circle cx="24" cy="24" r="18.5" fill="none" stroke="#CDAA82" stroke-opacity=".6" stroke-dasharray="2 3"/><path d="M16 32 24 14l8 18M19 26h10" fill="none" stroke="#F3EFEA" stroke-width="1.3"/></svg>
+        <span><b>Aura</b><small>Студия красоты</small></span>
+      </a>
+      <div class="soc">
+        <a href="#book" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.4 4.2 2.9 11.3c-1.2.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.8-1.4-1.4ZM8.6 14l9.8-6.2c.5-.3.9-.1.5.2l-8.1 7.3-.3 3.4L8.6 14Z"/></svg></a>
+        <a href="#book" aria-label="ВКонтакте"><svg viewBox="0 0 24 24"><path d="M12.9 17.5C6.6 17.5 3 13.2 2.8 6h3.2c.1 5.3 2.4 7.5 4.3 8V6h3v4.6c1.8-.2 3.8-2.3 4.4-4.6h3c-.5 2.8-2.6 4.9-4.1 5.7 1.5.7 3.8 2.5 4.7 5.8h-3.3c-.7-2.2-2.5-3.9-4.7-4.2v4.2h-.4Z"/></svg></a>
+        <a href="#book" aria-label="Чат"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Zm0 2a7 7 0 1 1-3.6 13l-.3-.2-2.3.6.6-2.2-.2-.3A7 7 0 0 1 12 5Z"/></svg></a>
+      </div>
+      <a class="phone" href="tel:+79000000000">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span>
+        <span><b>+7 (900) 000-00-00</b><small>ул. Садовая, 5 · 10:00–21:00</small></span>
+      </a>
+    </div>
+    <div class="hero-body">
+      <span class="pill">Косметика профессиональных брендов</span>
+      <h1>Студия<br><span class="k">К</span>расоты</h1>
+      <p class="lead">Мастера с опытом от 5 лет<br>Аккуратная работа и честные цены</p>
+      <div class="tags"><span>Стрижки и укладки</span><span>Окрашивание</span><span>Маникюр</span><span>Косметология</span><span>Массаж</span></div>
+      <button class="btn-o" type="button" data-book>Оставить заявку</button>
+    </div>
+  </div>
+</header>
 
-<section class="wrap spread">
-  <figure><img src="../img/salon-room.jpg" alt="Зал студии с креслами и зеркалами" onerror="this.src='../img/salon.jpg'"><figcaption>Зал на втором этаже: шесть кресел, у каждого своё окно.</figcaption></figure>
-  <div class="txt">
-    <p class="big">Мы записываем клиентов так, чтобы между ними оставалось пятнадцать минут. Никто не ждёт на диване, и мастер не торопится.</p>
-    <p>Работаем с волосами любой длины и сложными окрашиваниями. Перед первым окрашиванием мастер бесплатно смотрит волосы и называет точную цену.</p>
-    <div class="next" id="next"></div>
+<main>
+<section id="offers" style="padding-top:clamp(16px,2vw,28px)">
+  <div class="block" style="padding-block:clamp(48px,6vw,80px)">
+    <div class="wrap">
+      <h2 class="h2">Предложения</h2>
+      <span class="sub">Всё для красоты в одном месте</span>
+      <div class="rail-wrap">
+        <div class="rail" id="rail">
+          <button class="card" type="button" data-book="Стрижка и укладка"><img src="../img/salon-style.jpg" alt="Укладка феном" loading="lazy"><h3>Услуги стилиста</h3><span class="meta">Стрижка, укладка, уход<br>по типу волос<b>от 1 200 ₽</b></span></button>
+          <button class="card" type="button" data-book="Косметология"><img src="../img/salon-cosm.jpg" alt="Сыворотка для лица" loading="lazy"><h3>Косметология</h3><span class="meta">Чистка, пилинги,<br>уход по типу кожи<b>от 2 400 ₽</b></span></button>
+          <button class="card" type="button" data-book="Визаж"><img src="../img/salon-visage.jpg" alt="Визажист наносит помаду" loading="lazy"><h3>Визаж</h3><span class="meta">Дневной, вечерний<br>и свадебный макияж<b>от 1 800 ₽</b></span></button>
+          <button class="card" type="button" data-book="Маникюр"><img src="../img/salon-nails.jpg" alt="Мастер маникюра за работой" loading="lazy"><h3>Маникюр</h3><span class="meta">Аппаратный, гель-лак,<br>дизайн и укрепление<b>от 900 ₽</b></span></button>
+          <button class="card" type="button" data-book="Массаж"><img src="../img/salon-massage.jpg" alt="Массаж спины" loading="lazy"><h3>Массаж</h3><span class="meta">Классический, спина,<br>лицо и шейная зона<b>от 1 900 ₽</b></span></button>
+        </div>
+      </div>
+      <div class="arrows"><button type="button" data-dir="-1" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" data-dir="1" aria-label="Вперёд"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    </div>
   </div>
 </section>
 
-
-<section class="svc"><div class="wrap">
-  <div class="svc-row">
-    <a href="#price"><img src="../img/salon-scissors.jpg" alt="Стрижки" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Стрижки</h3><span>от 1 500 ₽</span></a>
-    <a href="#price"><img src="../img/salon-color.jpg" alt="Окрашивание" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Окрашивание</h3><span>от 2 800 ₽</span></a>
-    <a href="#price"><img src="../img/salon-dryer.jpg" alt="Укладки" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><h3>Укладки</h3><span>от 1 200 ₽</span></a>
-    <a href="#nails"><img src="../img/salon.jpg" alt="Маникюр" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><h3>Маникюр</h3><span>от 1 100 ₽</span></a>
-    <a href="#price"><img src="../img/salon-pedi.jpg" alt="Кресла для педикюра" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><h3>Педикюр</h3><span>2 600 ₽</span></a>
-  </div>
-</div></section>
-
-<section class="price" id="price"><div class="wrap">
-  <div class="price-head"><h2>Цены</h2><p>Стоимость стрижки и окрашивания зависит от длины волос. Короткие — выше линии подбородка, средние — до плеч, длинные — ниже плеч.</p></div>
-  <div class="toc">
-    <section><h3>Стрижки</h3><table>
-      <tr><th></th><th>короткие</th><th>средние</th><th>длинные</th></tr>
-      <tr><td>Женская стрижка<small>с мытьём и укладкой</small></td><td>1 900</td><td>2 300</td><td>2 700</td></tr>
-      <tr><td>Подравнивание кончиков</td><td>1 200</td><td>1 400</td><td>1 600</td></tr>
-      <tr><td>Мужская стрижка</td><td>1 500</td><td>—</td><td>—</td></tr>
-      <tr><td>Укладка</td><td>1 200</td><td>1 600</td><td>2 000</td></tr>
-    </table></section>
-    <section><h3>Окрашивание</h3><table>
-      <tr><th></th><th>короткие</th><th>средние</th><th>длинные</th></tr>
-      <tr><td>В один тон<small>корни до 3 см</small></td><td>3 500</td><td>4 500</td><td>5 500</td></tr>
-      <tr><td>Тонирование</td><td>2 800</td><td>3 400</td><td>4 200</td></tr>
-      <tr><td>Airtouch, балаяж<small>от 4 часов</small></td><td>7 000</td><td>9 500</td><td>12 000</td></tr>
-      <tr><td>Уход Olaplex</td><td>1 800</td><td>2 200</td><td>2 600</td></tr>
-    </table></section>
-    <section><h3>Ногти</h3><table>
-      <tr><th></th><th>цена</th></tr>
-      <tr><td>Маникюр с покрытием гель-лаком<small>снятие включено</small></td><td>2 000</td></tr>
-      <tr><td>Маникюр без покрытия</td><td>1 100</td></tr>
-      <tr><td>Педикюр с покрытием</td><td>2 600</td></tr>
-      <tr><td>Дизайн, один ноготь</td><td>100</td></tr>
-    </table></section>
-    <section><h3>Брови и ресницы</h3><table>
-      <tr><th></th><th>цена</th></tr>
-      <tr><td>Коррекция бровей</td><td>800</td></tr>
-      <tr><td>Окрашивание бровей хной</td><td>900</td></tr>
-      <tr><td>Ламинирование ресниц<small>с окрашиванием</small></td><td>2 400</td></tr>
-    </table></section>
-  </div>
-</div></section>
-
-
-<section class="offers" id="offers"><div class="wrap">
-  <h2 class="sh">Абонементы и подарки</h2>
-  <div class="off">
-    <div><h3>Первое окрашивание</h3><span class="v">−15%</span><p>Для новых клиентов на любое окрашивание. Консультация и тест пряди бесплатно.</p></div>
-    <div><h3>Пять маникюров</h3><span class="v">9 000 ₽</span><p>Вместо 10 000 ₽. Абонемент действует три месяца, можно делить с подругой.</p></div>
-    <div><h3>Подарочный сертификат</h3><span class="v">от 2 000 ₽</span><p>На любую сумму и услугу, действует полгода. Оформим в конверте или пришлём файлом.</p></div>
-  </div>
-</div></section>
-
-<section class="masters" id="masters"><div class="wrap">
-  <h2>Мастера</h2>
-  <div class="mlist">
-    <div class="m"><h3>Анна Белова<small>стилист, в Aura с 2018 года</small></h3><div><p>Стрижки на средние и длинные волосы, которые хорошо отрастают. Подскажет, как укладывать дома за десять минут.</p><p class="days">Работает во вторник, четверг и субботу</p></div></div>
-    <div class="m"><h3>Мария Ким<small>колорист, в Aura с 2020 года</small></h3><div><p>Холодный блонд, Airtouch, выход из чёрного. Перед окрашиванием делает тест пряди.</p><p class="days">Работает в понедельник, среду и пятницу</p></div></div>
-    <div class="m"><h3>Ева Соколова<small>мастер маникюра, в Aura с 2021 года</small></h3><div><p>Аккуратный маникюр без порезов, однотонные покрытия и френч. Работает только с одноразовыми пилками.</p><p class="days">Работает каждый день, кроме воскресенья</p></div></div>
-  </div>
-  <figure class="mphoto"><img src="../img/salon-scissors.jpg" alt="Ножницы и расчёска парикмахера" onerror="this.src='../img/salon.jpg'"><figcaption>Инструменты стерилизуем в сухожаровом шкафу после каждого клиента.</figcaption></figure>
-</div></section>
-
-
-<section class="works"><div class="wrap">
-  <h2 class="sh">Студия и работы</h2>
-  <div class="wgrid">
-    <figure><img src="../img/salon-room.jpg" alt="Зал студии" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><figcaption>Зал на втором этаже</figcaption></figure>
-    <figure><img src="../img/salon-color.jpg" alt="Окрашивание в фольге" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-room.jpg'"><figcaption>Airtouch, Мария</figcaption></figure>
-    <figure><img src="../img/salon-tools.jpg" alt="Пояс с ножницами мастера" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-scissors.jpg'"><figcaption>Инструменты Анны</figcaption></figure>
-    <figure><img src="../img/salon-polish.jpg" alt="Лаки для ногтей" loading="lazy" onerror="this.onerror=null;this.src='../img/salon.jpg'"><figcaption>140 оттенков гель-лака</figcaption></figure>
-    <figure><img src="../img/salon-dryer.jpg" alt="Укладка" loading="lazy" onerror="this.onerror=null;this.src='../img/salon-scissors.jpg'"><figcaption>Укладка, Анна</figcaption></figure>
-  </div>
-</div></section>
-
-<section class="nails" id="nails">
-  <img src="../img/salon.jpg" alt="Маникюр с цветным покрытием" loading="lazy">
-  <div class="t">
-    <h2>Маникюр, который держится три недели</h2>
-    <p>Выравниваем ногтевую пластину под покрытие, поэтому гель-лак не отслаивается у кутикулы. Если в первую неделю появился скол, исправим бесплатно.</p>
-    <p style="color:var(--taupe)">Маникюр с покрытием: 1 час 40 минут, 2 000 ₽</p>
+<section class="sec">
+  <div class="wrap">
+    <h2 class="h2">Лучшие предложения</h2>
+    <span class="sub">от ведущих мастеров</span>
+    <div class="best">
+      <div class="bi"><img src="../img/salon-waves.jpg" alt="Мягкие волны на светлых волосах" loading="lazy"><div><h3>Классическая укладка</h3><p>Объём от корней и мягкие волны, которые держатся весь день, без эффекта «залитых» лаком волос.</p><button class="btn-s" type="button" data-book="Укладка">Оставить заявку</button></div></div>
+      <div class="bi"><img src="../img/salon-curls.jpg" alt="Длинные волнистые волосы, вид со спины" loading="lazy"><div><h3>Голливудские локоны</h3><p>Крупная ретро-волна на выпускной, свадьбу или фотосессию. Подберём укладку под платье.</p><button class="btn-s" type="button" data-book="Укладка">Оставить заявку</button></div></div>
+      <div class="bi"><img src="../img/salon-brushes.jpg" alt="Набор кистей для макияжа" loading="lazy"><div><h3>Вечерний макияж</h3><p>Стойкий макияж на 10–12 часов. Перед работой делаем пробный образ и согласуем детали.</p><button class="btn-s" type="button" data-book="Визаж">Оставить заявку</button></div></div>
+      <div class="bi"><img class="dim" src="../img/salon-stones.jpg" alt="Камни для стоун-терапии и полотенца" loading="lazy"><div><h3>Стоун-терапия</h3><p>Массаж тёплыми базальтовыми камнями: снимает напряжение в спине и шее за 60 минут.</p><button class="btn-s" type="button" data-book="Массаж">Оставить заявку</button></div></div>
+    </div>
   </div>
 </section>
 
-
-<section class="revs" id="reviews"><div class="wrap">
-  <h2 class="sh">Отзывы</h2>
-  <div class="rgrid">
-    <div><blockquote>«Хожу к Анне третий год. Стрижка отрастает так, что до следующего визита можно не укладывать.»</blockquote><p>Ксения, Яндекс Карты</p></div>
-    <div><blockquote>«Мария вывела меня из чёрного в светлый за два визита и честно сказала, что за один нельзя.»</blockquote><p>Дарья, 2ГИС</p></div>
-    <div><blockquote>«Маникюр держится три недели, а записаться можно ночью через Telegram-бота.»</blockquote><p>Алина, Google</p></div>
-  </div>
-</div></section>
-
-<section class="qa"><div class="wrap">
-  <h2 class="sh">Вопросы</h2>
-  <div class="faq">
-    <details open><summary>Как узнать точную цену окрашивания?</summary><p>Приходите на бесплатную консультацию на 15 минут: мастер посмотрит длину, густоту и прошлые окрашивания и назовёт цену до начала работы.</p></details>
-    <details><summary>Можно ли перенести запись?</summary><p>Да, бесплатно, если предупредить за три часа. Перенести можно по телефону или в Telegram-боте.</p></details>
-    <details><summary>Чем вы работаете?</summary><p>Красители Wella и L’Oréal Professionnel, уход Olaplex и Kérastase, гель-лаки Luxio.</p></details>
-    <details><summary>Есть ли парковка?</summary><p>Во дворе через арку есть бесплатные места для гостей студии.</p></details>
-  </div>
-</div></section>
-
-<section class="book" id="book"><div class="wrap">
-  <div><h2>Запись</h2><p>Выберите услугу, мастера и время. Мы перезвоним, чтобы подтвердить запись, и напомним о визите за два часа.</p></div>
-  <form id="bookForm" novalidate>
-    <label>Услуга<select id="fSvc"><option>Женская стрижка</option><option>Окрашивание</option><option>Маникюр с покрытием</option><option>Брови</option></select></label>
-    <div class="r2">
-      <label>Мастер<select id="fMaster"><option>Анна Белова</option><option>Мария Ким</option><option>Ева Соколова</option><option>Любой свободный</option></select></label>
-      <label>Когда<select id="fWhen"></select></label>
+<section class="sec block" id="prices" style="padding-block:clamp(48px,6vw,80px)">
+  <div class="wrap">
+    <h2 class="h2">Цены</h2>
+    <span class="sub">Популярные услуги</span>
+    <div class="prices">
+      <div class="pr"><span class="n">Окрашивание «Мягкий блонд»</span><span class="d">Плавный переход оттенка и уход для блеска волос</span><span class="p">4 900 ₽</span><button class="btn-s" type="button" data-book="Окрашивание">Записаться</button></div>
+      <div class="pr"><span class="n">Уход «Кератин и блеск»</span><span class="d">Восстанавливает волосы после окрашивания и укладок</span><span class="p">3 200 ₽</span><button class="btn-s" type="button" data-book="Стрижка и укладка">Записаться</button></div>
+      <div class="pr"><span class="n">Стрижка и укладка</span><span class="d">Консультация, мытьё, стрижка по форме лица</span><span class="p">2 200 ₽</span><button class="btn-s" type="button" data-book="Стрижка и укладка">Записаться</button></div>
+      <div class="pr"><span class="n">Массаж лица «Лифтинг»</span><span class="d">Тонус, лифтинг и расслабление за 40 минут</span><span class="p">2 500 ₽</span><button class="btn-s" type="button" data-book="Косметология">Записаться</button></div>
+      <div class="pr"><span class="n">Маникюр + гель-лак</span><span class="d">Аппаратный маникюр, ровное покрытие до 3 недель</span><span class="p">1 800 ₽</span><button class="btn-s" type="button" data-book="Маникюр">Записаться</button></div>
+      <div class="pr"><span class="n">Брови и ресницы</span><span class="d">Коррекция, окрашивание, ламинирование</span><span class="p">1 500 ₽</span><button class="btn-s" type="button" data-book="Брови и ресницы">Записаться</button></div>
     </div>
-    <div class="r2">
-      <label>Имя<input id="fName" autocomplete="off"></label>
-      <label>Телефон<input id="fPhone" type="tel" inputmode="tel" placeholder="+7" autocomplete="off"></label>
+    <p class="price-note">Точную стоимость окрашивания мастер назовёт после консультации: она зависит от длины и густоты волос.</p>
+  </div>
+</section>
+
+<section class="sec" id="why">
+  <div class="wrap">
+    <h2 class="h2">За что выбирают<br>именно нас?</h2>
+    <span class="sub">Преимущества студии</span>
+    <div class="why">
+      <div class="wc"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2c-1 0-1.9-.4-2.5-1.2M12 6.5V8m0 8v1.5"/></svg></span><h3>Честные цены</h3><p>Стоимость называем до начала работы. Постоянным гостям скидка 10% и бонусы за отзывы.</p></div>
+      <div class="wc"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span><h3>Быстрая запись</h3><p>Свободное время видно онлайн. Срочные визиты принимаем в тот же день, напомним о записи в мессенджере.</p></div>
+      <div class="wc"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 15.3 7 18l1.2-5.6L4 8.6 9.6 8 12 3Z"/></svg></span><h3>Подход к каждому</h3><p>Мастер подбирает уход и средства под ваш тип волос и кожи и записывает всё в карту гостя.</p></div>
     </div>
-    <button type="submit">Записаться</button>
-    <div class="ok" id="ok" aria-live="polite"></div>
-  </form>
-</div></section>
+  </div>
+</section>
 
+<section class="sec about block" id="about" style="padding-block:clamp(48px,6vw,80px)">
+  <div class="wrap">
+    <div class="about-top">
+      <div class="about-l"><h2>О студии</h2>
+      <p class="about-big">Aura — это место, где можно выдохнуть: час для себя вдали от рабочих чатов и бытовой суеты</p></div>
+      <div class="about-ph"><img src="../img/salon-about.jpg" alt="Девушка с вечерним макияжем" loading="lazy"><div class="badge"><b>11</b><small>лет<br>в индустрии<br>красоты</small></div></div>
+    </div>
+    <div class="about-side">
+      <p>Нас выбирают за спокойную атмосферу, внимательных мастеров и тихую музыку в зале. Пока мастер работает, мы предложим чай или кофе.</p>
+      <p class="s">В студии работают мастера по волосам, ногтям, коже, бровям и ресницам. Используем профессиональную косметику и одноразовые расходники, инструменты проходят стерилизацию после каждого гостя.</p>
+      <div class="nums"><div><b>14</b><small>мастеров</small></div><div><b>6 800+</b><small>гостей в год</small></div><div><b>4,9</b><small>рейтинг на картах</small></div></div>
+    </div>
+  </div>
+</section>
 
-<section class="where"><div class="wrap">
-  <svg viewBox="0 0 640 340" role="img" aria-label="Схема: студия на Садовой, 5, вход через арку, второй этаж">
-    <rect width="640" height="340" fill="#FBF5F6"/>
-    <rect x="30" y="30" width="250" height="110" fill="#F2E6E8"/><rect x="330" y="30" width="280" height="110" fill="#F2E6E8"/>
-    <rect x="30" y="200" width="250" height="110" fill="#F2E6E8"/><rect x="330" y="200" width="280" height="110" fill="#EBD5D9"/>
-    <path d="M0 170 H640" stroke="#fff" stroke-width="34"/><path d="M305 0 V340" stroke="#fff" stroke-width="26"/>
-    <text x="18" y="175" font-family="Manrope,sans-serif" font-size="14" fill="#7E7076">ул. Садовая</text>
-    <text x="313" y="320" font-family="Manrope,sans-serif" font-size="13" fill="#7E7076" transform="rotate(-90 313 320)">Липовый пер.</text>
-    <path d="M430 200 V188" stroke="#5B2A40" stroke-width="3"/><rect x="410" y="214" width="40" height="22" fill="#fff" stroke="#5B2A40"/><text x="430" y="230" text-anchor="middle" font-family="Manrope,sans-serif" font-size="11" fill="#5B2A40">арка</text>
-    <circle cx="520" cy="255" r="16" fill="#24161D"/><text x="520" y="260" text-anchor="middle" font-family="Prata,serif" font-size="15" fill="#fff">a</text>
-    <text x="545" y="260" font-family="Manrope,sans-serif" font-size="13" fill="#24161D">Садовая, 5</text>
-    <path d="M436 238 C 460 250, 480 255, 503 255" stroke="#24161D" stroke-width="1.6" fill="none" stroke-dasharray="3 4"/>
-  </svg>
-  <dl>
-    <div><dt>Адрес</dt><dd>ул. Садовая, 5. Пройдите через арку, вход во дворе, второй этаж.</dd></div>
-    <div><dt>Часы</dt><dd>Ежедневно с 10:00 до 21:00, последняя запись в 19:30.</dd></div>
-    <div><dt>Парковка</dt><dd>Бесплатно во дворе для гостей студии.</dd></div>
-  </dl>
-</div></section>
+<section class="sec" id="reviews">
+  <div class="wrap">
+    <h2 class="h2">Отзывы</h2>
+    <span class="sub">Что говорят гости</span>
+    <div class="revs">
+      <article class="rv"><div class="rv-h"><span class="ava">М</span><div><b>Марина</b><small>сентябрь 2026</small></div><span class="stars" aria-label="5 из 5">★★★★★</span></div><p>Делала мягкий блонд: цвет получился ровно как на фото, которое я показывала. Мастер честно сказала, что за один раз из тёмного не вытянуть, и не стала жечь волосы.</p><span class="svc">Окрашивание</span></article>
+      <article class="rv"><div class="rv-h"><span class="ava">А</span><div><b>Алина</b><small>август 2026</small></div><span class="stars" aria-label="5 из 5">★★★★★</span></div><p>Записывалась на локоны и макияж перед свадьбой подруги. Пробный образ сделали за неделю, в день праздника всё заняло полтора часа и продержалось до ночи.</p><span class="svc">Укладка и визаж</span></article>
+      <article class="rv"><div class="rv-h"><span class="ava">О</span><div><b>Ольга</b><small>июль 2026</small></div><span class="stars" aria-label="5 из 5">★★★★★</span></div><p>Хожу на маникюр третий месяц, покрытие держится три недели без сколов. Удобно, что напоминание о записи приходит в мессенджер накануне.</p><span class="svc">Маникюр</span></article>
+    </div>
+  </div>
+</section>
 
-<footer id="contacts"><div class="wrap">
-  <div><div class="name">aura</div><p style="margin-top:10px;color:var(--taupe)">ул. Садовая, 5, второй этаж, вход через арку</p></div>
-  <div><ul><li><a href="tel:+79000000000">+7 900 000-00-00</a></li><li>Запись в Telegram: @aura_studio_bot</li></ul></div>
-  <div><ul><li>Ежедневно 10:00–21:00</li><li>Последняя запись в 19:30</li></ul></div>
-  <p class="small" id="credits">ИП Белова А. С., ИНН 000000000000 (демо-данные). Фото: <a href="https://www.flickr.com/photos/17868205@N00/8033063118" target="_blank" rel="noopener">Pro Touch</a>, Phalinn Ooi, CC BY 2.0; <a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0; <a href="https://stocksnap.io/photo/scissors-comb-A5M4RVGZKE" target="_blank" rel="noopener">Scissors Comb</a>, Candace McDaniel, CC0; <a href="https://commons.wikimedia.org/wiki/File:Hair_dyes_for_hair_colouring_in_a_shelf_of_a_hair_salon_in_Germany.jpg" target="_blank" rel="noopener">Hair dyes for hair colouring in a shelf of a hair salon in G</a>, автор указан на странице файла, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Sit-down_salon_hair_dryer.jpg" target="_blank" rel="noopener">Sit-down salon hair dryer</a>, UnifiedFunctionality, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Jenny_Bui_salon_4.jpg" target="_blank" rel="noopener">Jenny Bui salon 4</a>, Valereee, CC BY-SA 4.0; <a href="https://commons.wikimedia.org/wiki/File:Leather_belt_bag_with_various_tools_of_a_hairdresser_for_quick_access.jpg" target="_blank" rel="noopener">Leather belt bag with various tools of a hairdresser for qui</a>, Lisa Risager from Denmark, CC BY-SA 2.0; <a href="https://commons.wikimedia.org/wiki/File:Colourful_nail_polishes.jpg" target="_blank" rel="noopener">Colourful nail polishes</a>, Etsy Ketsy, CC BY-SA 2.0.</p>
+<section class="sec block" id="book" style="padding-block:clamp(48px,6vw,80px)">
+  <div class="wrap book">
+    <div>
+      <h2>Записаться</h2>
+      <p class="intro">Оставьте телефон: администратор перезвонит в течение 15 минут, подберёт мастера и удобное время.</p>
+      <form class="form" id="bookForm" novalidate>
+        <label class="fld"><span>Имя</span><input name="name" autocomplete="given-name" placeholder="Как к вам обращаться"></label>
+        <label class="fld"><span>Телефон *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
+        <label class="fld"><span>Услуга</span><select name="svc"></select></label>
+        <label class="fld"><span>Дата</span><input name="date" type="date"></label>
+        <label class="chk full"><input type="checkbox" name="agree" checked> Согласен на обработку персональных данных</label>
+        <button class="btn-o full" type="submit">Отправить заявку</button>
+        <div class="ok full" role="status"></div>
+      </form>
+    </div>
+    <div class="cts">
+      <div class="ct"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><div><small>Адрес</small><b>ул. Садовая, 5, 2 этаж</b></div></div>
+      <div class="ct"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><div><small>Телефон</small><b><a href="tel:+79000000000">+7 (900) 000-00-00</a></b></div></div>
+      <div class="ct"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span><div><small>Часы работы</small><b>Ежедневно 10:00–21:00</b></div></div>
+      <div class="map"><iframe src="https://yandex.ru/map-widget/v1/?ll=37.5935%2C55.7690&z=15&pt=37.5935%2C55.7690%2Cpm2dgm" title="Карта: студия Aura" loading="lazy"></iframe></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div class="f-top">
+    <a class="logo" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="none" stroke="#F3EFEA" stroke-opacity=".7"/><path d="M16 32 24 14l8 18M19 26h10" fill="none" stroke="#F3EFEA" stroke-width="1.3"/></svg><span><b style="color:var(--fg)">Aura</b><small>Студия красоты</small></span></a>
+    <nav class="f-nav"><a href="#offers">Услуги</a><a href="#prices">Цены</a><a href="#about">О студии</a><a href="#reviews">Отзывы</a><a href="#book">Контакты</a></nav>
+  </div>
+  <p>© 2026 Aura · ул. Садовая, 5 · +7 (900) 000-00-00. Сайт-демо, данные вымышленные.</p>
+  <p class="credits">Фото: <a href="https://stocksnap.io/photo/female-monochrome-Z3HY4JUDN2" target="_blank" rel="noopener">Female Monochrome</a>, Matt Moloney, CC0; <a href="https://stocksnap.io/photo/woman-hair-D5CG6JAYN3" target="_blank" rel="noopener">Woman Hair</a>, Healthy Living, CC0; <a href="https://stocksnap.io/photo/beauty-skincare-LRSAT4NCLS" target="_blank" rel="noopener">Beauty Skincare</a>, Authentic Stock, CC0; <a href="https://stocksnap.io/photo/makeup-people-G40JKFC5I5" target="_blank" rel="noopener">Makeup People</a>, Freestocks.org, CC0; <a href="https://stocksnap.io/photo/people-hands-XX356Q6EI4" target="_blank" rel="noopener">People Hands</a>, Freestocks.org, CC0; <a href="https://stocksnap.io/photo/woman-massage-VH22RVC5UT" target="_blank" rel="noopener">Woman Massage</a>, Authentic Stock, CC0; <a href="https://stocksnap.io/photo/woman-hair-IFMPBCVTUA" target="_blank" rel="noopener">Woman Hair</a>, Candace McDaniel, CC0; <a href="https://stocksnap.io/photo/woman-hair-XIEZSFATU3" target="_blank" rel="noopener">Woman Hair</a>, Matt Moloney, CC0; <a href="https://stocksnap.io/photo/makeup-brush-PZ0Z7K0JRR" target="_blank" rel="noopener">Makeup Brush</a>, Freestocks.org, CC0; <a href="https://stocksnap.io/photo/spa-concept-ZCLKDUY2CZ" target="_blank" rel="noopener">Spa Concept</a>, Healthy Living, CC0; <a href="https://stocksnap.io/photo/woman-girl-DE81H336XB" target="_blank" rel="noopener">Woman Girl</a>, Frederic Frognier, CC0.</p>
 </div></footer>
 
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="m-box">
+    <button class="x" type="button" id="mClose" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+    <h3 id="mTitle">Заявка</h3>
+    <p>Перезвоним за 15 минут и подберём время</p>
+    <form class="form" id="mForm" novalidate>
+      <label class="fld"><span>Имя</span><input name="name" autocomplete="given-name" placeholder="Как к вам обращаться"></label>
+      <label class="fld"><span>Телефон *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
+      <label class="fld"><span>Услуга</span><select name="svc"></select></label>
+      <label class="chk"><input type="checkbox" name="agree" checked> Согласен на обработку персональных данных</label>
+      <button class="btn-o" type="submit">Отправить</button>
+      <div class="ok" role="status"></div>
+    </form>
+  </div>
+</div>
+
 <script>
-(function(){
-const $=s=>document.querySelector(s);
-const now=new Date();const day=i=>{const d=new Date(now);d.setDate(d.getDate()+i);return d};
-const lab=(i)=>i===0?"Сегодня":i===1?"Завтра":day(i).toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"}).replace(/^./,c=>c.toUpperCase());
-const NEXT=[[0,"16:30","Ева, маникюр"],[0,"18:00","Анна, стрижка"],[1,"11:00","Мария, окрашивание"],[1,"14:30","Анна, стрижка"]];
-$("#next").innerHTML=`<div><b>Свободное время</b><span>ближайшие окна</span></div>`+NEXT.map(n=>`<div><span>${lab(n[0])}, ${n[1]}</span><b>${n[2]}</b></div>`).join("");
-const opts=[];for(let i=0;i<4;i++)for(const t of ["11:00","14:30","18:00"])opts.push(`${lab(i)}, ${t}`);
-$("#fWhen").innerHTML=opts.map(o=>`<option>${o}</option>`).join("");
-$("#bookForm").addEventListener("submit",e=>{e.preventDefault();const ok=$("#ok");
-  ok.textContent=`Это демо. Запись «${$("#fSvc").value}» к мастеру ${$("#fMaster").value}, ${$("#fWhen").value.toLowerCase()} ушла бы администратору студии.`;ok.classList.add("show")});
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const SVC=["Стрижка и укладка","Укладка","Окрашивание","Косметология","Визаж","Маникюр","Массаж","Брови и ресницы"];
+$$("select[name=svc]").forEach(s=>s.innerHTML=SVC.map(v=>`<option>${v}</option>`).join(""));
+
+/* меню */
+const menu=$("#menu"), burger=$("#burger");
+const setMenu=o=>{menu.classList.toggle("open",o);burger.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""};
+burger.onclick=()=>setMenu(!menu.classList.contains("open"));
+$$("#menu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+
+/* карусель предложений */
+const rail=$("#rail");
+$$(".arrows button").forEach(b=>b.onclick=()=>{const c=rail.querySelector(".card");rail.scrollBy({left:(c.offsetWidth+16)*+b.dataset.dir,behavior:"smooth"})});
+
+/* маска телефона */
+$$("input[type=tel]").forEach(i=>i.addEventListener("input",()=>{
+  let d=i.value.replace(/\D/g,"");if(d.startsWith("8"))d="7"+d.slice(1);if(d&&!d.startsWith("7"))d="7"+d;d=d.slice(0,11);
+  const p=[d.slice(1,4),d.slice(4,7),d.slice(7,9),d.slice(9,11)];
+  i.value=d?"+7"+(p[0]?" ("+p[0]:"")+(p[1]?") "+p[1]:"")+(p[2]?"-"+p[2]:"")+(p[3]?"-"+p[3]:""):"";
+}));
+
+/* формы */
+function bind(f){f.addEventListener("submit",e=>{e.preventDefault();
+  const ph=f.phone, ok=f.querySelector(".ok"), fld=ph.closest(".fld");
+  if(ph.value.replace(/\D/g,"").length<11){fld.classList.add("err");ph.focus();ok.classList.remove("show");return}
+  fld.classList.remove("err");
+  if(!f.agree.checked){ok.textContent="Отметьте согласие на обработку данных.";ok.classList.add("show");return}
+  const n=f.name.value.trim();
+  ok.textContent=`${n?n+", с":"С"}пасибо! Заявка на «${f.svc.value}» принята, перезвоним в течение 15 минут. Это демо: заявка никуда не отправляется.`;
+  ok.classList.add("show");f.phone.value="";
+});}
+bind($("#bookForm"));bind($("#mForm"));
+
+/* окно заявки */
+const modal=$("#modal");
+const open=svc=>{const f=$("#mForm");f.querySelector(".ok").classList.remove("show");if(svc&&SVC.includes(svc))f.svc.value=svc;$("#mTitle").textContent=svc?svc:"Заявка";modal.classList.add("open");setTimeout(()=>f.phone.focus(),50)};
+const close=()=>modal.classList.remove("open");
+$$("[data-book]").forEach(b=>b.addEventListener("click",()=>open(b.dataset.book)));
+$("#mClose").onclick=close;
+modal.addEventListener("click",e=>{if(e.target===modal)close()});
+addEventListener("keydown",e=>{if(e.key==="Escape"){close();setMenu(false)}});
 })();
 </script>
 <script>if(window.parent!==window)window.parent.postMessage({demo:"ready"},"*");</script>
