@@ -225,7 +225,7 @@ function profile(){
   const s = S(), wk = Array.from({length:7}, (_, i) => addDays(today(), i - 6));
   const vMonth = s.visits.filter(v => { const d = new Date(v.at); return d.getMonth() === new Date().getMonth(); }).length;
   return `<h1 class="h1" style="margin:6px 0 16px">Профиль</h1>
-  <div class="card" style="display:flex;gap:14px;align-items:center"><span style="width:60px;height:60px;border-radius:50%;background:var(--acc);color:#121407;display:grid;place-items:center;font-weight:800;font-size:20px">${esc((s.name[0] || "") + (s.last[0] || ""))}</span><div><b style="font-size:18px">${esc(s.name)} ${esc(s.last)}</b><br><small class="mut">Карта № ${s.card} · визитов в этом месяце: ${vMonth}</small></div></div>
+  <div class="card" style="display:flex;gap:14px;align-items:center"><span style="width:60px;height:60px;flex:none;border-radius:50%;background:var(--acc);color:#121407;display:grid;place-items:center;font-weight:800;font-size:20px">${esc((s.name[0] || "") + (s.last[0] || ""))}</span><div><b style="font-size:18px">${esc(s.name)} ${esc(s.last)}</b><br><small class="mut">Карта № ${s.card} · визитов в этом месяце: ${vMonth}</small></div></div>
   <div class="h2">Шаги за неделю</div>
   <div class="card"><div class="wk">${wk.map(d => { const v = d.getTime() === today().getTime() ? steps() : (s.steps[iso(d)] ?? 3000 + Math.floor(rnd("st" + iso(d))() * 7000)); return `<div><i><b style="height:${Math.min(100, Math.round(v / s.goal * 100))}%"></b></i><small>${DOW[d.getDay()]}</small></div>`; }).join("")}</div></div>
   <div class="h2">Цель по шагам</div>
