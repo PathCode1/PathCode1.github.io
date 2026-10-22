@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F4F8">
+<title>Учёт доходов и расходов</title>
+<meta name="description" content="Демо-приложение учёта финансов для малого бизнеса: выручка, расходы, прибыль, отчёты и выгрузка в CSV.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="kit.css?v=2">
+<style>
+:root{--bg:#F4F4F8;--acc:#5145E5;--acc-soft:#ECEAFD;--soft:#E9E9F1;--side-acc:#8F86FF;--chip-on:#111521}
+.rev{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:radial-gradient(260px 200px at 85% 0%,#4B44C9 0%,transparent 70%),linear-gradient(140deg,#24216B,#17154A)}
+.rev small{color:#C6C3F2;font-size:14px}
+.rev .sum{display:block;font:800 36px/1.1 var(--f);margin:6px 0 10px;letter-spacing:-.01em}
+.delta{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:10px;font-weight:700;font-size:13.5px;background:rgba(61,214,140,.16);color:#5BE3A2}
+.delta.dn{background:rgba(255,107,107,.16);color:#FF9A9A}
+.delta.na{background:rgba(255,255,255,.1);color:#C6C3F2}
+.rev .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.rev .two div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px}
+.rev .two small{font-size:13px}.rev .two b{display:block;font-size:19px;margin-top:2px}
+.chart{background:var(--card);border-radius:22px;padding:16px 12px 10px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:150px;position:relative;padding-top:30px}
+.bars button{flex:1;border:0;padding:0;background:none;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative;min-width:0}
+.bars button i{display:block;width:100%;max-width:44px;border-radius:12px;background:#ECEDF3;transition:background .2s}
+.bars button.on i{background:var(--acc)}
+.bars button span{position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#111521;color:#fff;font-size:12px;font-weight:700;padding:4px 8px;border-radius:8px;white-space:nowrap;display:none}
+.bars button.on span{display:block}
+.lbls{display:flex;gap:6px;margin-top:8px}
+.lbls span{flex:1;text-align:center;font-size:12px;color:var(--mut);min-width:0;overflow:hidden;white-space:nowrap}
+.catbar{margin-top:6px}
+.catbar .row{font-size:15px}
+.catbar i{display:block;height:6px;border-radius:3px;background:var(--soft);margin:8px 0 14px;overflow:hidden}
+.catbar i b{display:block;height:100%;border-radius:3px}
+.tile{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex:none}
+.tile svg{width:21px;height:21px}
+.grp{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:18px 0 8px}
+.ops{background:var(--card);border-radius:22px;padding:4px 14px}
+.op{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);width:100%;border-left:0;border-right:0;border-top:0;background:none;text-align:left}
+.op:last-child{border-bottom:0}
+.op .tx{flex:1;min-width:0}.op .tx b{display:block;font-size:15.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.op .tx small{color:var(--mut);font-size:13px}
+.op .am{font-weight:700;white-space:nowrap}.op .am.in{color:var(--ok)}
+.fab{position:absolute;right:18px;bottom:96px;z-index:6;width:62px;height:62px;border-radius:20px;border:0;background:var(--acc);color:#fff;display:grid;place-items:center;box-shadow:0 16px 30px -10px rgba(81,69,229,.75)}
+.fab svg{width:28px;height:28px;stroke-width:2.4}
+@media (max-width:600px){.fab{bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
+.amt{text-align:center;margin:8px 0 18px}
+.amt small{color:var(--mut);font-size:14px}
+.amt label{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px}
+.amt input{border:0;outline:0;background:none;font:800 46px/1.1 var(--f);width:100%;max-width:280px;text-align:right;color:var(--ink);caret-color:var(--acc);padding:0}
+.amt input::placeholder{color:#C9CBD6}
+.amt span{font:800 46px/1.1 var(--f)}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cat{border:2px solid transparent;background:var(--card);border-radius:18px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.cat .tile{width:42px;height:42px;border-radius:12px}
+.cat.on{border-color:var(--acc)}
+.fieldrow{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:18px;padding:10px 14px;margin-bottom:10px}
+.fieldrow svg{width:20px;height:20px;color:var(--mut);flex:none}
+.fieldrow div{flex:1;min-width:0}
+.fieldrow small{display:block;color:var(--mut);font-size:12.5px}
+.fieldrow input{border:0;outline:0;background:none;width:100%;font-weight:600;font-size:16px;padding:2px 0}
+.donut{display:flex;align-items:center;gap:16px}
+.donut svg{width:150px;height:150px;flex:none;transform:rotate(-90deg)}
+.legend{flex:1;min-width:0;display:grid;gap:8px}
+.legend div{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend b{white-space:nowrap}
+.msel{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:18px;padding:6px;margin-bottom:14px}
+.msel b{font-size:16px}
+.srch{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:0 14px;height:48px;margin-bottom:12px}
+.srch svg{width:19px;height:19px;color:var(--mut)}
+.srch input{flex:1;border:0;outline:0;background:none;height:100%;min-width:0}
+</style>
+</head>
+<body>
+<script src="kit.js?v=2"></script>
+<script>
+(() => {
+const {esc, rub, num, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON, MON1} = K;
+const CAT = {
+  sales:{n:"Продажи",t:"in",i:"card",c:"#5145E5",b:"#ECEAFD"}, cater:{n:"Кейтеринг",t:"in",i:"bag",c:"#1EA460",b:"#E3F6EC"}, oin:{n:"Прочее",t:"in",i:"dots",c:"#6B7280",b:"#EEF0F4"},
+  buy:{n:"Закупка",t:"out",i:"box",c:"#5145E5",b:"#ECEAFD"}, rent:{n:"Аренда",t:"out",i:"home2",c:"#F59E0B",b:"#FEF3DD"}, pay:{n:"Зарплата",t:"out",i:"people",c:"#0EA5E9",b:"#E0F2FE"},
+  ads:{n:"Реклама",t:"out",i:"megaphone",c:"#EC4899",b:"#FCE7F3"}, ship:{n:"Доставка",t:"out",i:"truck",c:"#14B8A6",b:"#DDF6F3"}, net:{n:"Связь",t:"out",i:"wifi",c:"#8B5CF6",b:"#EFE7FE"},
+  tax:{n:"Налоги",t:"out",i:"receipt",c:"#EF4444",b:"#FDE7E7"}, oout:{n:"Другое",t:"out",i:"dots",c:"#6B7280",b:"#EEF0F4"}
+};
+const METH = {card:"Картой", cash:"Наличные", sbp:"СБП"};
+const S = () => K.s;
+
+/* ---------- демо-данные: 100 дней работы кофейни ---------- */
+function seed(){
+  const r = rnd("zerno"), ops = [], t = today(); let n = 0;
+  const add = (d, type, cat, amt, method, note, h, m) => ops.push({id:"s" + (n++), type, cat, amt:Math.round(amt / 10) * 10, method, note, date:iso(d), time:String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0")});
+  for (let i = 99; i >= 0; i--) {
+    const d = addDays(t, -i), dow = d.getDay(), wk = dow === 0 || dow === 6 ? 1.25 : 1, limitH = i === 0 ? Math.min(21, new Date().getHours()) : 21;
+    for (let h = 8; h <= limitH; h += 2) {
+      add(d, "in", "sales", (800 + r() * 1200) * wk, "card", "Оплата картой", h, Math.floor(r() * 59));
+      if (r() < .55) add(d, "in", "sales", (300 + r() * 500) * wk, "cash", "Наличные", h + 1, Math.floor(r() * 59));
+      if (r() < .45) add(d, "in", "sales", (400 + r() * 700) * wk, "sbp", "Перевод СБП", h, Math.floor(r() * 59));
+    }
+    if (i === 0) continue;
+    if (dow === 2 || dow === 5) add(d, "out", "buy", 6000 + r() * 3000, "card", "Зерно, 10 кг", 12, 10);
+    if (dow === 1 || dow === 4) add(d, "out", "buy", 2500 + r() * 1200, "cash", "Молоко и сливки", 9, 30);
+    if (dow === 3) add(d, "out", "buy", 3500 + r() * 1500, "card", "Выпечка", 8, 40);
+    if (d.getDate() === 1) add(d, "out", "rent", 35000, "card", "Аренда", 10, 0);
+    if (d.getDate() === 5 || d.getDate() === 20) add(d, "out", "pay", 30000, "card", "Зарплата бариста", 18, 0);
+    if (d.getDate() === 10) { add(d, "out", "net", 1200, "card", "Интернет и телефон", 11, 0); add(d, "out", "ads", 7000, "card", "Таргет и карты", 15, 20); }
+    if (d.getDate() === 25 && d.getMonth() % 3 === 0) add(d, "out", "tax", 16000, "card", "Налог УСН", 12, 0);
+    if (r() < .12) add(d, "out", "ship", 600 + r() * 900, "card", "Курьер за посудой", 14, 15);
+    if (r() < .05) add(d, "in", "cater", 8000 + r() * 9000, "sbp", "Кофе-брейк для офиса", 16, 0);
+  }
+  return ops;
+}
+
+/* ---------- периоды ---------- */
+const sum = (ops, t) => ops.filter(o => o.type === t).reduce((a, o) => a + o.amt, 0);
+const inRange = (a, b) => S().ops.filter(o => o.date >= iso(a) && o.date <= iso(b));
+function period(p){
+  const t = today();
+  if (p === "day") return {a:t, b:t, pa:addDays(t, -1), pb:addDays(t, -1), lbl:"сегодня", plbl:"вчерашнему дню"};
+  if (p === "week") { const mon = addDays(t, -((t.getDay() + 6) % 7)); return {a:mon, b:t, pa:addDays(mon, -7), pb:addDays(t, -7), lbl:"за неделю", plbl:"прошлой неделе"}; }
+  if (p === "month") { const a = new Date(t.getFullYear(), t.getMonth(), 1), pa = new Date(t.getFullYear(), t.getMonth() - 1, 1); const pb = new Date(pa.getFullYear(), pa.getMonth(), Math.min(t.getDate(), new Date(pa.getFullYear(), pa.getMonth() + 1, 0).getDate())); return {a, b:t, pa, pb, lbl:"за " + MON1[t.getMonth()].toLowerCase(), plbl: MON1[pa.getMonth()].toLowerCase().replace(/ь$/, "ю").replace(/й$/, "ю").replace(/т$/, "ту")}; }
+  const a = new Date(t.getFullYear(), 0, 1); return {a, b:t, pa:new Date(t.getFullYear() - 1, 0, 1), pb:new Date(t.getFullYear() - 1, t.getMonth(), t.getDate()), lbl:"за " + t.getFullYear() + " год", plbl:"прошлому году"};
+}
+function buckets(p){
+  const t = today(), pr = period(p), ops = inRange(pr.a, pr.b).filter(o => o.type === "in");
+  if (p === "day") return [8,10,12,14,16,18,20].map(h => ({l:h + ":00", v: ops.filter(o => +o.time.slice(0,2) >= h && +o.time.slice(0,2) < h + 2).reduce((a, o) => a + o.amt, 0)}));
+  if (p === "week") { const mon = pr.a; return Array.from({length:7}, (_, i) => { const d = addDays(mon, i); return {l:DOW[d.getDay()], v: d > t ? 0 : ops.filter(o => o.date === iso(d)).reduce((a, o) => a + o.amt, 0)}; }); }
+  if (p === "month") { const res = []; for (let s = 1; s <= new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate(); s += 7) { const a = new Date(t.getFullYear(), t.getMonth(), s), b = addDays(a, 6); res.push({l: s + "–" + Math.min(b.getDate() < s ? 31 : b.getDate(), new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate()), v: ops.filter(o => o.date >= iso(a) && o.date <= iso(b)).reduce((x, o) => x + o.amt, 0)}); } return res; }
+  return Array.from({length:12}, (_, m) => ({l: MON1[m].slice(0,3), v: S().ops.filter(o => o.type === "in" && fromIso(o.date).getFullYear() === t.getFullYear() && fromIso(o.date).getMonth() === m).reduce((a, o) => a + o.amt, 0)}));
+}
+
+let per = "month", barSel = null;
+function overview(){
+  const s = S(), pr = period(per), ops = inRange(pr.a, pr.b), prev = inRange(pr.pa, pr.pb);
+  const inc = sum(ops, "in"), out = sum(ops, "out"), pin = sum(prev, "in");
+  const dlt = pin ? Math.round((inc - pin) / pin * 100) : null;
+  const bk = buckets(per), mx = Math.max(1, ...bk.map(b => b.v));
+  if (barSel === null || barSel >= bk.length) barSel = bk.reduce((m, b, i) => b.v > bk[m].v ? i : m, 0);
+  const cats = Object.entries(ops.filter(o => o.type === "out").reduce((a, o) => (a[o.cat] = (a[o.cat] || 0) + o.amt, a), {})).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  const cmax = cats.length ? cats[0][1] : 1;
+  return `<div class="top"><div class="tt"><p class="hello">${esc(s.biz)}</p><h1 class="h1">Обзор</h1></div><button class="ibtn" data-a="go" data-to="reports" aria-label="Отчёты">${ic("cal")}</button></div>
+  <div class="seg">${[["day","День"],["week","Неделя"],["month","Месяц"],["year","Год"]].map(([k, n]) => `<button class="${per===k?"on":""}" data-a="per" data-p="${k}">${n}</button>`).join("")}</div>
+  <div class="rev"><small>Выручка ${pr.lbl}</small><span class="sum">${rub(inc)}</span>
+    ${dlt === null ? '<span class="delta na">Нет данных для сравнения</span>' : `<span class="delta ${dlt < 0 ? "dn" : ""}">${dlt < 0 ? "▼" : "▲"} ${Math.abs(dlt)}% к ${pr.plbl}</span>`}
+    <div class="two"><div><small>Расходы</small><b>${rub(out)}</b></div><div><small>Прибыль</small><b>${rub(inc - out)}</b></div></div></div>
+  <div class="h2">Выручка по ${per === "day" ? "часам" : per === "week" ? "дням" : per === "month" ? "неделям" : "месяцам"}</div>
+  <div class="chart"><div class="bars">${bk.map((b, i) => `<button class="${i===barSel?"on":""}" data-a="bar" data-i="${i}" aria-label="${b.l}: ${rub(b.v)}"><span>${rub(b.v)}</span><i style="height:${Math.max(4, Math.round(b.v / mx * 100))}%"></i></button>`).join("")}</div>
+  <div class="lbls">${bk.map(b => `<span>${b.l}</span>`).join("")}</div></div>
+  <div class="h2">Расходы <button data-a="go" data-to="reports">Отчёт</button></div>
+  <div class="card catbar">${cats.map(([k, v]) => `<div class="row"><span style="display:flex;gap:10px;align-items:center"><span class="tile" style="width:34px;height:34px;border-radius:10px;background:${CAT[k].b};color:${CAT[k].c}">${ic(CAT[k].i)}</span>${CAT[k].n}</span><b>${rub(v)}</b></div><i><b style="width:${Math.round(v / cmax * 100)}%;background:${CAT[k].c}"></b></i>`).join("") || '<p class="mut" style="margin:4px 0">Расходов за период нет</p>'}</div>`;
+}
+K.on("per", el => { per = el.dataset.p; barSel = null; K.render(); });
+K.on("bar", el => { barSel = +el.dataset.i; K.render(); });
+
+let flt = "all", q = "", showQ = false;
+function opsScreen(){
+  let list = S().ops.slice();
+  if (flt === "in") list = list.filter(o => o.type === "in"); else if (flt === "out") list = list.filter(o => o.type === "out"); else if (flt === "cash") list = list.filter(o => o.method === "cash");
+  if (q) { const ql = q.toLowerCase(); list = list.filter(o => (o.note || "").toLowerCase().includes(ql) || CAT[o.cat].n.toLowerCase().includes(ql) || String(o.amt).includes(ql)); }
+  list.sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+  const shown = list.slice(0, 80), groups = {};
+  shown.forEach(o => (groups[o.date] = groups[o.date] || []).push(o));
+  const t = iso(today()), y = iso(addDays(today(), -1));
+  return `<div class="top"><h1 class="h1">Операции</h1><button class="ibtn" data-a="q" aria-label="Поиск">${ic(showQ ? "x" : "search")}</button></div>
+  ${showQ ? `<label class="srch">${ic("search")}<input data-in="q" value="${esc(q)}" placeholder="Комментарий, категория или сумма" aria-label="Поиск операций"></label>` : ""}
+  <div class="chips">${[["all","Все"],["in","Доходы"],["out","Расходы"],["cash","Наличные"]].map(([k, n]) => `<button class="chip ${flt===k?"on":""}" data-a="flt" data-f="${k}">${n}</button>`).join("")}</div>
+  <div id="opsList">${Object.entries(groups).map(([d, os]) => `<div class="grp">${d === t ? "Сегодня" : d === y ? "Вчера" : dmy(d)} · <span style="text-transform:none;letter-spacing:0">${(sum(os,"in") - sum(os,"out")) >= 0 ? "+" : ""}${rub(sum(os,"in") - sum(os,"out"))}</span></div><div class="ops">${os.map(opRow).join("")}</div>`).join("") || '<div class="empty"><b>Ничего не найдено</b>Измените фильтр или запрос</div>'}
+  ${list.length > 80 ? `<p class="mut" style="text-align:center;font-size:13px;margin-top:14px">Показаны последние 80 из ${list.length} операций</p>` : ""}</div>
+  <div style="height:70px"></div>
+  <button class="fab" data-a="go" data-to="new" aria-label="Новая операция">${ic("plus")}</button>`;
+}
+const opRow = o => `<button class="op" data-a="go" data-to="op/${o.id}"><span class="tile" style="background:${CAT[o.cat].b};color:${CAT[o.cat].c}">${ic(o.type === "in" && o.cat === "sales" ? (o.method === "cash" ? "cash" : o.method === "sbp" ? "sbp" : "card") : CAT[o.cat].i)}</span><span class="tx"><b>${esc(o.note || CAT[o.cat].n)}</b><small>${CAT[o.cat].n} · ${o.time}</small></span><span class="am ${o.type}">${o.type === "in" ? "+" : "−"}${rub(o.amt)}</span></button>`;
+K.on("flt", el => { flt = el.dataset.f; K.render(); });
+K.on("q", () => { showQ = !showQ; if (!showQ) q = ""; K.render(); if (showQ) setTimeout(() => K.$("[data-in=q]")?.focus(), 30); });
+K.onInput("q", el => { q = el.value; const pos = el.selectionStart; K.render(); const n = K.$("[data-in=q]"); n.focus(); n.setSelectionRange(pos, pos); });
+
+let ed = null;
+function editor(id){
+  const o = id ? S().ops.find(o => o.id === id) : null;
+  if (!ed || ed._for !== (id || "new")) ed = o ? {...o, _for:id} : {type:"out", amt:"", cat:"buy", method:"card", note:"", date:iso(today()), time:null, _for:"new"};
+  const cats = Object.entries(CAT).filter(([, c]) => c.t === ed.type);
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="ops" aria-label="Назад">${ic("back")}</button><div style="flex:1"><b>${o ? "Операция" : "Новая операция"}</b></div>${o ? `<button class="ibtn" data-a="del" data-id="${o.id}" aria-label="Удалить" style="color:var(--bad)">${ic("trash")}</button>` : ""}</div>
+  <div class="seg"><button class="${ed.type==="in"?"on":""}" data-a="etype" data-t="in">Доход</button><button class="${ed.type==="out"?"on":""}" data-a="etype" data-t="out">Расход</button></div>
+  <div class="amt"><small>Сумма</small><label><input id="amt" inputmode="decimal" placeholder="0" value="${ed.amt ? num(ed.amt).replace(/ /g, " ") : ""}" data-in="amt" aria-label="Сумма"><span>₽</span></label></div>
+  <div class="h2" style="margin-top:0">Категория</div>
+  <div class="cats">${cats.map(([k, c]) => `<button class="cat ${ed.cat===k?"on":""}" data-a="ecat" data-c="${k}"><span class="tile" style="background:${c.b};color:${c.c}">${ic(c.i)}</span>${c.n}</button>`).join("")}</div>
+  <div class="h2">Способ</div>
+  <div class="seg" style="margin-bottom:12px">${Object.entries(METH).map(([k, n]) => `<button class="${ed.method===k?"on":""}" data-a="emeth" data-m="${k}">${n}</button>`).join("")}</div>
+  <label class="fieldrow">${ic("cal")}<div><small>Дата</small><input type="date" value="${ed.date}" max="${iso(today())}" data-in="edate" aria-label="Дата"></div></label>
+  <label class="fieldrow">${ic("doc")}<div><small>Комментарий</small><input value="${esc(ed.note)}" placeholder="Например: зерно, 10 кг" data-in="enote" maxlength="40" aria-label="Комментарий"></div></label>
+  <div class="dock"><button class="btn" data-a="esave">Сохранить</button></div>`;
+}
+K.on("etype", el => { ed.type = el.dataset.t; ed.cat = ed.type === "in" ? "sales" : "buy"; K.render(); });
+K.on("ecat", el => { ed.cat = el.dataset.c; K.render(); });
+K.on("emeth", el => { ed.method = el.dataset.m; K.render(); });
+K.onInput("amt", el => { const d = el.value.replace(/[^\d]/g, "").slice(0, 9); ed.amt = d ? +d : ""; el.value = d ? num(+d).replace(/ /g, " ") : ""; });
+K.onInput("edate", el => { if (el.value) ed.date = el.value; });
+K.onInput("enote", el => { ed.note = el.value; });
+K.on("esave", () => {
+  if (!ed.amt || ed.amt <= 0) { K.toast("Введите сумму"); K.$("#amt").focus(); return; }
+  const now = new Date(), s = S();
+  const rec = {id: ed._for === "new" ? "u" + Date.now().toString(36) : ed._for, type:ed.type, cat:ed.cat, amt:ed.amt, method:ed.method, note:ed.note.trim(), date:ed.date, time: ed.time || String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0")};
+  if (ed._for === "new") s.ops.push(rec); else Object.assign(s.ops.find(o => o.id === ed._for), rec);
+  K.save(); K.toast(ed._for === "new" ? `${ed.type === "in" ? "Доход" : "Расход"} ${rub(ed.amt)} сохранён` : "Изменения сохранены"); ed = null; K.back("ops");
+});
+K.on("del", async el => { if (await K.ask({title:"Удалить операцию?", text:"Она пропадёт из отчётов.", ok:"Удалить", danger:true})) { S().ops = S().ops.filter(o => o.id !== el.dataset.id); K.save(); ed = null; K.toast("Операция удалена"); K.back("ops"); } });
+
+let mOff = 0;
+function reports(){
+  const t = today(), m = new Date(t.getFullYear(), t.getMonth() + mOff, 1), mEnd = new Date(m.getFullYear(), m.getMonth() + 1, 0);
+  const ops = inRange(m, mEnd), inc = sum(ops, "in"), out = sum(ops, "out");
+  const cats = Object.entries(ops.filter(o => o.type === "out").reduce((a, o) => (a[o.cat] = (a[o.cat] || 0) + o.amt, a), {})).sort((a, b) => b[1] - a[1]);
+  const C = 2 * Math.PI * 48; let acc = 0;
+  const arcs = cats.map(([k, v]) => { const len = v / (out || 1) * C, a = `<circle cx="75" cy="75" r="48" fill="none" stroke="${CAT[k].c}" stroke-width="22" stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-acc}"/>`; acc += len; return a; }).join("");
+  const days = ops.length ? new Set(ops.filter(o => o.type === "in").map(o => o.date)).size : 0;
+  const minM = S().ops.reduce((a, o) => o.date < a ? o.date : a, iso(t));
+  const canPrev = iso(new Date(m.getFullYear(), m.getMonth() - 1, 1)) >= minM.slice(0, 8) + "01";
+  return `<h1 class="h1" style="margin:6px 0 16px">Отчёты</h1>
+  <div class="msel"><button class="ibtn" data-a="mon" data-d="-1" ${canPrev ? "" : "disabled style=\"opacity:.3\""} aria-label="Предыдущий месяц">${ic("back")}</button><b>${MON1[m.getMonth()]} ${m.getFullYear()}</b><button class="ibtn" data-a="mon" data-d="1" ${mOff < 0 ? "" : "disabled style=\"opacity:.3\""} aria-label="Следующий месяц">${ic("next")}</button></div>
+  <div class="card kv"><div><span>Доходы</span><b style="color:var(--ok)">+${rub(inc)}</b></div><div><span>Расходы</span><b>−${rub(out)}</b></div><div><span>Прибыль</span><b>${rub(inc - out)}</b></div><div><span>Рентабельность</span><b>${inc ? Math.round((inc - out) / inc * 100) + "%" : "—"}</b></div><div><span>Средняя выручка в день</span><b>${days ? rub(inc / days) : "—"}</b></div></div>
+  <div class="h2">Расходы по категориям</div>
+  <div class="card donut"><svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="48" fill="none" stroke="var(--soft)" stroke-width="22"/>${arcs}</svg>
+  <div class="legend">${cats.map(([k, v]) => `<div><i style="background:${CAT[k].c}"></i><span>${CAT[k].n}</span><b>${Math.round(v / (out || 1) * 100)}%</b></div>`).join("") || '<p class="mut">Нет расходов</p>'}</div></div>
+  <button class="btn" style="margin-top:14px" data-a="csv" data-y="${m.getFullYear()}" data-m="${m.getMonth()}" ${ops.length ? "" : "disabled"}>${ic("download")} Скачать отчёт (CSV)</button>
+  <p class="mut" style="font-size:13px;text-align:center;margin-top:10px">Файл открывается в Excel и Google Таблицах</p>`;
+}
+K.on("mon", el => { mOff += +el.dataset.d; K.render(); });
+K.on("csv", el => {
+  const y = +el.dataset.y, m = +el.dataset.m, ops = inRange(new Date(y, m, 1), new Date(y, m + 1, 0)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const rows = [["Дата","Время","Тип","Категория","Способ","Сумма","Комментарий"], ...ops.map(o => [o.date, o.time, o.type === "in" ? "Доход" : "Расход", CAT[o.cat].n, METH[o.method], (o.type === "in" ? "" : "-") + o.amt, o.note])];
+  const csv = "﻿" + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\r\n");
+  K.dl(`otchet-${y}-${String(m + 1).padStart(2, "0")}.csv`, csv, "text/csv"); K.toast(`Отчёт за ${MON1[m].toLowerCase()} скачан: ${ops.length} ${plural(ops.length,"операция","операции","операций")}`);
+});
+
+function profile(){
+  const s = S();
+  return `<h1 class="h1" style="margin:6px 0 16px">Профиль</h1>
+  <label class="field"><span>Название бизнеса</span><input data-ch="biz" value="${esc(s.biz)}" maxlength="30"></label>
+  <div class="card kv"><div><span>Операций в базе</span><b>${s.ops.length}</b></div><div><span>Добавлено вручную</span><b>${s.ops.filter(o => o.id[0] === "u").length}</b></div><div><span>Валюта</span><b>Рубль, ₽</b></div></div>
+  <button class="btn ghost" style="margin-top:14px" data-a="reset">Сбросить демо-данные</button>
+  <div class="demo-note">Демо-приложение PathCode: операции кофейни сгенерированы автоматически и хранятся только в этом браузере. В рабочей версии — синхронизация между телефонами, выгрузка из онлайн-кассы и банка. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать учёт для своего бизнеса</a></div>`;
+}
+K.onChange("biz", el => { const v = el.value.trim(); if (v) { S().biz = v; K.save(); K.toast("Сохранено"); } });
+K.on("reset", async () => { if (await K.ask({title:"Сбросить демо-данные?", text:"Вернём исходные операции кофейни; добавленные вручную пропадут.", ok:"Сбросить", danger:true})) { K.reset(); ed = null; K.go("overview", true); K.toast("Данные сброшены"); } });
+
+K.app({
+  key: "pc-money", title: "Учёт доходов и расходов",
+  defaults: () => ({v:2, day: iso(today()), biz:"Кофейня «Зерно»", ops: seed()}),
+  side: {tag:"Концепт · Android", h1:"Учёт доходов", h1b:"и расходов", text:"Владелец бизнеса видит выручку, траты и прибыль за любой период прямо в телефоне.", feats:["Выручка по дням","Категории расходов","Отчёт за месяц"]},
+  tabs: [{r:"overview",l:"Обзор",i:"chart"},{r:"ops",l:"Операции",i:"list",m:["op","new"]},{r:"reports",l:"Отчёты",i:"doc"},{r:"profile",l:"Профиль",i:"user"}],
+  start: "overview", noTabs: ["new","op"],
+  routes: {overview, ops: opsScreen, new: () => editor(null), op: id => editor(id), reports, profile}
+});
+/* демо-данные «живут» относительно сегодняшней даты: на новый день пересоздаём только сгенерированную часть */
+if (K.s.day !== iso(today())) { const mine = K.s.ops.filter(o => o.id[0] === "u"); K.s.ops = seed().concat(mine); K.s.day = iso(today()); K.save(); K.render(); }
+})();
+</script>
+</body>
+</html>

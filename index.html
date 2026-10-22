@@ -160,23 +160,26 @@ p{margin:0}
 .app-card img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:#0B0E17}
 .app-card span{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;font-weight:600;font-size:15px}
 .app-card small{flex:none;color:var(--accent);font-weight:600;font-size:13px}
-.app-dlg{width:min(1080px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:20px;background:var(--surface);color:var(--ink);overflow:auto}
+.app-dlg{width:min(940px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:24px;background:var(--surface);color:var(--ink);overflow:auto}
 .app-dlg::backdrop{background:rgba(8,11,20,.75);backdrop-filter:blur(4px)}
-.app-dlg figure{margin:0;position:relative;background:#0B0E17}
-.app-dlg figure img{display:block;width:100%;height:auto;aspect-ratio:2000/1333}
-.app-dlg .ad-body{display:flex;flex-wrap:wrap;align-items:flex-start;gap:14px 28px;padding:18px 22px 22px}
-.app-dlg .ad-text{flex:1 1 320px;min-width:0}
-.app-dlg h3{margin:0 0 6px;font:600 22px/1.2 var(--f-display)}
-.app-dlg p{margin:0 0 12px;color:var(--muted)}
-.app-dlg ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.app-dlg li{padding:5px 12px;border-radius:999px;background:var(--accent-soft);color:var(--ink);font-size:13.5px}
+.ad-wrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:center;padding:24px 28px}
+.ad-phone{width:min(360px,calc((100dvh - 96px) * .47));aspect-ratio:360/760;border-radius:46px;padding:10px;background:#08080A;box-shadow:0 0 0 2px #2A2C33,0 30px 60px -30px rgba(0,0,0,.7)}
+.ad-phone iframe{display:block;width:100%;height:100%;border:0;border-radius:37px;background:#F4F4F8}
+.app-dlg .ad-tag{display:inline-block;margin-bottom:12px;padding:5px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:700;letter-spacing:.04em}
+.app-dlg h3{margin:0 0 8px;font:600 26px/1.15 var(--f-display)}
+.app-dlg p{margin:0 0 14px;color:var(--muted)}
+.app-dlg ul{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;padding:0;list-style:none}
+.app-dlg li{padding:5px 12px;border-radius:999px;background:var(--sunk);color:var(--ink);font-size:13.5px}
+.ad-try{margin:0 0 18px;padding:12px 14px;border-radius:14px;background:var(--sunk);font-size:14px;color:var(--muted)}
+.ad-try b{color:var(--ink)}
+.ad-acts{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ad-open{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;text-decoration:none}
 .ad-nav{display:flex;gap:8px;margin-left:auto}
-.ad-nav button,.ad-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.ad-nav button,.ad-x{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
 .ad-nav button:hover,.ad-x:hover{border-color:var(--accent);color:var(--accent)}
-.ad-x{position:absolute;top:12px;right:12px;z-index:2;background:rgba(255,255,255,.92);color:#121826;border:0}
-.app-dlg figcaption{display:none}
-@media (max-width:900px){.apps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:600px){.app-dlg figure{overflow-x:auto;scrollbar-width:thin}.app-dlg figure img{width:auto;height:min(58dvh,520px);max-width:none}.app-dlg figcaption{display:block;position:sticky;left:0;padding:6px 16px 8px;color:#B9C2D6;font-size:12.5px}.apps{grid-template-columns:1fr}.app-dlg .ad-body{padding:16px}.app-dlg h3{font-size:19px}.ad-nav{margin-left:0}}
+.ad-x{position:absolute;top:14px;right:14px;z-index:2}
+@media (max-width:900px){.apps{grid-template-columns:repeat(2,minmax(0,1fr))}.ad-wrap{gap:22px;padding:20px}}
+@media (max-width:600px){.apps{grid-template-columns:1fr}}
 @media (max-width:440px){.switch{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none}.switch::-webkit-scrollbar{display:none}.switch button{flex:none;padding:9px 11px;font-size:13.5px}}
 @media (max-width:360px){.switch{gap:1px;padding:3px}.switch button{padding:8px 6px;font-size:12.5px}}
 
@@ -672,7 +675,7 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Демо-работы</span><h2>Можно потрогать прямо здесь</h2></div>
-      <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью. В приложениях — концепты экранов для Android.</p>
+      <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью. Приложения — рабочие демо: их можно открыть и пройти сценарий целиком.</p>
     </div>
     <div class="switch" role="tablist" aria-label="Тип работ">
       <button role="tab" aria-selected="true" aria-controls="pBots" id="tBots">Telegram-боты</button>
@@ -714,20 +717,23 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
       <p class="site-cap" id="siteCap"></p>
     </div>
     <div id="pApps" role="tabpanel" aria-labelledby="tApps" hidden>
-      <p class="apps-note">Концепты Android-приложений для бизнеса: экраны, сценарии и навигация. Нажмите на карточку, чтобы посмотреть экраны крупно.</p>
+      <p class="apps-note">Пять приложений для бизнеса — рабочие демо, а не картинки: можно записаться, оформить заказ, добавить операцию или пройти урок. Нажмите на карточку, чтобы открыть приложение.</p>
       <div class="apps">
-        <button class="app-card" type="button" data-app="0"><img src="img/app-salon-cover.webp" alt="Концепт: Онлайн-запись в салон красоты" width="960" height="640" loading="lazy"><span>Онлайн-запись в салон красоты<small>3 экрана →</small></span></button>
-        <button class="app-card" type="button" data-app="1"><img src="img/app-food-cover.webp" alt="Концепт: Доставка еды для кафе" width="960" height="640" loading="lazy"><span>Доставка еды для кафе<small>3 экрана →</small></span></button>
-        <button class="app-card" type="button" data-app="2"><img src="img/app-fit-cover.webp" alt="Концепт: Приложение фитнес-клуба" width="960" height="640" loading="lazy"><span>Приложение фитнес-клуба<small>3 экрана →</small></span></button>
-        <button class="app-card" type="button" data-app="3"><img src="img/app-money-cover.webp" alt="Концепт: Учёт доходов и расходов" width="960" height="640" loading="lazy"><span>Учёт доходов и расходов<small>3 экрана →</small></span></button>
-        <button class="app-card" type="button" data-app="4"><img src="img/app-school-cover.webp" alt="Концепт: Приложение онлайн-школы" width="960" height="640" loading="lazy"><span>Приложение онлайн-школы<small>3 экрана →</small></span></button>
+        <button class="app-card" type="button" data-app="0"><img src="img/app-salon-cover.webp" alt="Концепт: Онлайн-запись в салон красоты" width="960" height="640" loading="lazy"><span>Онлайн-запись в салон красоты<small>Открыть приложение →</small></span></button>
+        <button class="app-card" type="button" data-app="1"><img src="img/app-food-cover.webp" alt="Концепт: Доставка еды для кафе" width="960" height="640" loading="lazy"><span>Доставка еды для кафе<small>Открыть приложение →</small></span></button>
+        <button class="app-card" type="button" data-app="2"><img src="img/app-fit-cover.webp" alt="Концепт: Приложение фитнес-клуба" width="960" height="640" loading="lazy"><span>Приложение фитнес-клуба<small>Открыть приложение →</small></span></button>
+        <button class="app-card" type="button" data-app="3"><img src="img/app-money-cover.webp" alt="Концепт: Учёт доходов и расходов" width="960" height="640" loading="lazy"><span>Учёт доходов и расходов<small>Открыть приложение →</small></span></button>
+        <button class="app-card" type="button" data-app="4"><img src="img/app-school-cover.webp" alt="Концепт: Приложение онлайн-школы" width="960" height="640" loading="lazy"><span>Приложение онлайн-школы<small>Открыть приложение →</small></span></button>
       </div>
       <dialog class="app-dlg" id="appDlg" aria-labelledby="adTitle">
         <button class="ad-x" type="button" id="adClose" aria-label="Закрыть">✕</button>
-        <figure><img id="adImg" alt="" width="1600" height="1066"><figcaption>листайте вбок →</figcaption></figure>
-        <div class="ad-body">
-          <div class="ad-text"><h3 id="adTitle"></h3><p id="adDesc"></p><ul id="adFeats"></ul></div>
-          <div class="ad-nav"><button type="button" id="adPrev" aria-label="Предыдущее приложение">←</button><button type="button" id="adNext" aria-label="Следующее приложение">→</button></div>
+        <div class="ad-wrap">
+          <div class="ad-phone"><iframe id="adFrame" title="Демо-приложение"></iframe></div>
+          <div class="ad-text"><span class="ad-tag">Рабочее демо · Android-концепт</span><h3 id="adTitle"></h3><p id="adDesc"></p><ul id="adFeats"></ul>
+            <p class="ad-try" id="adTry"></p>
+            <div class="ad-acts"><a class="ad-open" id="adOpen" target="_blank" rel="noopener">Открыть во весь экран ↗</a>
+              <div class="ad-nav"><button type="button" id="adPrev" aria-label="Предыдущее приложение">←</button><button type="button" id="adNext" aria-label="Следующее приложение">→</button></div></div>
+          </div>
         </div>
       </dialog>
     </div>
@@ -953,14 +959,19 @@ const tabs=[[$("#tBots"),$("#pBots")],[$("#tSites"),$("#pSites")],[$("#tApps"),$
 /* ---------- приложения: окно с экранами ---------- */
 const APPS=[["salon", "Онлайн-запись в салон красоты", "Клиент сам выбирает услугу, мастера и свободное время без звонков администратору", ["Каталог услуг с ценами", "Свободные окна мастеров", "Напоминание о визите"]], ["food", "Доставка еды для кафе", "Меню, корзина и отслеживание курьера: заказы приходят без комиссии агрегаторов", ["Меню с фото и ценами", "Оплата картой и СБП", "Курьер на карте"]], ["fit", "Приложение фитнес-клуба", "Расписание тренировок, запись в один клик, абонемент и пропуск прямо в телефоне", ["Расписание и запись", "QR-пропуск в клуб", "Шаги и активность"]], ["money", "Учёт доходов и расходов", "Владелец бизнеса видит выручку, траты и прибыль за любой период прямо в телефоне", ["Выручка по дням", "Категории расходов", "Отчёт за месяц"]], ["school", "Приложение онлайн-школы", "Курсы, видеоуроки и прогресс ученика: всё обучение в одном приложении", ["Видеоуроки и задания", "Прогресс по курсам", "Дипломы после курса"]]];
 const adDlg=$("#appDlg");let adI=0;
-function adShow(i){adI=(i+APPS.length)%APPS.length;const [k,t,d,f]=APPS[adI];
-  $("#adImg").src="img/app-"+k+"-screens.webp";$("#adImg").alt="Экраны приложения: "+t;
-  $("#adTitle").textContent=t;$("#adImg").parentElement.scrollLeft=0;$("#adDesc").textContent=d;$("#adFeats").innerHTML=f.map(x=>"<li>"+x+"</li>").join("");}
-document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>{adShow(+b.dataset.app);if(adDlg.showModal)adDlg.showModal();else adDlg.setAttribute("open","")});
+const AD_TRY={"salon": "Попробуйте: выберите услугу, мастера и время — запись появится во вкладке «Записи», её можно перенести или скачать в календарь.", "food": "Попробуйте: добавьте блюда, введите промокод <b>PATHCODE</b>, оформите заказ — и смотрите, как курьер едет на карте.", "fit": "Попробуйте: запишитесь на тренировку, откройте QR-пропуск и отметьте вход, заморозьте абонемент в профиле.", "money": "Попробуйте: переключите периоды, добавьте расход кнопкой «+» и скачайте отчёт за месяц в CSV.", "school": "Попробуйте: продолжите урок, перемотайте видео, пройдите тест — а после последнего урока курса получите диплом."};
+function adShow(i){adI=(i+APPS.length)%APPS.length;const [k,t,d,f]=APPS[adI],url="works/apps/"+k+".html";
+  $("#adFrame").src=url;$("#adFrame").title="Демо-приложение: "+t;$("#adOpen").href=url;
+  $("#adTitle").textContent=t;$("#adDesc").textContent=d;$("#adFeats").innerHTML=f.map(x=>"<li>"+x+"</li>").join("");$("#adTry").innerHTML=AD_TRY[k];}
+document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>{const k=APPS[+b.dataset.app][0];
+  if(matchMedia("(max-width:600px)").matches){location.href="works/apps/"+k+".html";return}
+  adShow(+b.dataset.app);if(adDlg.showModal)adDlg.showModal();else adDlg.setAttribute("open","")});
 $("#adPrev").onclick=()=>adShow(adI-1);$("#adNext").onclick=()=>adShow(adI+1);
-$("#adClose").onclick=()=>adDlg.close();
-adDlg.addEventListener("click",e=>{if(e.target===adDlg)adDlg.close()});
-adDlg.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")adShow(adI-1);if(e.key==="ArrowRight")adShow(adI+1)});
+const adEnd=()=>{adDlg.close();$("#adFrame").src="about:blank"};
+$("#adClose").onclick=adEnd;
+adDlg.addEventListener("cancel",()=>{$("#adFrame").src="about:blank"});
+adDlg.addEventListener("click",e=>{if(e.target===adDlg)adEnd()});
+adDlg.addEventListener("keydown",e=>{if(e.target.tagName==="IFRAME")return;if(e.key==="ArrowLeft")adShow(adI-1);if(e.key==="ArrowRight")adShow(adI+1)});
 tabs.forEach(([t,p])=>t.onclick=()=>tabs.forEach(([t2,p2])=>{const on=t2===t;t2.setAttribute("aria-selected",on);p2.hidden=!on;}));
 
 /* ---------- telegram bots ---------- */

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F4F8">
+<title>Шаг — онлайн-школа</title>
+<meta name="description" content="Демо-приложение онлайн-школы: курсы, видеоуроки, задания, прогресс и дипломы.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="kit.css?v=2">
+<style>
+:root{--bg:#F4F4F8;--acc:#6A4CF2;--acc-soft:#EEEAFE;--soft:#E9E9F1;--side-acc:#9A83FF;--chip-on:#111521}
+.cont{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:linear-gradient(135deg,#6A4CF2 0%,#8C6DFF 100%);display:flex;gap:12px;align-items:center;border:0;width:100%;text-align:left}
+.cont::before{content:"";position:absolute;right:-50px;top:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12)}
+.cont .tx{position:relative;flex:1;min-width:0}
+.cont small{opacity:.85;font-size:13.5px}
+.cont b{display:block;font:800 21px/1.15 var(--f);margin:6px 0 4px}
+.cont .pb{height:5px;border-radius:3px;background:rgba(255,255,255,.3);margin-top:14px;max-width:220px}
+.cont .pb i{display:block;height:100%;border-radius:3px;background:#fff}
+.cont .play{position:relative;width:64px;height:64px;border-radius:50%;background:#fff;color:var(--acc);display:grid;place-items:center;flex:none}
+.cont .play svg{width:24px;height:24px;margin-left:3px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.stats div{background:var(--card);border-radius:20px;padding:14px}
+.stats i{width:34px;height:34px;border-radius:10px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;margin-bottom:10px}
+.stats i svg{width:17px;height:17px}
+.stats b{display:block;font-size:22px;line-height:1.1}
+.stats small{color:var(--mut);font-size:12.5px}
+.course{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:22px;padding:14px;border:0;width:100%;text-align:left}
+.course .ic{width:52px;height:52px;border-radius:16px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;flex:none}
+.course .ic svg{width:22px;height:22px}
+.course .tx{flex:1;min-width:0}
+.course b{display:block;font-size:16px}
+.course small{color:var(--mut);font-size:13px}
+.course .pb{height:6px;border-radius:3px;background:var(--soft);margin-top:8px}
+.course .pb i{display:block;height:100%;border-radius:3px;background:var(--acc)}
+.player{position:relative;margin:-6px -18px 0;height:250px;background:radial-gradient(180px 140px at 70% 30%,#7C5CFF 0%,transparent 70%),radial-gradient(160px 120px at 25% 55%,#9B4B8F 0%,transparent 70%),#2A1B6E;color:#fff;overflow:hidden}
+@media (max-width:600px){.player{margin-top:calc(-14px - env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);height:calc(250px + env(safe-area-inset-top,0px))}}
+.player .bk{position:absolute;top:14px;left:18px;width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;z-index:2}
+.player .bk svg{width:20px;height:20px}
+.player .pp{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.player .pp svg{width:30px;height:30px}
+.player .pp.play svg{margin-left:4px}
+.player .seek{position:absolute;left:18px;right:18px;bottom:44px;height:20px;display:flex;align-items:center;cursor:pointer}
+.player .seek i{position:relative;display:block;width:100%;height:5px;border-radius:3px;background:rgba(255,255,255,.28)}
+.player .seek b{position:absolute;inset:0 auto 0 0;border-radius:3px;background:#fff}
+.player .tm{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;font-size:13.5px;font-variant-numeric:tabular-nums}
+.player .badge{position:absolute;top:18px;right:18px;font-size:12px;font-weight:700;background:rgba(0,0,0,.25);padding:6px 10px;border-radius:10px}
+.lh small{color:var(--mut);font-size:13.5px}
+.lh h1{font:800 26px/1.15 var(--f);margin:4px 0 14px}
+.tabs{display:flex;gap:22px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.tabs button{border:0;background:none;padding:0 0 10px;font-weight:600;font-size:15.5px;color:var(--mut);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.les{display:flex;gap:14px;align-items:center;padding:10px 12px;border-radius:18px;border:0;background:none;width:100%;text-align:left}
+.les .st{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--acc-soft);color:var(--acc)}
+.les .st svg{width:18px;height:18px}
+.les.cur{background:var(--card);box-shadow:0 1px 2px rgba(17,21,33,.05)}
+.les.cur .st{background:var(--acc);color:#fff}
+.les.lock{opacity:.5}.les.lock .st{background:var(--soft);color:var(--mut)}
+.les b{display:block;font-size:15.5px;font-weight:600}
+.les small{color:var(--mut);font-size:13px}
+.q{background:var(--card);border-radius:20px;padding:16px;margin-bottom:10px}
+.q p{margin:0 0 12px;font-weight:600}
+.q label{display:flex;gap:10px;align-items:center;padding:11px 12px;border-radius:14px;border:1.5px solid var(--line);margin-bottom:8px;cursor:pointer;font-size:15px}
+.q label:has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.q label.ok{border-color:var(--ok);background:#E3F6EC}.q label.bad{border-color:var(--bad);background:#FDE8E8}
+.q input{accent-color:var(--acc);width:18px;height:18px;margin:0;flex:none}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center}
+.wk i{display:grid;place-items:center;width:100%;aspect-ratio:1;border-radius:14px;background:var(--soft);color:#fff}
+.wk i.on{background:var(--acc)}.wk i svg{width:18px;height:18px}
+.wk small{display:block;margin-top:6px;color:var(--mut);font-size:12.5px}
+.dip{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:22px;padding:14px}
+.dip .ic{width:52px;height:52px;border-radius:16px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;flex:none}
+.dip .ic svg{width:22px;height:22px}
+.dip .tx{flex:1;min-width:0}.dip b{display:block;font-size:16px}.dip small{color:var(--mut);font-size:13px}
+.prof3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.prof3 div{background:var(--card);border-radius:20px;padding:14px}.prof3 small{color:var(--mut);font-size:13px}.prof3 b{display:block;font-size:24px;margin-top:4px}
+.mat{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.mat:last-child{border-bottom:0}
+</style>
+</head>
+<body>
+<script src="kit.js?v=2"></script>
+<script>
+(() => {
+const {esc, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON} = K;
+const C = {
+  design:{n:"Основы дизайна",i:"palette",l:["Как мыслит дизайнер","Форма и пятно","Баланс","Ритм","Контраст формы","Акцент","Визуальная иерархия","Шрифты: основы","Шрифтовые пары","Текст в макете","Композиция","Типографика","Цвет и контраст","Сетки и отступы","Фото в макете","Иконки","Интерфейсы","Адаптив","Портфолио","Финальный проект"],
+    q:[["Что помогает выделить главное на странице?",["Контраст размера и цвета","Одинаковые элементы","Мелкий шрифт"],0],["Сколько шрифтов обычно хватает в макете?",["1–2","5–6","Чем больше, тем лучше"],0],["Зачем нужна модульная сетка?",["Чтобы элементы стояли ровно и логично","Чтобы добавить декор","Для печати"],0],["Какой текст читается лучше на тёмном фоне?",["Светлый с хорошим контрастом","Тёмно-серый","Насыщенно-синий"],0],["Что такое визуальная иерархия?",["Порядок, в котором взгляд считывает элементы","Список слоёв в редакторе","Палитра"],0],["Что даёт воздух между блоками?",["Группировку и спокойствие","Ничего","Экономию места"],0]]},
+  photo:{n:"Мобильная фотография",i:"camera",l:["Камера телефона","Свет","Композиция кадра","Портрет","Предметка","Пейзаж","Ночная съёмка","Обработка: основы","Цветокоррекция","Ретушь","Съёмка еды","Репортаж","Сторис и рилс","Серия кадров","Итоговый проект"],
+    q:[["Какой свет мягче для портрета?",["Рассеянный у окна","Прямое полуденное солнце","Вспышка в упор"],0],["Правило третей — это…",["Размещение объекта на линиях сетки 3×3","Съёмка трёх кадров","Три источника света"],0],["Что снизит шум ночью?",["Опора и ночной режим","Цифровой зум","Высокая резкость"],0],["Зачем снимать серию?",["Выбрать лучший момент","Заполнить память","Для HDR всегда"],0],["Что делает баланс белого?",["Убирает лишний оттенок цвета","Добавляет резкость","Меняет формат"],0],["Лучший ракурс для еды в тарелке?",["Сверху или под 45°","Снизу","Сбоку в упор"],0]]},
+  eng:{n:"Английский A2",i:"globe",l:["Present Simple","Present Continuous","Past Simple","Irregular verbs","Will и going to","Comparatives","Superlatives","Countable nouns","Some и any","Much и many","Can и could","Must и have to","Present Perfect","Ever и never","Prepositions of time","Prepositions of place","Travel","At the restaurant","Shopping","Health","Work and jobs","Phrasal verbs","Reading practice","Final test"],
+    q:[["She ___ coffee every morning.",["drinks","drink","drinking"],0],["Yesterday we ___ to the cinema.",["went","go","gone"],0],["This bag is ___ than that one.",["cheaper","more cheap","cheapest"],0],["Have you ___ been to London?",["ever","never","yet"],0],["How ___ water do you drink?",["much","many","a few"],0],["You ___ wear a seatbelt.",["must","can","might to"],0]]},
+  py:{n:"Python с нуля",i:"doc",l:["Первая программа","Переменные","Типы данных","Условия","Циклы","Списки","Словари","Функции","Модули","Файлы","Ошибки","Классы","Наследование","Библиотеки","Работа с API","Telegram-бот","Парсер сайта","Итоговый проект"],
+    q:[["Как вывести текст на экран?",["print('Привет')","echo 'Привет'","console.log"],0],["Какой тип у значения 3.14?",["float","int","str"],0],["Как начать цикл по списку?",["for x in items:","foreach items","loop items"],0],["Что вернёт len([1, 2, 3])?",["3","2","[1, 2, 3]"],0],["Как объявить функцию?",["def name():","function name()","fn name()"],0],["Какой модуль работает с JSON?",["json","os","math"],0]]},
+  smm:{n:"SMM для бизнеса",i:"megaphone",l:["Цели и аудитория","Контент-план","Тексты","Визуал","Сторис","Рилс","Таргет","Блогеры","Аналитика","Чат-боты","Отзывы","Стратегия"],
+    q:[["С чего начинается продвижение?",["С целей и портрета аудитории","С покупки рекламы","С логотипа"],0],["Что такое контент-план?",["График публикаций по темам","Список подписчиков","Бюджет"],0],["Какая метрика показывает вовлечённость?",["ER","CPM","ROI"],0],["Зачем отвечать на отзывы?",["Чтобы повысить доверие","Не нужно","Только на хорошие"],0],["Что лучше для охвата сейчас?",["Короткие видео","Длинные тексты без фото","Репосты"],0],["Для чего нужен чат-бот?",["Отвечать клиентам 24/7","Для красоты","Заменить сайт полностью"],0]]},
+  excel:{n:"Excel и Google Таблицы",i:"chart",l:["Интерфейс","Формулы","Функции","ВПР","Сводные таблицы","Графики","Фильтры","Google Таблицы","Совместная работа","Автоматизация"],
+    q:[["С чего начинается формула?",["Со знака =","С #","С $"],0],["Какая функция считает сумму?",["СУММ","СЧЁТ","СРЗНАЧ"],0],["ВПР ищет значение…",["в первом столбце диапазона","в любой ячейке листа","только в строке"],0],["Что делает сводная таблица?",["Группирует и считает данные","Красит ячейки","Удаляет дубли"],0],["Как закрепить ссылку на ячейку?",["$A$1","A1!","#A1"],0],["Где удобно работать вместе онлайн?",["Google Таблицы","Блокнот","Paint"],0]]}
+};
+const DUR = (cid, n) => cid === "design" && n === 11 ? 15 : cid === "design" && n === 12 ? 21 : cid === "design" && n === 13 ? 18 : 12 + Math.floor(rnd(cid + n)() * 13);
+const S = () => K.s;
+const enrolled = () => Object.keys(S().prog);
+const done = cid => S().prog[cid] || 0;
+const total = cid => C[cid].l.length;
+const minsDone = () => S().baseMin + Object.entries(S().prog).reduce((a, [cid, d]) => a + Array.from({length:d}, (_, i) => DUR(cid, i + 1)).reduce((x, y) => x + y, 0), 0);
+function streak(){ const a = new Set(S().act); let d = today(), n = 0; if (!a.has(iso(d))) d = addDays(d, -1); while (a.has(iso(d))) { n++; d = addDays(d, -1); } return n; }
+const lastCourse = () => { const c = S().cur && S().prog[S().cur] !== undefined && done(S().cur) < total(S().cur) ? S().cur : enrolled().find(c => done(c) < total(c)); return c; };
+
+function home(){
+  const s = S(), lc = lastCourse(), h = Math.floor(minsDone() / 60);
+  return `<div class="top"><div class="tt"><p class="hello">С возвращением,</p><h1 class="h1">${esc(s.name)}</h1></div><button class="ibtn" data-a="ntf" aria-label="Уведомления">${ic("bell")}${lc ? '<span class="dot"></span>' : ""}</button></div>
+  ${lc ? `<button class="cont" data-a="go" data-to="lesson/${lc}/${done(lc) + 1}"><span class="tx"><small>Продолжить урок</small><b>${esc(C[lc].l[done(lc)])}</b><small>${esc(C[lc].n)} · урок ${done(lc) + 1} из ${total(lc)}</small><span class="pb" style="display:block"><i style="width:${Math.round(done(lc) / total(lc) * 100)}%"></i></span></span><span class="play">${ic("play")}</span></button>`
+    : `<button class="cont" data-a="go" data-to="catalog"><span class="tx"><small>Все курсы пройдены</small><b>Выберите новый курс</b><small>В каталоге ${Object.keys(C).length - enrolled().length} курса</small></span><span class="play">${ic("arrow")}</span></button>`}
+  <div class="stats"><div><i>${ic("fire")}</i><b>${streak()} ${plural(streak(), "день", "дня", "дней")}</b><small>подряд</small></div><div><i>${ic("clock")}</i><b>${h} ч</b><small>обучения</small></div><div><i>${ic("trophy")}</i><b>${s.dip.length}</b><small>${plural(s.dip.length, "диплом", "диплома", "дипломов")}</small></div></div>
+  <div class="h2">Мои курсы <button data-a="go" data-to="catalog">Каталог</button></div>
+  <div class="list">${enrolled().map(courseRow).join("")}</div>`;
+}
+const courseRow = cid => `<button class="course" data-a="go" data-to="course/${cid}"><span class="ic">${ic(C[cid].i)}</span><span class="tx"><b>${esc(C[cid].n)}</b><small>${done(cid) >= total(cid) ? "Пройден · диплом получен" : `${done(cid)} из ${total(cid)} ${plural(total(cid), "урока", "уроков", "уроков")}`}</small><span class="pb" style="display:block"><i style="width:${Math.round(done(cid) / total(cid) * 100)}%"></i></span></span></button>`;
+K.on("ntf", () => { const lc = lastCourse(); K.sheet(`<h3>Уведомления</h3>${lc ? `<p>Вы остановились на уроке «${esc(C[lc].l[done(lc)])}». Ежедневное напоминание в ${S().remind}.</p>` : "<p>Новых уведомлений нет.</p>"}<button class="btn ghost" data-a="close">Закрыть</button>`); });
+
+function course(cid){
+  if (!C[cid]) return home();
+  const d = done(cid);
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="home" aria-label="Назад">${ic("back")}</button><div><b>${esc(C[cid].n)}</b><small>${d} из ${total(cid)} · ${Math.round(d / total(cid) * 100)}%</small></div></div>
+  <div class="course" style="margin-bottom:14px"><span class="ic">${ic(C[cid].i)}</span><span class="tx"><small>${d >= total(cid) ? "Курс пройден" : "Следующий урок"}</small><b>${d >= total(cid) ? "Диплом в профиле" : esc(C[cid].l[d])}</b><span class="pb" style="display:block"><i style="width:${Math.round(d / total(cid) * 100)}%"></i></span></span></div>
+  ${C[cid].l.map((t, i) => lesRow(cid, i + 1)).join("")}`;
+}
+function lesRow(cid, n){
+  const d = done(cid), st = n <= d ? "done" : n === d + 1 ? "cur" : "lock";
+  return `<button class="les ${st}" data-a="openLes" data-c="${cid}" data-n="${n}"><span class="st">${ic(st === "done" ? "check" : st === "cur" ? "play" : "lock")}</span><span><b>${esc(C[cid].l[n - 1])}</b><small>${DUR(cid, n)} мин${st === "cur" ? " · смотрите сейчас" : ""}</small></span></button>`;
+}
+K.on("openLes", el => { const cid = el.dataset.c, n = +el.dataset.n; if (n > done(cid) + 1) { K.toast("Сначала пройдите предыдущий урок"); return; } K.go(`lesson/${cid}/${n}`); });
+
+let pl = {key:"", t:0, play:false, tab:"desc"};
+function lesson(cid, n){
+  n = +n; if (!C[cid] || n > done(cid) + 1 || n < 1) return course(cid);
+  const k = cid + "/" + n, dur = DUR(cid, n) * 60;
+  if (pl.key !== k) pl = {key:k, t: n <= done(cid) ? dur : Math.round(dur * .34), play:false, tab:"desc"};
+  const isDone = n <= done(cid), around = [n - 2, n - 1, n, n + 1].filter(x => x >= 1 && x <= total(cid));
+  S().cur = cid; K.save();
+  return `<div class="player"><button class="bk" data-a="back" data-to="course/${cid}" aria-label="Назад">${ic("back")}</button><span class="badge">${isDone ? "Просмотрено" : "×30 в демо"}</span>
+    <button class="pp ${pl.play ? "" : "play"}" id="pp" data-a="pp" aria-label="${pl.play ? "Пауза" : "Смотреть"}">${ic(pl.play ? "pause" : "play")}</button>
+    <div class="seek" id="seek" data-a="seek" role="slider" aria-label="Перемотка" aria-valuemin="0" aria-valuemax="${dur}"><i><b id="pbar" style="width:${pl.t / dur * 100}%"></b></i></div>
+    <div class="tm"><span id="ptime">${mmss(pl.t)}</span><span>${mmss(dur)}</span></div></div>
+  <div class="lh" style="margin-top:16px"><small>${esc(C[cid].n)} · урок ${n}</small><h1>${esc(C[cid].l[n - 1])}</h1></div>
+  <div class="tabs">${[["desc","Описание"],["mat","Материалы"],["task","Задание"]].map(([kk, t]) => `<button class="${pl.tab===kk?"on":""}" data-a="ltab" data-t="${kk}">${t}</button>`).join("")}</div>
+  ${pl.tab === "desc" ? `<p class="mut" style="margin:0 0 16px">${desc(cid, n)}</p>`
+   : pl.tab === "mat" ? `<div class="card" style="margin-bottom:16px;padding:4px 16px">${["Конспект урока","Чек-лист","Ссылки и примеры"].map((m, i) => `<div class="mat"><span class="ic" style="width:40px;height:40px;border-radius:12px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center">${ic("doc")}</span><div style="flex:1"><b>${m}</b><br><small class="mut">${i === 0 ? "TXT · 2 КБ" : i === 1 ? "TXT · 1 КБ" : "TXT · 1 КБ"}</small></div><button class="ibtn" data-a="mat" data-c="${cid}" data-n="${n}" data-i="${i}" aria-label="Скачать">${ic("download")}</button></div>`).join("")}</div>`
+   : `<div class="card" style="margin-bottom:16px"><b>Тест по уроку · 3 вопроса</b><p class="mut" style="margin:6px 0 12px">${S().quiz[k] !== undefined ? "Ваш результат: " + S().quiz[k] + " из 3" : "Проверьте, как усвоили тему"}</p><button class="btn sm" data-a="go" data-to="quiz/${cid}/${n}">${S().quiz[k] !== undefined ? "Пройти ещё раз" : "Начать тест"}</button></div>`}
+  <div class="h2" style="margin-top:4px">Уроки модуля</div>
+  ${around.map(x => lesRow(cid, x)).join("")}
+  <div class="dock"><button class="btn" id="finish" data-a="finish" data-c="${cid}" data-n="${n}" ${isDone || pl.t >= dur * .9 ? "" : "disabled"}>${isDone ? (n < total(cid) ? "Следующий урок" : "Курс пройден") : pl.t >= dur * .9 ? "Завершить урок" : "Досмотрите урок до конца"}</button></div>`;
+}
+const mmss = s => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+const desc = (cid, n) => `В этом уроке разбираем тему «${C[cid].l[n - 1]}»: короткая теория, разбор примеров и практика. После просмотра пройдите тест во вкладке «Задание» и скачайте конспект в «Материалах».`;
+function plTick(){
+  const [cid, n] = pl.key.split("/"), dur = DUR(cid, +n) * 60;
+  if (pl.play) { pl.t = Math.min(dur, pl.t + 30 * 0.25); if (pl.t >= dur) { pl.play = false; K.render(); K.toast("Урок просмотрен — можно завершить"); return; } }
+  const b = K.$("#pbar"), t = K.$("#ptime"); if (b) b.style.width = (pl.t / dur * 100) + "%"; if (t) t.textContent = mmss(pl.t);
+  const f = K.$("#finish"); if (f && f.disabled && pl.t >= dur * .9) { f.disabled = false; f.textContent = "Завершить урок"; }
+}
+K.on("pp", () => { pl.play = !pl.play; const b = K.$("#pp"); b.classList.toggle("play", !pl.play); b.innerHTML = ic(pl.play ? "pause" : "play"); b.setAttribute("aria-label", pl.play ? "Пауза" : "Смотреть"); });
+K.on("seek", (el, e) => { const r = el.getBoundingClientRect(), [cid, n] = pl.key.split("/"), dur = DUR(cid, +n) * 60; pl.t = Math.max(0, Math.min(dur, (e.clientX - r.left) / r.width * dur)); plTick(); });
+K.on("ltab", el => { pl.tab = el.dataset.t; K.render(); });
+K.on("mat", el => { const cid = el.dataset.c, n = +el.dataset.n, i = +el.dataset.i, t = C[cid].l[n - 1];
+  const body = i === 0 ? `Конспект урока «${t}»\nКурс: ${C[cid].n}, урок ${n}\n\n1. Главная мысль урока.\n2. Разбор примеров.\n3. Практика: повторите упражнение из видео.\n\nДемо-материал онлайн-школы «Шаг» от PathCode.` : i === 1 ? `Чек-лист к уроку «${t}»\n[ ] Посмотрел урок\n[ ] Сделал практику\n[ ] Прошёл тест\n` : `Полезные ссылки к уроку «${t}»\n— примеры из урока\n— дополнительное чтение\n`;
+  K.dl(`${cid}-urok-${n}-${["konspekt","chek-list","ssylki"][i]}.txt`, body); K.toast("Файл скачан"); });
+K.on("finish", el => {
+  const cid = el.dataset.c, n = +el.dataset.n, s = S();
+  if (n <= done(cid)) { if (n < total(cid)) K.go(`lesson/${cid}/${n + 1}`, true); else K.go("profile"); return; }
+  s.prog[cid] = n; if (!s.act.includes(iso(today()))) s.act.push(iso(today()));
+  if (n === total(cid)) { s.dip.unshift({n:C[cid].n, d:iso(today())}); K.save(); K.go("course/" + cid, true); K.sheet(`<div class="center"><div style="font-size:64px">🎓</div><h3>Курс «${esc(C[cid].n)}» пройден!</h3><p>Диплом уже в профиле. Его можно скачать картинкой.</p></div><button class="btn" data-a="dipDl" data-i="0">${ic("download")} Скачать диплом</button>`); return; }
+  K.save(); K.toast("Урок пройден! Открыт следующий"); pl.key = ""; K.go(`lesson/${cid}/${n + 1}`, true);
+});
+
+let qa = {};
+function quiz(cid, n){
+  n = +n; if (!C[cid]) return home();
+  const k = cid + "/" + n, bank = C[cid].q, start = (n * 2) % bank.length, qs = [0, 1, 2].map(i => bank[(start + i) % bank.length]);
+  const sh = rnd(k); const order = qs.map(q => [0, 1, 2].sort(() => sh() - .5));
+  const checked = qa._k === k && qa.done;
+  if (qa._k !== k) qa = {_k:k};
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="tasks" aria-label="Назад">${ic("back")}</button><div><b>Тест: ${esc(C[cid].l[n - 1])}</b><small>${esc(C[cid].n)} · урок ${n}</small></div></div>
+  ${qs.map((q, qi) => `<div class="q"><p>${qi + 1}. ${esc(q[0])}</p>${order[qi].map(oi => `<label class="${checked ? (oi === q[2] ? "ok" : qa[qi] === oi ? "bad" : "") : ""}"><input type="radio" name="q${qi}" data-ch="ans" data-q="${qi}" data-o="${oi}" ${qa[qi] === oi ? "checked" : ""} ${checked ? "disabled" : ""}>${esc(q[1][oi])}</label>`).join("")}</div>`).join("")}
+  ${checked ? `<div class="card center" style="margin-bottom:10px"><b style="font-size:20px">${qa.score} из 3</b><p class="mut" style="margin:4px 0 0">${qa.score === 3 ? "Отлично, всё верно!" : qa.score === 2 ? "Хорошо! Одна ошибка." : "Стоит пересмотреть урок."}</p></div>` : ""}
+  <div class="dock">${checked ? `<div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="btn ghost" data-a="qRetry">Ещё раз</button><button class="btn" data-a="back" data-to="tasks">Готово</button></div>` : `<button class="btn" data-a="qCheck" data-k="${k}">Проверить</button>`}</div>`;
+}
+K.onChange("ans", el => { qa[+el.dataset.q] = +el.dataset.o; });
+K.on("qCheck", el => {
+  const k = el.dataset.k, [cid, n] = k.split("/"), bank = C[cid].q, start = (+n * 2) % bank.length;
+  if ([0, 1, 2].some(i => qa[i] === undefined)) { K.toast("Ответьте на все вопросы"); return; }
+  qa.score = [0, 1, 2].filter(i => qa[i] === bank[(start + i) % bank.length][2]).length; qa.done = true;
+  S().quiz[k] = Math.max(S().quiz[k] ?? 0, qa.score); if (!S().act.includes(iso(today()))) S().act.push(iso(today())); K.save(); K.render();
+});
+K.on("qRetry", () => { const k = qa._k; qa = {_k:k}; K.render(); });
+
+function tasks(){
+  const cur = enrolled().filter(c => done(c) < total(c)).map(c => [c, done(c) + 1]);
+  const doneQ = Object.entries(S().quiz).sort((a, b) => b[0].localeCompare(a[0]));
+  return `<h1 class="h1" style="margin:6px 0 16px">Задания</h1>
+  <div class="h2" style="margin-top:0">К выполнению</div>
+  <div class="list">${cur.map(([c, n]) => S().quiz[c + "/" + n] !== undefined ? "" : `<button class="item" data-a="go" data-to="quiz/${c}/${n}"><span class="ic">${ic("task")}</span><span class="tx"><b>Тест: ${esc(C[c].l[n - 1])}</b><small>${esc(C[c].n)} · урок ${n} · 3 вопроса</small></span><span class="end">${ic("next")}</span></button>`).join("") || '<div class="card mut">Все тесты по текущим урокам сданы</div>'}</div>
+  <div class="h2">Выполнено</div>
+  <div class="list">${doneQ.map(([k, sc]) => { const [c, n] = k.split("/"); return `<button class="item" data-a="go" data-to="quiz/${c}/${n}"><span class="ic" style="background:#E3F6EC;color:var(--ok)">${ic("check")}</span><span class="tx"><b>${esc(C[c].l[n - 1])}</b><small>${esc(C[c].n)}</small></span><span class="end">${sc}/3</span></button>`; }).join("") || '<div class="card mut">Здесь появятся пройденные тесты</div>'}</div>`;
+}
+
+function catalog(){
+  return `<h1 class="h1" style="margin:6px 0 16px">Каталог</h1>
+  <div class="list">${Object.keys(C).map(cid => { const on = S().prog[cid] !== undefined; return `<div class="course"><span class="ic">${ic(C[cid].i)}</span><span class="tx"><b>${esc(C[cid].n)}</b><small>${total(cid)} ${plural(total(cid), "урок", "урока", "уроков")} · ${Math.round(Array.from({length:total(cid)}, (_, i) => DUR(cid, i + 1)).reduce((a, b) => a + b, 0) / 60)} ч видео</small></span>${on ? `<button class="btn ghost sm" data-a="go" data-to="course/${cid}">Открыть</button>` : `<button class="btn sm" data-a="enroll" data-c="${cid}">Начать</button>`}</div>`; }).join("")}</div>
+  <p class="mut" style="font-size:13px;text-align:center;margin-top:14px">В демо все курсы бесплатные. В рабочей версии — оплата картой и СБП.</p>`;
+}
+K.on("enroll", el => { S().prog[el.dataset.c] = 0; S().cur = el.dataset.c; K.save(); K.toast("Курс добавлен в «Мои курсы»"); K.go("course/" + el.dataset.c); });
+
+function profile(){
+  const s = S(), wk = Array.from({length:7}, (_, i) => addDays(today(), i - ((today().getDay() + 6) % 7)));
+  const lessons = Object.values(s.prog).reduce((a, b) => a + b, 0) + s.baseLes;
+  return `<div class="top"><h1 class="h1">Профиль</h1><button class="ibtn" data-a="settings" aria-label="Настройки">${ic("sliders")}</button></div>
+  <div class="card" style="display:flex;gap:14px;align-items:center"><span style="width:64px;height:64px;border-radius:50%;background:linear-gradient(140deg,#8C6DFF,#5A3BE0);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px">${esc((s.name[0] || "") + (s.last[0] || ""))}</span><div><b style="font-size:19px">${esc(s.name)} ${esc(s.last)}</b><br><small class="mut">Учится с марта 2026</small></div></div>
+  <div class="prof3"><div><small>Уроков</small><b>${lessons}</b></div><div><small>Курсов</small><b>${enrolled().length}</b></div><div><small>Дипломов</small><b>${s.dip.length}</b></div></div>
+  <div class="h2">Дипломы</div>
+  <div class="list">${s.dip.map((d, i) => `<div class="dip"><span class="ic">${ic("award")}</span><span class="tx"><b>${esc(d.n)}</b><small>Выдан ${dmy(d.d)} ${fromIso(d.d).getFullYear()}</small></span><button class="ibtn" data-a="dipDl" data-i="${i}" aria-label="Скачать диплом">${ic("download")}</button></div>`).join("")}</div>
+  <div class="h2">Эта неделя</div>
+  <div class="card"><div class="wk">${wk.map(d => `<div><i class="${s.act.includes(iso(d)) ? "on" : ""}">${s.act.includes(iso(d)) ? ic("check") : ""}</i><small>${DOW[d.getDay()]}</small></div>`).join("")}</div></div>
+  <div class="demo-note">Демо-приложение PathCode: прогресс хранится только в этом браузере, видео имитируется. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать приложение для своей школы</a></div>`;
+}
+K.on("settings", () => {
+  const s = S();
+  K.sheet(`<h3>Настройки</h3><label class="field"><span>Имя</span><input id="stName" value="${esc(s.name)}" maxlength="20"></label><label class="field"><span>Фамилия</span><input id="stLast" value="${esc(s.last)}" maxlength="24"></label>
+  <label class="field"><span>Напоминание о занятиях</span><input id="stRem" type="time" value="${s.remind}"></label>
+  <div class="two"><button class="btn ghost" data-a="reset">Сбросить прогресс</button><button class="btn" data-a="stSave">Сохранить</button></div>`);
+});
+K.on("stSave", () => { const s = S(); s.name = K.$("#stName").value.trim() || s.name; s.last = K.$("#stLast").value.trim() || s.last; s.remind = K.$("#stRem").value || s.remind; K.save(); K.close(); K.toast("Сохранено"); K.render(); });
+K.on("reset", async () => { K.close(); if (await K.ask({title:"Сбросить прогресс?", text:"Вернём курсы, тесты и дипломы к исходным.", ok:"Сбросить", danger:true})) { K.reset(); pl = {key:""}; qa = {}; K.go("home", true); K.toast("Прогресс сброшен"); } });
+K.on("dipDl", el => {
+  const d = S().dip[+el.dataset.i], s = S(), cv = document.createElement("canvas"); cv.width = 1600; cv.height = 1130; const x = cv.getContext("2d");
+  x.fillStyle = "#FBFAFF"; x.fillRect(0, 0, 1600, 1130);
+  const g = x.createLinearGradient(0, 0, 1600, 0); g.addColorStop(0, "#6A4CF2"); g.addColorStop(1, "#9A83FF"); x.fillStyle = g; x.fillRect(0, 0, 1600, 26); x.fillRect(0, 1104, 1600, 26);
+  x.strokeStyle = "#D9D1FF"; x.lineWidth = 4; x.strokeRect(60, 70, 1480, 990);
+  x.textAlign = "center"; x.fillStyle = "#6A4CF2"; x.font = "700 34px Onest, sans-serif"; x.fillText("ОНЛАЙН-ШКОЛА «ШАГ»", 800, 180);
+  x.fillStyle = "#111521"; x.font = "800 110px Onest, sans-serif"; x.fillText("ДИПЛОМ", 800, 330);
+  x.fillStyle = "#6B7080"; x.font = "400 38px Onest, sans-serif"; x.fillText("выдан", 800, 430);
+  x.fillStyle = "#111521"; x.font = "700 76px Onest, sans-serif"; x.fillText(s.name + " " + s.last, 800, 540);
+  x.fillStyle = "#6B7080"; x.font = "400 38px Onest, sans-serif"; x.fillText("за успешное окончание курса", 800, 630);
+  x.fillStyle = "#6A4CF2"; x.font = "800 64px Onest, sans-serif"; x.fillText("«" + d.n + "»", 800, 730);
+  x.fillStyle = "#6B7080"; x.font = "400 32px Onest, sans-serif"; x.fillText("Выдан " + dmy(d.d) + " " + fromIso(d.d).getFullYear() + " · № " + (1000 + Math.floor(rnd(d.n + d.d)() * 8999)), 800, 900);
+  x.font = "400 26px Onest, sans-serif"; x.fillStyle = "#A0A4B4"; x.fillText("Демо-диплом PathCode", 800, 1000);
+  cv.toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "diplom-" + d.n.toLowerCase().replace(/[^a-zа-яё0-9]+/gi, "-") + ".png"; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }, "image/png");
+  K.close(); K.toast("Диплом скачан");
+});
+
+function defaults(){
+  const t = today(), mon = addDays(t, -((t.getDay() + 6) % 7)), act = [];
+  for (let d = addDays(t, -9); d < t; d = addDays(d, 1)) if (d.getDay() !== 0 && d.getDay() !== 6 || d >= mon) act.push(iso(d));
+  return {v:2, name:"Ксения", last:"Морозова", remind:"19:00", prog:{design:12, photo:4, eng:18}, cur:"design", quiz:{"design/12":3, "eng/18":2}, dip:[{n:"Мобильная фотография: старт", d:"2026-09-02"}, {n:"Английский A1", d:"2026-06-15"}], act, baseMin:0, baseLes:0};
+}
+K.app({
+  key: "pc-school", title: "Шаг — онлайн-школа", defaults,
+  side: {tag:"Концепт · Android", h1:"Приложение", h1b:"онлайн-школы", text:"Курсы, видеоуроки и прогресс ученика: всё обучение в одном приложении.", feats:["Видеоуроки и задания","Прогресс по курсам","Дипломы после курса"]},
+  tabs: [{r:"home",l:"Главная",i:"home",m:["course"]},{r:"catalog",l:"Каталог",i:"book"},{r:"tasks",l:"Задания",i:"task",m:["quiz"]},{r:"profile",l:"Профиль",i:"user"}],
+  start: "home", noTabs: ["lesson","quiz"], routes: {home, course, lesson, quiz, tasks, catalog, profile},
+  mounted: {lesson: () => K.timer(plTick, 250)}
+});
+})();
+</script>
+</body>
+</html>

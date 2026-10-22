@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F4F8">
+<title>Aura — онлайн-запись</title>
+<meta name="description" content="Демо-приложение онлайн-записи в салон красоты: услуги, мастера, свободное время, напоминания.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="kit.css?v=2">
+<style>
+:root{--bg:#F4F4F8;--acc:#D9497A;--acc-soft:#FBE6EE;--soft:#E9E9F0;--side-acc:#EC7AA2;--gold:#E9A23B}
+.ava{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:17px;border:0;flex:none}
+.g-pink{background:linear-gradient(140deg,#EE7CA4,#C9356A)}.g-gold{background:linear-gradient(140deg,#D2A97A,#9C7046)}
+.g-green{background:linear-gradient(140deg,#9CC09C,#5E8C63)}.g-violet{background:linear-gradient(140deg,#A99BEA,#6C5BC8)}
+.promo{position:relative;overflow:hidden;border-radius:26px;padding:22px;color:#fff;background:linear-gradient(135deg,#7E2547 0%,#521532 100%)}
+.promo::before,.promo::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.14)}
+.promo::before{width:220px;height:220px;right:-70px;top:-60px}.promo::after{width:150px;height:150px;right:-20px;bottom:-80px}
+.promo small{color:#F6A9C5;font-size:13.5px;font-weight:600}
+.promo h2{margin:8px 0 18px;font:800 26px/1.15 var(--f);max-width:250px}
+.promo button{position:relative;z-index:1;border:0;background:#fff;color:#1A0E14;border-radius:14px;padding:12px 16px;font-weight:700;font-size:14.5px;display:inline-flex;align-items:center;gap:8px}
+.promo button svg{width:16px;height:16px}
+.promo .spark{position:absolute;right:22px;bottom:22px;width:42px;height:42px;color:#F6A9C5}
+.next{display:flex;gap:14px;align-items:center}
+.next .when{background:var(--acc-soft);color:var(--acc);border-radius:16px;padding:10px 12px;text-align:center;flex:none;min-width:64px}
+.next .when b{display:block;font-size:22px;line-height:1}
+.next .when small{font-size:12px;font-weight:600}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.cat{border:0;background:var(--card);border-radius:20px;padding:14px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:600;font-size:14px;box-shadow:0 1px 2px rgba(17,21,33,.04)}
+.cat i{width:48px;height:48px;border-radius:15px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center}
+.cat svg{width:22px;height:22px}
+.price{font-weight:700;font-size:16px;white-space:nowrap}
+.price s{display:block;color:var(--mut);font-weight:500;font-size:12.5px}
+.stars{color:var(--gold)}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:0 14px;height:50px;margin-bottom:12px}
+.search svg{width:20px;height:20px;color:var(--mut);flex:none}
+.search input{border:0;outline:0;background:none;flex:1;min-width:0;height:100%}
+.sec{font-weight:700;font-size:18px;margin:22px 0 12px}
+.masters{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:2px 18px 4px}
+.masters::-webkit-scrollbar{display:none}
+.mst{flex:0 0 31%;min-width:104px;border:2px solid transparent;background:var(--card);border-radius:22px;padding:16px 6px 14px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(17,21,33,.05)}
+.mst .ava{width:62px;height:62px;font-size:20px;margin-bottom:4px}
+.mst b{font-size:15.5px}
+.mst small{color:var(--mut);font-size:13px}
+.mst.on{border-color:var(--acc);box-shadow:0 8px 20px -12px rgba(217,73,122,.7)}
+.days{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:2px 18px 4px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:0 0 62px;height:84px;border:0;background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative}
+.day small{color:var(--mut);font-size:12.5px}
+.day b{font-size:21px}
+.day.dot::after{content:"";position:absolute;bottom:10px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+.day.on{background:#111521;color:#fff}.day.on small{color:#B8BDCC}
+.day.off{opacity:.4}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.slot{height:54px;border:0;border-radius:16px;background:var(--card);font-weight:600;font-size:16.5px;letter-spacing:.02em}
+.slot:disabled{background:transparent;color:#C5C8D2;box-shadow:inset 0 0 0 1px #ECEDF2;cursor:not-allowed}
+.slot.on{background:var(--acc);color:#fff}
+.okmark{width:132px;height:132px;margin:26px auto 22px;border-radius:50%;display:grid;place-items:center;background:var(--acc-soft);box-shadow:0 0 0 16px #FDF1F5}
+.okmark svg{width:50px;height:50px;color:var(--acc);stroke-width:2.4}
+.center{text-align:center}
+.done-t{font:800 30px/1.1 var(--f);margin:0 0 8px}
+.rec{background:var(--card);border-radius:22px;padding:16px;box-shadow:0 1px 2px rgba(17,21,33,.04)}
+.rec .top2{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.rec .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.fav{border:0;background:none;color:var(--acc);padding:0;width:40px;height:40px;display:grid;place-items:center;flex:none}
+.fav svg{width:22px;height:22px}
+.prof{display:flex;gap:14px;align-items:center}
+.prof .ava{width:64px;height:64px;font-size:22px}
+.set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border-bottom:0}
+.set small{display:block;color:var(--mut);font-size:13px}
+.stat3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.stat3 div{background:var(--card);border-radius:18px;padding:14px}
+.stat3 small{color:var(--mut);font-size:12.5px}
+.stat3 b{display:block;font-size:22px;margin-top:4px}
+.ntf{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ntf:last-child{border-bottom:0}
+.ntf i{width:40px;height:40px;border-radius:12px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;flex:none}
+.ntf svg{width:19px;height:19px}
+</style>
+</head>
+<body>
+<script src="kit.js?v=2"></script>
+<script>
+(() => {
+const {esc, rub, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON, MON1} = K;
+
+const CATS = [{id:"nails",n:"Ногти",i:"nail"},{id:"hair",n:"Волосы",i:"scissors"},{id:"brows",n:"Брови",i:"eye"},{id:"care",n:"Уход",i:"leaf"}];
+const SVC = [
+  {id:1,c:"nails",n:"Маникюр с покрытием",d:90,p:1800,r:4.9,i:"nail",t:"Аппаратный маникюр, выравнивание и гель-лак. Держится до трёх недель."},
+  {id:2,c:"nails",n:"Маникюр без покрытия",d:45,p:900,r:4.8,i:"nail",t:"Обработка кутикулы, форма и уход маслом."},
+  {id:3,c:"nails",n:"Педикюр с покрытием",d:90,p:2400,r:4.9,i:"nail",t:"Аппаратный педикюр, обработка стоп и гель-лак."},
+  {id:4,c:"hair",n:"Женская стрижка",d:60,p:1500,r:4.8,i:"scissors",t:"Консультация, мытьё, стрижка по форме лица и укладка."},
+  {id:5,c:"hair",n:"Окрашивание",d:150,p:3500,r:5.0,i:"palette",t:"Окрашивание в один тон с уходом. Цену уточнит мастер по длине волос."},
+  {id:6,c:"hair",n:"Укладка",d:45,p:1200,r:4.7,i:"scissors",t:"Объём, локоны или гладкая укладка на праздник."},
+  {id:7,c:"brows",n:"Коррекция бровей",d:30,p:700,r:4.9,i:"eye",t:"Форма бровей пинцетом или воском."},
+  {id:8,c:"brows",n:"Ламинирование ресниц",d:60,p:1900,r:4.8,i:"eye",t:"Изгиб и окрашивание ресниц, эффект до шести недель."},
+  {id:9,c:"care",n:"Чистка лица",d:75,p:2900,r:4.9,i:"leaf",t:"Комбинированная чистка, маска и уход по типу кожи."},
+  {id:10,c:"care",n:"Массаж лица",d:40,p:2500,r:4.8,i:"leaf",t:"Лимфодренажный массаж: тонус и отёки уходят за один сеанс."}
+];
+const MST = [
+  {id:"as",n:"Анна",f:"Анна Соколова",in:"АС",g:"g-pink",r:4.9,c:["nails","brows"]},
+  {id:"ok",n:"Ольга",f:"Ольга Кузнецова",in:"ОК",g:"g-gold",r:4.8,c:["hair","care"]},
+  {id:"ip",n:"Ирина",f:"Ирина Петрова",in:"ИП",g:"g-green",r:5.0,c:["nails","care","brows"]},
+  {id:"dm",n:"Дарья",f:"Дарья Морозова",in:"ДМ",g:"g-violet",r:4.9,c:["hair"]}
+];
+const TIMES = ["10:00","11:30","12:30","14:00","15:30","17:00","18:30","19:30","20:30"];
+const ADDR = "ул. Садовая, 5";
+const svc = id => SVC.find(x => x.id === +id);
+const mst = id => MST.find(x => x.id === id);
+const dur = m => (m >= 60 ? Math.floor(m/60) + " ч" : "") + (m % 60 ? (m >= 60 ? " " : "") + (m % 60) + " мин" : "");
+
+const S = () => K.s;
+
+/* ---------- данные записи ---------- */
+const now = () => new Date();
+const isPast = b => new Date(b.date + "T" + b.time) < now();
+const active = () => S().book.filter(b => b.st === "on" && !isPast(b)).sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+const visits = () => S().book.filter(b => b.st === "on" && isPast(b)).length;
+const promoOk = () => !S().book.some(b => b.st === "on");
+function busy(mId, date, time, skipId){
+  if (S().book.some(b => b.st === "on" && b.id !== skipId && b.m === mId && b.date === date && b.time === time)) return true;
+  if (date === iso(today())) { const [h,m] = time.split(":").map(Number); const t = new Date(); t.setHours(h, m - 30, 0, 0); if (t < now()) return true; }
+  return rnd(mId + date + time)() < 0.34;
+}
+const freeCount = (mId, date, skip) => TIMES.filter(t => !busy(mId, date, t, skip)).length;
+
+let sel = {svc:null, m:null, d:null, t:null, re:null};
+
+/* ---------- экраны ---------- */
+function home(){
+  const s = S(), nx = active()[0];
+  const unread = active().length && !s.seenNtf;
+  return `
+  <div class="top"><div class="tt"><p class="hello">Добрый ${greet()},</p><h1 class="h1">${esc(s.name)}</h1></div>
+    <div class="acts"><button class="ibtn" data-a="ntf" aria-label="Уведомления">${ic("bell")}${unread ? '<span class="dot"></span>' : ""}</button>
+    <button class="ava g-pink" data-a="go" data-to="profile" aria-label="Профиль">${esc((s.name[0]||"?").toUpperCase())}</button></div></div>
+  ${promoOk() ? `<div class="promo"><small>Для новых клиентов</small><h2>−20% на первый визит</h2><button data-a="go" data-to="cat/all">Выбрать услугу ${ic("arrow")}</button>${ic("sparkle","spark")}</div>`
+   : nx ? `<div class="card next"><div class="when"><b>${fromIso(nx.date).getDate()}</b><small>${MON[fromIso(nx.date).getMonth()].slice(0,3)}</small></div><div style="flex:1;min-width:0"><small class="mut">Ближайшая запись · ${nx.time}</small><b style="display:block;font-size:16px;margin-top:2px">${esc(svc(nx.s).n)}</b><small class="mut">${esc(mst(nx.m).f)}</small></div><button class="ibtn" data-a="go" data-to="recs" aria-label="Мои записи">${ic("next")}</button></div>`
+   : `<div class="promo"><small>Свободные окна сегодня и завтра</small><h2>Запишитесь за минуту</h2><button data-a="go" data-to="cat/all">Выбрать услугу ${ic("arrow")}</button>${ic("sparkle","spark")}</div>`}
+  <div class="h2">Категории</div>
+  <div class="cats">${CATS.map(c => `<button class="cat" data-a="go" data-to="cat/${c.id}"><i>${ic(c.i)}</i>${c.n}</button>`).join("")}</div>
+  <div class="h2">Популярное <button data-a="go" data-to="cat/all">Все</button></div>
+  <div class="list">${[1,4,5].map(id => svcItem(svc(id))).join("")}</div>`;
+}
+const greet = () => { const h = new Date().getHours(); return h < 5 ? "вечер" : h < 12 ? "утро" : h < 18 ? "день" : "вечер"; };
+function svcItem(x){
+  const disc = promoOk();
+  return `<button class="item" data-a="pick" data-id="${x.id}"><span class="ic">${ic(x.i)}</span><span class="tx"><b>${esc(x.n)}</b><small>${dur(x.d)} · <span class="stars">★</span> ${x.r.toFixed(1).replace(".",",")}</small></span>
+  <span class="end price">${disc ? `<s>${rub(x.p)}</s>${rub(x.p*0.8)}` : rub(x.p)}</span></button>`;
+}
+let q = "";
+function cat(id = "all"){
+  const list = SVC.filter(x => (id === "all" || x.c === id) && x.n.toLowerCase().includes(q.toLowerCase()));
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="home" aria-label="Назад">${ic("back")}</button><div><b>${id === "all" ? "Все услуги" : CATS.find(c => c.id === id).n}</b><small>${list.length} ${plural(list.length,"услуга","услуги","услуг")}${promoOk() ? " · цены со скидкой 20%" : ""}</small></div></div>
+  <label class="search">${ic("search")}<input data-in="q" placeholder="Найти услугу" value="${esc(q)}" aria-label="Поиск услуги"></label>
+  <div class="chips"><button class="chip ${id==="all"?"on":""}" data-a="cat" data-c="all">Все</button>${CATS.map(c => `<button class="chip ${id===c.id?"on":""}" data-a="cat" data-c="${c.id}">${c.n}</button>`).join("")}</div>
+  <div class="list" id="svcList">${list.map(svcItem).join("") || '<div class="empty"><b>Ничего не нашлось</b>Попробуйте другое слово</div>'}</div>`;
+}
+K.onInput("q", el => { q = el.value; const id = K.args()[0] || "all"; const list = SVC.filter(x => (id === "all" || x.c === id) && x.n.toLowerCase().includes(q.toLowerCase())); K.$("#svcList").innerHTML = list.map(svcItem).join("") || '<div class="empty"><b>Ничего не нашлось</b>Попробуйте другое слово</div>'; });
+K.on("cat", el => K.go("cat/" + el.dataset.c, true));
+K.on("pick", el => { sel = {svc:+el.dataset.id, m:null, d:null, t:null, re:null}; K.go("book/" + el.dataset.id); });
+
+function book(id, re){
+  const x = svc(id); if (!x) return home();
+  if (sel.svc !== x.id || (re && sel.re !== re)) {
+    sel = {svc:x.id, m:null, d:null, t:null, re:re || null};
+    const old = re && S().book.find(b => b.id === re);
+    if (old) { sel.m = old.m; sel.d = old.date; }
+  }
+  const ms = MST.filter(m => m.c.includes(x.c));
+  if (!sel.m) sel.m = ms[0].id;
+  const days = Array.from({length:14}, (_, i) => addDays(today(), i));
+  if (!sel.d) sel.d = iso(days.find(d => freeCount(sel.m, iso(d), sel.re)) || days[1]);
+  const dSel = fromIso(sel.d);
+  const price = promoOk() || (re && S().book.find(b => b.id === re)?.disc) ? x.p * 0.8 : x.p;
+  const fav = S().favS.includes(x.id);
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="cat/all" aria-label="Назад">${ic("back")}</button><div style="flex:1;min-width:0"><b>${esc(x.n)}</b><small>${dur(x.d)} · ${rub(price)}${price < x.p ? ` <s>${rub(x.p)}</s>` : ""}</small></div>
+    <button class="fav" data-a="favS" data-id="${x.id}" aria-label="${fav ? "Убрать из избранного" : "В избранное"}">${ic(fav ? "heartf" : "heart")}</button></div>
+  ${re ? '<div class="pill" style="margin:-6px 0 6px">Перенос записи</div>' : ""}
+  <p class="mut" style="margin:0 0 4px;font-size:14px">${esc(x.t)}</p>
+  <div class="sec">Мастер</div>
+  <div class="masters">${ms.map(m => `<button class="mst ${sel.m===m.id?"on":""}" data-a="selM" data-id="${m.id}"><span class="ava ${m.g}">${m.in}</span><b>${m.n}</b><small><span class="stars">★</span> ${m.r.toFixed(1).replace(".",",")}</small></button>`).join("")}</div>
+  <div class="sec">${MON1[dSel.getMonth()]}</div>
+  <div class="days">${days.map(d => { const di = iso(d), fc = freeCount(sel.m, di, sel.re); return `<button class="day ${di===sel.d?"on":""} ${fc && fc <= 3 ? "dot" : ""} ${fc ? "" : "off"}" data-a="selD" data-d="${di}" ${fc ? "" : 'aria-disabled="true"'}><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b></button>`; }).join("")}</div>
+  <div class="sec">Свободное время</div>
+  <div class="slots">${TIMES.map(t => `<button class="slot ${sel.t===t?"on":""}" data-a="selT" data-t="${t}" ${busy(sel.m, sel.d, t, sel.re) ? "disabled" : ""}>${t}</button>`).join("")}</div>
+  ${freeCount(sel.m, sel.d, sel.re) ? "" : '<p class="mut center" style="margin-top:12px">На этот день мест нет — выберите другой</p>'}
+  <div class="dock"><button class="btn dark" data-a="confirm" ${sel.t ? "" : "disabled"}>${sel.t ? (re ? "Перенести на " : "Записаться на ") + sel.t : "Выберите время"}</button></div>`;
+}
+K.on("selM", el => { sel.m = el.dataset.id; sel.t = null; if (!freeCount(sel.m, sel.d, sel.re)) sel.d = null; K.render(); });
+K.on("selD", el => { if (el.getAttribute("aria-disabled")) { K.toast("На этот день мест нет"); return; } sel.d = el.dataset.d; sel.t = null; K.render(); });
+K.on("selT", el => { sel.t = el.dataset.t; K.render(); });
+K.on("favS", el => { const id = +el.dataset.id, f = S().favS; const i = f.indexOf(id); i < 0 ? f.push(id) : f.splice(i, 1); K.save(); K.toast(i < 0 ? "Добавлено в избранное" : "Убрано из избранного"); K.render(); });
+K.on("confirm", () => {
+  if (!sel.t || busy(sel.m, sel.d, sel.t, sel.re)) { K.toast("Это время уже занято"); sel.t = null; K.render(); return; }
+  const x = svc(sel.svc);
+  if (sel.re) {
+    const b = S().book.find(b => b.id === sel.re);
+    Object.assign(b, {m:sel.m, date:sel.d, time:sel.t}); K.save(); const id = b.id; sel = {}; K.go("done/" + id + "/moved", true); return;
+  }
+  const disc = promoOk();
+  const b = {id:"b" + Date.now().toString(36), s:x.id, m:sel.m, date:sel.d, time:sel.t, price: disc ? x.p*0.8 : x.p, disc, st:"on"};
+  S().book.push(b); S().seenNtf = false; K.save(); sel = {}; K.go("done/" + b.id, true);
+});
+
+function done(id, moved){
+  const b = S().book.find(b => b.id === id); if (!b) return recs();
+  const d = fromIso(b.date);
+  return `<div class="center"><div class="okmark">${ic("check")}</div><h1 class="done-t">${moved ? "Запись перенесена" : "Вы записаны"}</h1>
+  <p class="mut" style="margin:0 0 22px">${S().notif ? "Напомним за 2 часа до визита" : "Напоминания выключены в профиле"}</p></div>
+  <div class="card kv"><div><span>Услуга</span><b>${esc(svc(b.s).n)}</b></div><div><span>Мастер</span><b>${esc(mst(b.m).f)}</b></div>
+  <div><span>Дата</span><b>${DOW[d.getDay()]}, ${dmy(d)} · ${b.time}</b></div><div><span>Адрес</span><b>${ADDR}</b></div><div><span>Стоимость</span><b>${rub(b.price)}</b></div></div>
+  <div style="display:grid;gap:10px;margin-top:16px"><button class="btn" data-a="ics" data-id="${b.id}">${ic("cal")} Добавить в календарь</button>
+  <button class="btn ghost" data-a="move" data-id="${b.id}">Перенести запись</button>
+  <button class="btn ghost" data-a="go" data-to="home" style="box-shadow:none;background:none;color:var(--mut);height:44px">На главную</button></div>`;
+}
+K.on("ics", el => {
+  const b = S().book.find(b => b.id === el.dataset.id), x = svc(b.s);
+  const st = new Date(b.date + "T" + b.time), en = new Date(st.getTime() + x.d * 60000);
+  const f = d => `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}T${String(d.getHours()).padStart(2,"0")}${String(d.getMinutes()).padStart(2,"0")}00`;
+  const ics = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//PathCode//Aura demo//RU","BEGIN:VEVENT","UID:" + b.id + "@aura.demo","DTSTAMP:" + f(new Date()),"DTSTART:" + f(st),"DTEND:" + f(en),
+    "SUMMARY:" + x.n + " — Aura","LOCATION:" + ADDR,"DESCRIPTION:Мастер: " + mst(b.m).f + ". Стоимость " + Math.round(b.price) + " руб.","BEGIN:VALARM","TRIGGER:-PT2H","ACTION:DISPLAY","DESCRIPTION:Скоро визит в Aura","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  K.dl("aura-" + b.date + ".ics", ics, "text/calendar"); K.toast("Файл события скачан — откройте его, чтобы добавить в календарь");
+});
+K.on("move", el => { const b = S().book.find(b => b.id === el.dataset.id); sel = {}; K.go("book/" + b.s + "/" + b.id); });
+
+let tabRec = "next";
+function recs(){
+  const all = S().book.slice().sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
+  const nx = active(), past = all.filter(b => b.st !== "on" || isPast(b));
+  const list = tabRec === "next" ? nx : past;
+  return `<h1 class="h1" style="margin:6px 0 16px">Мои записи</h1>
+  <div class="seg"><button class="${tabRec==="next"?"on":""}" data-a="tabRec" data-t="next">Предстоящие${nx.length ? " · " + nx.length : ""}</button><button class="${tabRec==="past"?"on":""}" data-a="tabRec" data-t="past">История</button></div>
+  <div class="list">${list.map(b => recCard(b, tabRec === "next")).join("") || `<div class="empty"><b>${tabRec==="next" ? "Записей пока нет" : "История пуста"}</b>${tabRec==="next" ? "Выберите услугу — свободные окна есть уже сегодня" : "Здесь появятся прошедшие визиты"}<div style="margin-top:16px"><button class="btn sm" data-a="go" data-to="cat/all" style="margin:0 auto">Записаться</button></div></div>`}</div>`;
+}
+function recCard(b, upcoming){
+  const x = svc(b.s), m = mst(b.m), d = fromIso(b.date);
+  const st = b.st === "off" ? '<span class="pill grey">Отменена</span>' : upcoming ? '<span class="pill">Подтверждена</span>' : '<span class="pill ok">Состоялась</span>';
+  return `<div class="rec"><div class="top2"><span class="ava ${m.g}">${m.in}</span><div style="flex:1;min-width:0"><b style="display:block;font-size:16px">${esc(x.n)}</b><small class="mut">${esc(m.f)}</small></div>${st}</div>
+  <div class="kv"><div><span>Когда</span><b>${DOW[d.getDay()]}, ${dmy(d)} · ${b.time}</b></div><div><span>Стоимость</span><b>${rub(b.price)}</b></div></div>
+  <div class="acts">${upcoming ? `<button class="btn ghost sm" data-a="move" data-id="${b.id}">Перенести</button><button class="btn ghost sm" data-a="cancel" data-id="${b.id}" style="color:var(--bad)">Отменить</button>` : `<button class="btn ghost sm" data-a="pick" data-id="${b.s}" style="grid-column:1/-1">Записаться снова</button>`}</div></div>`;
+}
+K.on("tabRec", el => { tabRec = el.dataset.t; K.render(); });
+K.on("cancel", async el => {
+  const b = S().book.find(b => b.id === el.dataset.id);
+  if (await K.ask({title:"Отменить запись?", text:`${svc(b.s).n}, ${dmy(b.date)} в ${b.time}. Мастер освободит это время для других клиентов.`, ok:"Отменить", cancel:"Оставить", danger:true})) { b.st = "off"; K.save(); K.toast("Запись отменена"); K.render(); }
+});
+
+function favs(){
+  const s = S(), fs = s.favS.map(svc).filter(Boolean), fm = s.favM.map(mst).filter(Boolean);
+  return `<h1 class="h1" style="margin:6px 0 16px">Избранное</h1>
+  <div class="sec" style="margin-top:0">Мастера</div>
+  <div class="masters">${MST.map(m => `<button class="mst ${s.favM.includes(m.id)?"on":""}" data-a="favM" data-id="${m.id}"><span class="ava ${m.g}">${m.in}</span><b>${m.n}</b><small>${s.favM.includes(m.id) ? "♥ в избранном" : "♡ добавить"}</small></button>`).join("")}</div>
+  <div class="sec">Услуги</div>
+  <div class="list">${fs.map(x => `<div class="item" style="padding-right:6px"><span class="ic">${ic(x.i)}</span><span class="tx"><b>${esc(x.n)}</b><small>${dur(x.d)} · ${rub(x.p)}</small></span><button class="btn sm" data-a="pick" data-id="${x.id}">Записаться</button><button class="fav" data-a="favS" data-id="${x.id}" aria-label="Убрать из избранного">${ic("heartf")}</button></div>`).join("") || '<div class="empty"><b>Пока пусто</b>Нажмите ♡ на странице услуги, чтобы сохранить её здесь</div>'}</div>`;
+}
+K.on("favM", el => { const id = el.dataset.id, f = S().favM; const i = f.indexOf(id); i < 0 ? f.push(id) : f.splice(i, 1); K.save(); K.render(); });
+
+function profile(){
+  const s = S();
+  return `<h1 class="h1" style="margin:6px 0 16px">Профиль</h1>
+  <div class="card prof"><span class="ava g-pink">${esc((s.name[0]||"?").toUpperCase())}</span><div style="min-width:0"><b style="font-size:18px">${esc(s.name)}</b><br><small class="mut">${esc(s.phone)}</small></div></div>
+  <div class="stat3"><div><small>Визитов</small><b>${visits()}</b></div><div><small>Записей</small><b>${active().length}</b></div><div><small>Скидка</small><b>${promoOk() ? "20%" : "—"}</b></div></div>
+  <div class="sec">Данные</div>
+  <label class="field"><span>Имя</span><input data-ch="name" value="${esc(s.name)}" maxlength="24" autocomplete="given-name"></label>
+  <label class="field"><span>Телефон</span><input data-ch="phone" value="${esc(s.phone)}" inputmode="tel" autocomplete="tel"></label>
+  <div class="card" style="padding:4px 16px">
+    <div class="set"><div><b>Напоминания</b><small>За 2 часа до визита</small></div><label class="switch"><input type="checkbox" data-ch="notif" ${s.notif ? "checked" : ""} aria-label="Напоминания"><i></i></label></div>
+    <div class="set"><div><b>Адрес салона</b><small>${ADDR} · 10:00–21:00</small></div></div>
+    <div class="set"><div><b>Сбросить демо-данные</b><small>Записи, избранное и имя</small></div><button class="btn ghost sm" data-a="reset">Сбросить</button></div>
+  </div>
+  <div class="demo-note">Это демо-приложение от PathCode: записи хранятся только в этом браузере. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать такое для своего салона</a></div>`;
+}
+K.onChange("name", el => { const v = el.value.trim(); if (v) { S().name = v; K.save(); K.toast("Имя сохранено"); K.render(); } });
+K.onChange("phone", el => { S().phone = el.value.trim(); K.save(); K.toast("Телефон сохранён"); });
+K.onChange("notif", el => { S().notif = el.checked; K.save(); K.toast(el.checked ? "Напомним за 2 часа до визита" : "Напоминания выключены"); });
+K.on("reset", async () => { if (await K.ask({title:"Сбросить демо-данные?", text:"Удалим записи, избранное и вернём имя по умолчанию.", ok:"Сбросить", danger:true})) { K.reset(); sel = {}; K.toast("Данные сброшены"); K.go("home", true); } });
+K.on("ntf", () => {
+  const a = active(); S().seenNtf = true; K.save();
+  K.sheet(`<h3>Уведомления</h3>${a.length ? a.map(b => `<div class="ntf"><i>${ic("bell")}</i><div><b>${esc(svc(b.s).n)}</b><br><small class="mut">${dmy(b.date)} в ${b.time} · ${esc(mst(b.m).f)}${S().notif ? " · напомним за 2 часа" : ""}</small></div></div>`).join("") : '<p>Новых уведомлений нет. После записи здесь появится напоминание о визите.</p>'}<button class="btn ghost" data-a="close" style="margin-top:12px">Закрыть</button>`);
+  K.render();
+});
+
+K.app({
+  key: "pc-salon", title: "Aura — онлайн-запись",
+  defaults: () => ({v:1, name:"Мария", phone:"+7 900 000-00-00", notif:true, favS:[1], favM:[], book:[], seenNtf:false}),
+  side: {tag:"Концепт · Android", h1:"Онлайн-запись", h1b:"в салон красоты", text:"Клиент сам выбирает услугу, мастера и свободное время без звонков администратору.", feats:["Каталог услуг с ценами","Свободные окна мастеров","Напоминание о визите"]},
+  tabs: [{r:"home",l:"Главная",i:"home",m:["cat"]},{r:"recs",l:"Записи",i:"cal",m:["done"]},{r:"favs",l:"Избранное",i:"heart"},{r:"profile",l:"Профиль",i:"user"}],
+  start: "home", noTabs: ["book","done"],
+  routes: {home, cat, book, done, recs, favs, profile}
+});
+})();
+</script>
+</body>
+</html>

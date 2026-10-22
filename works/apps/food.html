@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F4F7">
+<title>Сытый кот — доставка еды</title>
+<meta name="description" content="Демо-приложение доставки еды для кафе: меню, корзина, промокоды, оплата и курьер на карте.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="kit.css?v=2">
+<style>
+:root{--bg:#F4F4F7;--acc:#FF6B2C;--acc-soft:#FFEDE3;--soft:#EAEAF0;--side-acc:#FF8A55;--chip-on:#111521}
+.addr{border:0;background:none;padding:0;text-align:left}
+.addr small{display:block;color:var(--mut);font-size:13.5px}
+.addr b{display:inline-flex;align-items:center;gap:4px;font-size:19px}
+.addr b svg{width:18px;height:18px;transform:rotate(90deg)}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:0 14px;height:52px;margin-bottom:14px;width:100%;border:0;text-align:left;color:var(--mut)}
+.search svg{width:20px;height:20px;color:var(--mut);flex:none}
+.search input{border:0;outline:0;background:none;flex:1;min-width:0;height:100%;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dish{background:var(--card);border-radius:22px;padding:10px 10px 12px;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(17,21,33,.04);border:0;text-align:left}
+.dish .pic{border-radius:16px;height:104px;display:grid;place-items:center;font-size:54px;margin-bottom:10px;line-height:1}
+.dish b{font-size:15.5px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dish small{color:var(--mut);font-size:13px;display:block;margin:2px 0 10px}
+.dish .ft{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:6px}
+.dish .ft span{font-weight:700;font-size:17px}
+.plus{width:38px;height:38px;border-radius:12px;border:0;background:var(--acc);color:#fff;display:grid;place-items:center;flex:none}
+.plus svg{width:20px;height:20px;stroke-width:2.4}
+.step{display:flex;align-items:center;gap:2px;background:var(--soft);border-radius:12px;padding:3px;flex:none}
+.step button{width:32px;height:32px;border-radius:10px;border:0;background:var(--card);display:grid;place-items:center}
+.step button.p{background:var(--acc);color:#fff}
+.step button svg{width:16px;height:16px;stroke-width:2.4}
+.step b{min-width:22px;text-align:center;font-size:15px}
+.cartbar{position:absolute;left:18px;right:18px;bottom:96px;z-index:6;display:flex;align-items:center;justify-content:space-between;background:#14161D;color:#fff;border-radius:20px;padding:8px 8px 8px 18px;border:0;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);font-weight:600;font-size:15.5px}
+.cartbar span{display:flex;align-items:center;gap:10px}.cartbar svg{width:22px;height:22px}
+.cartbar b{background:var(--acc);border-radius:14px;padding:11px 16px;font-size:16px}
+@media (max-width:600px){.cartbar{bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
+.ci{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:20px;padding:12px}
+.ci .pic{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-size:32px;flex:none}
+.ci .tx{flex:1;min-width:0}.ci .tx b{display:block;font-size:15.5px;font-weight:600}.ci .tx small{color:var(--mut)}
+.promo{display:flex;align-items:center;gap:10px;border:1.5px dashed #D9DBE3;border-radius:18px;padding:6px 6px 6px 14px;margin:12px 0}
+.promo svg{width:20px;height:20px;color:var(--mut);flex:none}
+.promo input{flex:1;min-width:0;border:0;outline:0;background:none;height:44px;text-transform:uppercase}
+.promo button{border:0;background:none;color:var(--acc);font-weight:700;padding:0 10px;height:44px}
+.free{color:var(--ok);font-weight:700}
+.tot{font-size:24px!important;font-weight:800!important}
+.opt{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:18px;padding:14px;border:2px solid transparent;width:100%;text-align:left;margin-bottom:8px}
+.opt.on{border-color:var(--acc)}
+.opt i{width:42px;height:42px;border-radius:12px;background:var(--soft);display:grid;place-items:center;flex:none}
+.opt i svg{width:20px;height:20px}
+.opt small{display:block;color:var(--mut);font-size:13px}
+.times{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px 8px;padding:0 18px}
+.times::-webkit-scrollbar{display:none}
+.map{position:relative;height:330px;margin:-6px -18px 0;background:#EDEFF3;overflow:hidden}
+@media (max-width:600px){.map{margin-top:calc(-14px - env(safe-area-inset-top,0px))}}
+.map svg{width:100%;height:100%}
+.map .bk{position:absolute;top:14px;left:18px;width:44px;height:44px;border-radius:14px;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.map .bk svg{width:20px;height:20px}
+.panel{position:relative;margin:-26px -18px 0;background:var(--bg);border-radius:28px 28px 0 0;padding:12px 18px 0}
+.panel .grab{width:42px;height:5px;border-radius:3px;background:#D9DBE3;margin:0 auto 14px}
+.eta h2{margin:0;font:800 26px/1.1 var(--f)}
+.eta p{margin:4px 0 0;color:var(--acc);font-weight:700}
+.no{background:var(--acc-soft);color:var(--acc);border-radius:12px;padding:6px 12px;font-weight:700;font-size:14px;flex:none}
+.bars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:18px 0 6px}
+.bars i{height:5px;border-radius:3px;background:#E1E3EA;position:relative;overflow:hidden}
+.bars i b{position:absolute;inset:0;background:var(--acc);transform-origin:left;transform:scaleX(0);transition:transform .8s linear}
+.bars-l{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:12.5px;color:var(--mut);margin-bottom:16px}
+.bars-l span:nth-child(2),.bars-l span:nth-child(3){text-align:center}.bars-l span:last-child{text-align:right}
+.bars-l .on{color:var(--ink);font-weight:700}
+.courier{display:flex;align-items:center;gap:14px}
+.courier .av{width:52px;height:52px;border-radius:50%;background:linear-gradient(140deg,#7C8DB5,#4E5F86);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.courier a{width:52px;height:52px;border-radius:16px;background:var(--acc);color:#fff;display:grid;place-items:center;margin-left:auto;flex:none}
+.courier a svg{width:22px;height:22px}
+.rate{display:flex;gap:6px;justify-content:center;margin:8px 0 4px}
+.rate button{border:0;background:none;font-size:34px;color:#D9DBE3;padding:0 2px;line-height:1}
+.rate button.on{color:#F5B33A}
+.big-emoji{font-size:90px;height:170px;border-radius:24px;display:grid;place-items:center;margin-bottom:14px}
+.qchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ostat{display:inline-block;padding:4px 10px;border-radius:9px;font-size:12.5px;font-weight:700;background:var(--acc-soft);color:var(--acc)}
+.ostat.ok{background:#E3F6EC;color:var(--ok)}
+</style>
+</head>
+<body>
+<script src="kit.js?v=2"></script>
+<script>
+(() => {
+const {esc, rub, ic, plural} = K;
+const CATS = [["all","Все"],["pizza","Пицца"],["burger","Бургеры"],["roll","Роллы"],["salad","Салаты"],["drink","Напитки"]];
+const TINT = {pizza:"#FFF1E2", burger:"#FFF5D6", roll:"#FFE7E2", salad:"#E5F3E2", drink:"#FCE6EE"};
+const MENU = [
+  {id:1,c:"pizza",n:"Пепперони",w:"30 см · 520 г",p:590,e:"🍕",hit:1,t:"Пикантная пепперони, моцарелла и томатный соус на тонком тесте."},
+  {id:2,c:"burger",n:"Чизбургер",w:"280 г",p:390,e:"🍔",hit:1,t:"Говяжья котлета, чеддер, маринованный огурец и фирменный соус."},
+  {id:3,c:"roll",n:"Филадельфия",w:"8 шт",p:490,e:"🍣",hit:1,t:"Лосось, сливочный сыр, огурец и рис."},
+  {id:4,c:"salad",n:"Цезарь",w:"250 г",p:350,e:"🥗",hit:1,t:"Курица гриль, романо, пармезан, сухарики и соус цезарь."},
+  {id:5,c:"pizza",n:"Маргарита",w:"30 см · 450 г",p:490,e:"🍕",t:"Томаты, моцарелла и базилик."},
+  {id:6,c:"pizza",n:"Четыре сыра",w:"30 см · 480 г",p:650,e:"🧀",t:"Моцарелла, дор-блю, пармезан и чеддер на сливочном соусе."},
+  {id:7,c:"burger",n:"Двойной бургер",w:"360 г",p:520,e:"🍔",t:"Две котлеты, двойной чеддер, бекон и лук."},
+  {id:8,c:"burger",n:"Чикен бургер",w:"300 г",p:360,e:"🍗",t:"Хрустящее куриное филе, салат и соус ранч."},
+  {id:9,c:"roll",n:"Калифорния",w:"8 шт",p:420,e:"🍱",t:"Краб, авокадо, огурец и икра масаго."},
+  {id:10,c:"roll",n:"Запечённый лосось",w:"8 шт",p:460,e:"🍣",t:"Ролл с лососем под сырной шапкой."},
+  {id:11,c:"salad",n:"Греческий",w:"240 г",p:320,e:"🥙",t:"Овощи, фета, маслины и орегано."},
+  {id:12,c:"drink",n:"Морс",w:"0,5 л",p:195,e:"🥤",hit:1,t:"Клюквенный морс собственного приготовления."},
+  {id:13,c:"drink",n:"Лимонад",w:"0,5 л",p:220,e:"🍋",t:"Цитрусовый лимонад с мятой."},
+  {id:14,c:"drink",n:"Латте",w:"0,3 л",p:180,e:"☕",t:"Эспрессо и молоко."}
+];
+const PROMO = {"PATHCODE":{t:"−15% на заказ",f:s=>Math.round(s*.15)}, "ПЕРВЫЙ":{t:"−200 ₽ на первый заказ",f:s=>200,first:1}, "FREE":{t:"Бесплатная доставка",ship:1}};
+const STAGES = ["Принят","Готовится","В пути","У вас"];
+const DUR = [12, 40, 70]; // секунды демо на этапы
+const dish = id => MENU.find(x => x.id === +id);
+
+/* ---------- корзина ---------- */
+const S = () => K.s;
+const key = (id, sz) => id + (sz ? "-" + sz : "");
+const linePrice = l => dish(l.id).p + (l.sz === 35 ? 180 : 0);
+const cartCount = () => S().cart.reduce((a, l) => a + l.q, 0);
+const subtotal = () => S().cart.reduce((a, l) => a + linePrice(l) * l.q, 0);
+function totals(){
+  const sub = subtotal(), pr = S().promo && PROMO[S().promo];
+  let disc = 0, ship = sub >= 1000 || sub === 0 ? 0 : 149;
+  if (pr) { if (pr.ship) ship = 0; else disc = Math.min(sub, pr.f(sub)); }
+  return {sub, disc, ship, total: sub - disc + ship};
+}
+const qtyOf = id => S().cart.filter(l => l.id === +id).reduce((a, l) => a + l.q, 0);
+function add(id, sz){ const k = key(id, sz), l = S().cart.find(l => l.k === k); l ? l.q++ : S().cart.push({k, id:+id, sz:sz || 0, q:1}); K.save(); }
+function dec(id){ const ls = S().cart.filter(l => l.id === +id); const l = ls[ls.length - 1]; if (!l) return; l.q--; if (!l.q) S().cart.splice(S().cart.indexOf(l), 1); K.save(); }
+
+/* ---------- заказы ---------- */
+function stageOf(o){ const s = (Date.now() - o.at) / 1000; if (s < DUR[0]) return [0, s / DUR[0]]; if (s < DUR[0] + DUR[1]) return [1, (s - DUR[0]) / DUR[1]]; if (s < DUR[0] + DUR[1] + DUR[2]) return [2, (s - DUR[0] - DUR[1]) / DUR[2]]; return [3, 1]; }
+const etaMin = o => { const total = DUR[0] + DUR[1] + DUR[2], left = Math.max(0, total - (Date.now() - o.at) / 1000); return Math.ceil(left / total * 36); };
+
+/* ---------- экраны ---------- */
+let curCat = "all";
+function menu(){
+  const s = S(), a = s.addrs.find(x => x.id === s.addr) || s.addrs[0];
+  const list = MENU.filter(x => curCat === "all" ? x.hit : x.c === curCat);
+  return `<div class="top"><button class="addr" data-a="addrs"><small>Доставим по адресу</small><b>${esc(a.t)} ${ic("next")}</b></button><button class="ibtn" data-a="go" data-to="profile" aria-label="Профиль">${ic("user")}</button></div>
+  <button class="search" data-a="go" data-to="search">${ic("search")} Пицца, роллы, бургеры</button>
+  <div class="chips">${CATS.map(([k, n]) => `<button class="chip ${curCat===k?"on":""}" data-a="cat" data-c="${k}">${n}</button>`).join("")}</div>
+  <div class="h2" style="margin-top:4px">${curCat === "all" ? "Хиты недели" : CATS.find(c => c[0] === curCat)[1]} ${curCat === "all" ? '<button data-a="cat" data-c="pizza">Всё меню</button>' : ""}</div>
+  <div class="grid">${list.map(card).join("")}</div>
+  ${curCat === "all" ? `<div class="h2">Всё меню</div><div class="grid">${MENU.filter(x => !x.hit).map(card).join("")}</div>` : ""}
+  <div style="height:${cartCount() ? 70 : 0}px"></div>
+  ${cartBar()}`;
+}
+const cartBar = () => cartCount() ? `<button class="cartbar" data-a="go" data-to="cart"><span>${ic("bag")} ${cartCount()} ${plural(cartCount(),"товар","товара","товаров")}</span><b>${rub(totals().sub)}</b></button>` : "";
+function card(x){
+  const q = qtyOf(x.id);
+  return `<div class="dish" data-a="dish" data-id="${x.id}" role="button" tabindex="0"><div class="pic" style="background:${TINT[x.c]}">${x.e}</div><b>${esc(x.n)}</b><small>${x.w}</small>
+  <div class="ft"><span>${rub(x.p)}</span>${q ? `<div class="step"><button data-a="dec" data-id="${x.id}" aria-label="Убрать">${ic("minus")}</button><b>${q}</b><button class="p" data-a="inc" data-id="${x.id}" aria-label="Добавить">${ic("plus")}</button></div>` : `<button class="plus" data-a="inc" data-id="${x.id}" aria-label="Добавить ${esc(x.n)}">${ic("plus")}</button>`}</div></div>`;
+}
+K.on("cat", el => { curCat = el.dataset.c; K.render(); });
+K.on("inc", (el, e) => { e.stopPropagation(); const x = dish(el.dataset.id); add(x.id, x.c === "pizza" ? 30 : 0); K.render(); if (!qtyOf(x.id) || qtyOf(x.id) === 1) K.toast(x.n + " в корзине"); });
+K.on("dec", (el, e) => { e.stopPropagation(); dec(el.dataset.id); K.render(); });
+let szSel = 30;
+K.on("dish", (el, e) => {
+  if (e.target.closest("[data-a=inc],[data-a=dec]")) return;
+  const x = dish(el.dataset.id); szSel = 30;
+  const draw = () => K.sheet(`<div class="big-emoji" style="background:${TINT[x.c]}">${x.e}</div><h3>${esc(x.n)}</h3><p>${x.w} · ${esc(x.t)}</p>
+  ${x.c === "pizza" ? `<div class="seg"><button class="${szSel===30?"on":""}" data-a="sz" data-s="30">30 см</button><button class="${szSel===35?"on":""}" data-a="sz" data-s="35">35 см · +180 ₽</button></div>` : ""}
+  <button class="btn" data-a="addSheet" data-id="${x.id}">Добавить · ${rub(x.p + (szSel === 35 ? 180 : 0))}</button>`);
+  K._redrawDish = draw; draw();
+});
+K.on("sz", el => { szSel = +el.dataset.s; K._redrawDish(); });
+K.on("addSheet", el => { const x = dish(el.dataset.id); add(x.id, x.c === "pizza" ? szSel : 0); K.close(); K.toast(x.n + (x.c === "pizza" ? ", " + szSel + " см" : "") + " в корзине"); K.render(); });
+K.on("addrs", () => {
+  const s = S();
+  K.sheet(`<h3>Куда доставить?</h3><p>Выберите адрес или добавьте новый</p>${s.addrs.map(a => `<button class="opt ${a.id===s.addr?"on":""}" data-a="setAddr" data-id="${a.id}"><i>${ic("pin")}</i><span><b>${esc(a.t)}</b><small>${esc(a.n || "Без комментария")}</small></span></button>`).join("")}
+  <label class="field" style="margin-top:8px"><span>Новый адрес</span><input id="newAddr" placeholder="Улица, дом" maxlength="40"></label><label class="field"><span>Квартира, подъезд</span><input id="newAddrN" placeholder="кв. 12, подъезд 2" maxlength="40"></label><button class="btn ghost" data-a="addAddr">Добавить адрес</button>`);
+});
+K.on("setAddr", el => { S().addr = el.dataset.id; K.save(); K.close(); K.render(); K.toast("Адрес выбран"); });
+K.on("addAddr", () => { const t = K.$("#newAddr").value.trim(); if (t.length < 4) { K.toast("Введите улицу и дом"); return; } const a = {id:"a" + Date.now().toString(36), t, n:K.$("#newAddrN").value.trim()}; S().addrs.push(a); S().addr = a.id; K.save(); K.close(); K.render(); K.toast("Адрес добавлен"); });
+
+let sq = "";
+function search(){
+  return `<h1 class="h1" style="margin:6px 0 14px">Поиск</h1>
+  <label class="search">${ic("search")}<input data-in="sq" placeholder="Что хотите заказать?" value="${esc(sq)}" aria-label="Поиск по меню"></label>
+  <div class="qchips">${["Пицца","Роллы","Лосось","Сыр","Курица","Напитки"].map(t => `<button class="chip" data-a="sqq" data-q="${t}">${t}</button>`).join("")}</div>
+  <div id="sres">${sres()}</div>${cartBar()}`;
+}
+function sres(){
+  const q = sq.trim().toLowerCase(); if (!q) return '<div class="empty"><b>Ищите по названию или составу</b>Например: «сыр» или «лосось»</div>';
+  const map = {"пицца":"pizza","роллы":"roll","напитки":"drink"};
+  const r = MENU.filter(x => x.n.toLowerCase().includes(q) || x.t.toLowerCase().includes(q) || map[q] === x.c);
+  return r.length ? `<div class="grid">${r.map(card).join("")}</div>` : '<div class="empty"><b>Ничего не нашли</b>Попробуйте другое слово</div>';
+}
+K.onInput("sq", el => { sq = el.value; K.$("#sres").innerHTML = sres(); });
+K.on("sqq", el => { sq = el.dataset.q; K.render(); });
+
+function cart(){
+  const s = S(), t = totals();
+  if (!s.cart.length) return `<div class="back"><button class="ibtn" data-a="back" data-to="menu" aria-label="Назад">${ic("back")}</button><div><b>Корзина</b><small>пока пусто</small></div></div><div class="empty" style="padding-top:60px"><div style="font-size:64px">🛍️</div><b>В корзине ничего нет</b>Добавьте блюда из меню<div style="margin-top:16px"><button class="btn sm" data-a="go" data-to="menu" style="margin:0 auto">В меню</button></div></div>`;
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="menu" aria-label="Назад">${ic("back")}</button><div><b>Корзина</b><small>${cartCount()} ${plural(cartCount(),"товар","товара","товаров")} · доставка 30–40 мин</small></div></div>
+  <div class="list">${s.cart.map(l => { const x = dish(l.id); return `<div class="ci"><div class="pic" style="background:${TINT[x.c]}">${x.e}</div><div class="tx"><b>${esc(x.n)}${l.sz ? `, ${l.sz} см` : ""}</b><small>${rub(linePrice(l))}</small></div>
+    <div class="step"><button data-a="lineDec" data-k="${l.k}" aria-label="Меньше">${ic("minus")}</button><b>${l.q}</b><button class="p" data-a="lineInc" data-k="${l.k}" aria-label="Больше">${ic("plus")}</button></div></div>`; }).join("")}</div>
+  <div class="promo">${ic("tag")}<input id="promo" placeholder="Промокод" value="${esc(s.promo || "")}" aria-label="Промокод" ${s.promo ? "disabled" : ""}>${s.promo ? '<button data-a="promoOff">Убрать</button>' : '<button data-a="promo">Применить</button>'}</div>
+  ${s.promo ? `<p class="mut" style="margin:-4px 0 10px;font-size:13.5px">Промокод ${esc(s.promo)}: ${PROMO[s.promo].t}</p>` : '<p class="mut" style="margin:-4px 0 10px;font-size:13px">Попробуйте PATHCODE — скидка 15%</p>'}
+  <div class="card kv"><div><span>Товары</span><b>${rub(t.sub)}</b></div>${t.disc ? `<div><span>Скидка</span><b style="color:var(--ok)">−${rub(t.disc)}</b></div>` : ""}
+  <div><span>Доставка</span><b class="${t.ship ? "" : "free"}">${t.ship ? rub(t.ship) : "Бесплатно"}</b></div>${t.ship ? `<div><span class="mut" style="font-size:13px">До бесплатной доставки</span><b style="font-size:13px">${rub(1000 - t.sub)}</b></div>` : ""}
+  <div><b style="text-align:left">Итого</b><b class="tot">${rub(t.total)}</b></div></div>
+  <div class="dock"><button class="btn" data-a="go" data-to="checkout">Оформить заказ ${ic("arrow")}</button></div>`;
+}
+K.on("lineInc", el => { const l = S().cart.find(l => l.k === el.dataset.k); l.q++; K.save(); K.render(); });
+K.on("lineDec", el => { const l = S().cart.find(l => l.k === el.dataset.k); l.q--; if (!l.q) S().cart.splice(S().cart.indexOf(l), 1); K.save(); K.render(); });
+K.on("promo", () => {
+  const c = K.$("#promo").value.trim().toUpperCase(), p = PROMO[c];
+  if (!p) { K.toast("Такого промокода нет"); return; }
+  if (p.first && S().orders.length) { K.toast("Этот код только для первого заказа"); return; }
+  S().promo = c; K.save(); K.toast("Промокод применён: " + p.t); K.render();
+});
+K.on("promoOff", () => { S().promo = null; K.save(); K.render(); });
+
+let co = {when:"asap", time:null, pay:"card", note:""};
+function checkout(){
+  const s = S(), t = totals(), a = s.addrs.find(x => x.id === s.addr) || s.addrs[0];
+  if (!s.cart.length) return cart();
+  const now = new Date(), slots = [];
+  for (let i = 1; i <= 8; i++) { const d = new Date(now.getTime() + (45 + i * 30) * 60000); d.setMinutes(d.getMinutes() < 30 ? 0 : 30, 0, 0); const tt = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0"); if (!slots.includes(tt)) slots.push(tt); }
+  return `<div class="back"><button class="ibtn" data-a="back" data-to="cart" aria-label="Назад">${ic("back")}</button><div><b>Оформление</b><small>${rub(t.total)} · ${cartCount()} ${plural(cartCount(),"товар","товара","товаров")}</small></div></div>
+  <div class="h2" style="margin-top:0">Адрес</div>
+  <button class="opt on" data-a="addrs"><i>${ic("pin")}</i><span style="flex:1"><b>${esc(a.t)}</b><small>${esc(a.n || "Добавьте квартиру и подъезд")}</small></span>${ic("next")}</button>
+  <div class="h2">Когда</div>
+  <div class="seg"><button class="${co.when==="asap"?"on":""}" data-a="when" data-w="asap">Как можно скорее</button><button class="${co.when==="time"?"on":""}" data-a="when" data-w="time">Ко времени</button></div>
+  ${co.when === "time" ? `<div class="times">${slots.map(x => `<button class="chip ${co.time===x?"on":""}" data-a="time" data-t="${x}">${x}</button>`).join("")}</div>` : '<p class="mut" style="margin:-6px 0 0;font-size:13.5px">Привезём за 30–40 минут</p>'}
+  <div class="h2">Оплата</div>
+  ${[["card","card","Картой онлайн","Visa, Мир, Mastercard"],["sbp","sbp","СБП","Через приложение банка"],["cash","cash","Наличными курьеру","Подготовим сдачу"]].map(([k,i,n,d]) => `<button class="opt ${co.pay===k?"on":""}" data-a="pay" data-p="${k}"><i>${ic(i)}</i><span><b>${n}</b><small>${d}</small></span></button>`).join("")}
+  <label class="field" style="margin-top:8px"><span>Комментарий курьеру</span><textarea data-in="note" placeholder="Например: позвонить за 5 минут">${esc(co.note)}</textarea></label>
+  <div class="dock"><button class="btn" data-a="place" ${co.when === "time" && !co.time ? "disabled" : ""}>${co.pay === "cash" ? "Заказать" : "Оплатить"} · ${rub(t.total)}</button></div>`;
+}
+K.on("when", el => { co.when = el.dataset.w; K.render(); });
+K.on("time", el => { co.time = el.dataset.t; K.render(); });
+K.on("pay", el => { co.pay = el.dataset.p; K.render(); });
+K.onInput("note", el => { co.note = el.value; });
+K.on("place", () => {
+  const go = () => {
+    const s = S(), t = totals(), a = s.addrs.find(x => x.id === s.addr) || s.addrs[0];
+    const o = {id:"o" + Date.now().toString(36), no: 1048 + s.orders.length, items: s.cart.map(l => ({n: dish(l.id).n + (l.sz ? ` ${l.sz} см` : ""), q:l.q, p:linePrice(l), id:l.id, sz:l.sz})), ...t, addr:a.t, pay:co.pay, when: co.when === "time" ? co.time : null, note:co.note, at: Date.now() + (co.when === "time" ? 0 : 0), rate:0};
+    s.orders.unshift(o); s.cart = []; s.promo = null; K.save(); co = {when:"asap", time:null, pay:"card", note:""}; K.close(); K.go("track/" + o.id, true);
+  };
+  if (co.pay === "cash") { go(); return; }
+  K.sheet(`<h3>${co.pay === "sbp" ? "Оплата через СБП" : "Оплата картой"}</h3><p>Демо-режим: деньги не списываются.</p><div class="card kv" style="background:var(--soft)"><div><span>К оплате</span><b>${rub(totals().total)}</b></div><div><span>Получатель</span><b>Кафе «Сытый кот»</b></div></div><button class="btn" style="margin-top:14px" data-a="payOk">Подтвердить оплату</button>`);
+  K._payGo = go;
+});
+K.on("payOk", el => { el.disabled = true; el.textContent = "Проводим оплату…"; setTimeout(() => { K.toast("Оплачено"); K._payGo(); }, 900); });
+
+/* ---------- отслеживание ---------- */
+const ROUTE = "M70 250 L70 205 L210 205 L210 120 L320 120 L320 60";
+function track(id){
+  const o = S().orders.find(o => o.id === id); if (!o) return orders();
+  const [st] = stageOf(o);
+  return `<div class="map"><svg viewBox="0 0 390 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="390" height="330" fill="#EDEFF3"/>
+    <path d="M250 10h120a20 20 0 0 1 20 20v70H250z" fill="#D7EED3"/><path d="M0 268h120v62H0z" fill="#D7EED3"/><circle cx="330" cy="250" r="44" fill="#DCE9F7"/>
+    <g stroke="#fff" stroke-width="16" stroke-linecap="square"><path d="M0 205H390M210 0V330M70 120V330M0 120H390M320 0V205"/></g>
+    <g stroke="#fff" stroke-width="7"><path d="M140 0V330M0 60H390M260 120V330M0 290H390"/></g>
+    <path id="route" d="${ROUTE}" fill="none" stroke="#FF6B2C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="routeDone" d="${ROUTE}" fill="none" stroke="#FFC7AE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(70 250)"><rect x="-22" y="-22" width="44" height="44" rx="12" fill="#fff"/><g transform="translate(-10 -10) scale(.84)" fill="none" stroke="#111521" stroke-width="2"><path d="M3 9h18l-1.5-5h-15zM4 9v11h16V9M9 20v-6h6v6"/></g></g>
+    <g transform="translate(320 60)"><rect x="-24" y="-24" width="48" height="48" rx="14" fill="#111521"/><g transform="translate(-11 -11) scale(.92)" fill="none" stroke="#fff" stroke-width="2"><path d="M4 11 12 4l8 7M6 9.5V20h12V9.5"/></g></g>
+    <g id="cour" transform="translate(70 250)"><circle r="30" fill="#FF6B2C" opacity=".18"/><circle r="21" fill="#FF6B2C"/><g transform="translate(-10 -10) scale(.84)" fill="none" stroke="#fff" stroke-width="2.2"><circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h5l3 7M10 9l2 7h6"/></g></g>
+  </svg><button class="bk" data-a="toOrders" aria-label="К заказам">${ic("back")}</button></div>
+  <div class="panel"><div class="grab"></div>
+    <div class="row eta"><div><h2 id="stT">${["Заказ принят","Готовим заказ","Курьер в пути","Заказ доставлен"][st]}</h2><p id="stE"></p></div><span class="no">№ ${o.no}</span></div>
+    <div class="bars">${STAGES.map((_, i) => `<i><b id="bar${i}"></b></i>`).join("")}</div>
+    <div class="bars-l">${STAGES.map((n, i) => `<span id="lab${i}">${n}</span>`).join("")}</div>
+    <div class="card courier" id="cour-card"><span class="av">ДК</span><div><b style="font-size:16px">Дмитрий</b><br><small class="mut"><span style="color:#F5B33A">★</span> 4,9 · курьер на велосипеде</small></div><a href="tel:+79000000000" aria-label="Позвонить курьеру">${ic("phone")}</a></div>
+    <div id="rateBox"></div>
+    <div class="card kv" style="margin-top:10px"><div><span>Заказ</span><b>${o.items.map(i => esc(i.n) + (i.q > 1 ? " × " + i.q : "")).join(", ")}</b></div><div><span>Адрес</span><b>${esc(o.addr)}</b></div><div><span>${o.pay === "cash" ? "К оплате курьеру" : "Оплачено"}</span><b>${rub(o.total)}</b></div></div>
+    <button class="btn ghost" style="margin:12px 0 4px" data-a="repeat" data-id="${o.id}">Повторить заказ</button>
+  </div>`;
+}
+function trackTick(id){
+  const o = S().orders.find(o => o.id === id); if (!o) return;
+  const [st, f] = stageOf(o);
+  const path = K.$("#route"), done = K.$("#routeDone"), cour = K.$("#cour"); if (!path) return;
+  const L = path.getTotalLength(), k = st < 2 ? 0 : st === 2 ? f : 1, p = path.getPointAtLength(L * k);
+  cour.setAttribute("transform", `translate(${p.x} ${p.y})`);
+  done.style.strokeDasharray = L; done.style.strokeDashoffset = L * (1 - k);
+  for (let i = 0; i < 4; i++) { K.$("#bar" + i).style.transform = `scaleX(${i < st ? 1 : i === st ? (st === 3 ? 1 : Math.max(.08, f)) : 0})`; K.$("#lab" + i).classList.toggle("on", i === st); }
+  K.$("#stT").textContent = ["Заказ принят","Готовим заказ","Курьер в пути","Заказ доставлен"][st];
+  const m = etaMin(o);
+  K.$("#stE").textContent = st === 3 ? "Приятного аппетита!" : st === 2 ? `Приедет через ${m} ${plural(m,"минуту","минуты","минут")}` : `Доставим примерно через ${m} ${plural(m,"минуту","минуты","минут")}`;
+  K.$("#cour-card").style.display = st >= 2 && st < 3 ? "" : st === 3 ? "none" : "";
+  const rb = K.$("#rateBox");
+  if (st === 3 && !rb.dataset.on) { rb.dataset.on = 1; rb.innerHTML = `<div class="card center" style="margin-top:4px"><b>Оцените заказ</b><div class="rate">${[1,2,3,4,5].map(n => `<button class="${o.rate >= n ? "on" : ""}" data-a="rate" data-id="${o.id}" data-n="${n}" aria-label="${n} из 5">★</button>`).join("")}</div><small class="mut">${o.rate ? "Спасибо за оценку!" : "Это поможет кафе стать лучше"}</small></div>`; }
+}
+K.on("toOrders", () => { K._depth = 0; K.go("orders", true); });
+K.on("rate", el => { const o = S().orders.find(o => o.id === el.dataset.id); o.rate = +el.dataset.n; K.save(); const rb = K.$("#rateBox"); rb.dataset.on = ""; trackTick(o.id); K.toast("Спасибо за оценку!"); });
+K.on("repeat", el => { const o = S().orders.find(o => o.id === el.dataset.id); o.items.forEach(i => { for (let n = 0; n < i.q; n++) add(i.id, i.sz); }); K.toast("Блюда добавлены в корзину"); K.go("cart"); });
+
+function orders(){
+  const os = S().orders;
+  return `<h1 class="h1" style="margin:6px 0 16px">Заказы</h1>
+  <div class="list">${os.map(o => { const [st] = stageOf(o), d = new Date(o.at); return `<button class="item" data-a="go" data-to="track/${o.id}"><span class="ic">${ic(st === 3 ? "check" : "bike")}</span><span class="tx"><b>Заказ № ${o.no}</b><small>${d.getDate()} ${K.MON[d.getMonth()]}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} · ${o.items.length} ${plural(o.items.length,"позиция","позиции","позиций")}</small><span class="ostat ${st===3?"ok":""}" style="margin-top:6px">${STAGES[st]}</span></span><span class="end">${rub(o.total)}</span></button>`; }).join("") || '<div class="empty"><div style="font-size:60px">🧾</div><b>Заказов пока нет</b>Первый заказ со скидкой 200 ₽ по коду ПЕРВЫЙ<div style="margin-top:16px"><button class="btn sm" data-a="go" data-to="menu" style="margin:0 auto">В меню</button></div></div>'}</div>`;
+}
+function profile(){
+  const s = S();
+  return `<h1 class="h1" style="margin:6px 0 16px">Профиль</h1>
+  <label class="field"><span>Имя</span><input data-ch="name" value="${esc(s.name)}" maxlength="24"></label>
+  <label class="field"><span>Телефон</span><input data-ch="phone" value="${esc(s.phone)}" inputmode="tel"></label>
+  <div class="h2">Адреса</div>
+  <div class="list">${s.addrs.map(a => `<div class="item"><span class="ic">${ic("pin")}</span><span class="tx"><b>${esc(a.t)}</b><small>${esc(a.n || "—")}</small></span>${s.addrs.length > 1 ? `<button class="ibtn" data-a="delAddr" data-id="${a.id}" aria-label="Удалить адрес">${ic("trash")}</button>` : ""}</div>`).join("")}</div>
+  <button class="btn ghost" style="margin-top:10px" data-a="addrs">${ic("plus")} Добавить адрес</button>
+  <div class="h2">Промокоды</div>
+  <div class="card kv"><div><span>PATHCODE</span><b>−15% на заказ</b></div><div><span>ПЕРВЫЙ</span><b>−200 ₽ на первый заказ</b></div><div><span>FREE</span><b>Бесплатная доставка</b></div></div>
+  <button class="btn ghost" style="margin-top:14px" data-a="reset">Сбросить демо-данные</button>
+  <div class="demo-note">Это демо-приложение от PathCode: оплата не проводится, заказы хранятся только в этом браузере. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать приложение для своего кафе</a></div>`;
+}
+K.onChange("name", el => { S().name = el.value.trim() || S().name; K.save(); K.toast("Сохранено"); });
+K.onChange("phone", el => { S().phone = el.value.trim(); K.save(); K.toast("Сохранено"); });
+K.on("delAddr", el => { const s = S(); s.addrs = s.addrs.filter(a => a.id !== el.dataset.id); if (!s.addrs.find(a => a.id === s.addr)) s.addr = s.addrs[0].id; K.save(); K.render(); });
+K.on("reset", async () => { if (await K.ask({title:"Сбросить демо-данные?", text:"Очистим корзину, заказы и адреса.", ok:"Сбросить", danger:true})) { K.reset(); K.go("menu", true); K.toast("Данные сброшены"); } });
+
+K.app({
+  key: "pc-food", title: "Сытый кот — доставка еды",
+  defaults: () => ({v:1, name:"Гость", phone:"+7 900 000-00-00", addr:"a1", addrs:[{id:"a1", t:"ул. Ленина, 12", n:"кв. 45, подъезд 2"}], cart:[{k:"1-30",id:1,sz:30,q:1},{k:"2",id:2,sz:0,q:1},{k:"12",id:12,sz:0,q:2}], promo:null, orders:[]}),
+  side: {tag:"Концепт · Android", h1:"Доставка еды", h1b:"для кафе", text:"Меню, корзина и отслеживание курьера: заказы приходят без комиссии агрегаторов.", feats:["Меню с фото и ценами","Оплата картой и СБП","Курьер на карте"]},
+  tabs: [{r:"menu",l:"Меню",i:"home"},{r:"search",l:"Поиск",i:"search"},{r:"orders",l:"Заказы",i:"list",m:["track"]},{r:"profile",l:"Профиль",i:"user"}],
+  start: "menu", noTabs: ["cart","checkout","track"],
+  routes: {menu, search, cart, checkout, track, orders, profile},
+  mounted: {track: id => { trackTick(id); K.timer(() => trackTick(id), 1000); }}
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0F12">
+<title>Пульс — фитнес-клуб</title>
+<meta name="description" content="Демо-приложение фитнес-клуба: расписание и запись, абонемент, QR-пропуск, шаги и активность.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="kit.css?v=2">
+<style>
+:root{--bg:#0E0F12;--card:#1A1C21;--ink:#F3F4F6;--mut:#8C919C;--line:#2A2D34;--soft:#24272D;--acc:#CDF23C;--acc-ink:#121407;--acc-soft:#2B3315;
+  --side-acc:#CDF23C;--tab-on:#CDF23C;--tab-on-ink:#121407;--chip-on:#F3F4F6;--chip-on-ink:#121318;color-scheme:dark}
+.tabbar{background:#131418;border-top-color:#22252B}
+.ibtn{background:var(--card);color:var(--ink)}
+.item,.card,.chip{box-shadow:none}
+.chip{background:var(--card);color:var(--ink)}
+.field input,.field select{background:var(--card)}
+.sheet{background:#17191D}
+.member{position:relative;overflow:hidden;border-radius:26px;padding:20px;background:var(--acc);color:#121407}
+.member::after{content:"";position:absolute;right:-60px;top:-40px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.22)}
+.member small{font-size:13.5px;font-weight:500;opacity:.75}
+.member h2{margin:4px 0 18px;font:800 24px/1.1 var(--f)}
+.member .qb{position:absolute;right:16px;top:16px;z-index:1;width:54px;height:54px;border-radius:16px;border:0;background:#121407;color:var(--acc);display:grid;place-items:center}
+.member .qb svg{width:26px;height:26px}
+.member .bar{position:relative;z-index:1;height:6px;border-radius:3px;background:rgba(18,20,7,.15);margin-bottom:10px}
+.member .bar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:#121407}
+.member .row{position:relative;z-index:1;font-size:14px;font-weight:600}
+.member.frozen{background:#9FB4C9}
+.today{display:grid;grid-template-columns:1.1fr 1fr;gap:10px}
+.ring{background:var(--card);border-radius:24px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;grid-row:span 2;border:0;color:inherit}
+.ring svg{width:128px;height:128px;transform:rotate(-90deg)}
+.ring .in{position:relative;width:128px;height:128px}
+.ring .in div{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring b{font-size:26px;line-height:1}
+.ring small{color:var(--mut);font-size:12.5px}
+.ring p{margin:10px 0 0;color:var(--mut);font-size:13px}
+.mini{background:var(--card);border-radius:22px;padding:14px 16px;border:0;color:inherit;text-align:left}
+.mini small{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:13px}
+.mini small svg{width:15px;height:15px}
+.mini b{display:block;font-size:26px;margin-top:6px}
+.mini b span{font-size:14px;color:var(--mut);font-weight:500}
+.mini.measuring b{color:var(--acc)}
+.going{border:0;border-radius:11px;padding:8px 12px;font-weight:700;font-size:13px;background:var(--acc-soft);color:var(--acc);white-space:nowrap}
+.days{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px 14px;padding:0 18px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:0 0 58px;height:74px;border:0;border-radius:18px;background:var(--card);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.day small{font-size:12.5px;color:var(--mut)}.day b{font-size:21px}
+.day.on{background:var(--acc);color:#121407}.day.on small{color:#3B4314}
+.cls{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:22px;padding:14px 14px 14px 16px;border:1.5px solid transparent;width:100%;text-align:left;color:inherit}
+.cls.mine{border-color:rgba(205,242,60,.45)}
+.cls .tm{flex:none;width:58px}
+.cls .tm b{display:block;font-size:19px}
+.cls .tm small{color:var(--mut);font-size:12.5px}
+.cls .ln{width:3px;align-self:stretch;border-radius:2px;background:var(--line)}
+.cls.mine .ln{background:var(--acc)}
+.cls .tx{flex:1;min-width:0}
+.cls .tx b{display:block;font-size:16px}
+.cls .tx small{color:var(--mut);font-size:13px}
+.cls .bt{border:0;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;background:#26292F;color:var(--ink);white-space:nowrap;flex:none}
+.cls .bt.on{background:var(--acc);color:#121407}
+.cls .bt.wait{background:#3A3423;color:#F2C55C}
+.cls.past{opacity:.45}
+.pass{background:#fff;color:#121318;border-radius:26px;padding:20px;text-align:center}
+.pass p{margin:0 0 12px;color:#6B7080;font-size:14px}
+.pass #qr{width:212px;height:212px;margin:0 auto 14px}
+.pass #qr svg,.pass #qr img{width:100%;height:100%}
+.pass b{display:block;font-size:20px}
+.pass small{color:#6B7080}
+.pass .ref{margin-top:12px;font-size:12.5px;color:#8B90A0}
+.vis .ic{background:var(--acc-soft);color:var(--acc)}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center}
+.wk i{display:block;height:64px;border-radius:12px;background:var(--soft);position:relative;overflow:hidden}
+.wk i b{position:absolute;left:0;right:0;bottom:0;background:var(--acc);border-radius:12px}
+.wk small{display:block;margin-top:6px;color:var(--mut);font-size:12px}
+.set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border-bottom:0}.set small{display:block;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="kit.js?v=2"></script>
+<script>
+(() => {
+const {esc, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, DOWL, MON} = K;
+const TYPES = [["all","Все"],["mine","Мои"],["cardio","Кардио"],["power","Силовые"],["yoga","Йога"],["box","Бокс"]];
+const TPL = [
+  ["08:00","Хатха-йога","yoga",60,"Мария","зал 2",14,"Мягкая практика: дыхание, растяжка и баланс. Подходит новичкам."],
+  ["09:00","Функциональный тренинг","power",50,"Артём","зал 1",16,"Круговая тренировка на всё тело с собственным весом и гирями."],
+  ["10:00","Сайкл","cardio",45,"Ирина","сайкл-студия",12,"Интервальная езда под музыку. Возьмите воду и полотенце."],
+  ["12:30","Пилатес","yoga",55,"Ольга","зал 2",12,"Мышцы кора, осанка и гибкость без ударной нагрузки."],
+  ["18:00","Сайкл","cardio",45,"Ирина","сайкл-студия",12,"Вечерний сайкл: 45 минут, до 600 ккал."],
+  ["19:00","Силовой тренинг","power",60,"Артём","зал 1",14,"Работа со штангой и гантелями в малой группе."],
+  ["19:30","Бокс","box",60,"Артём","ринг",10,"Техника ударов, работа на лапах и мешках. Перчатки дадим."],
+  ["20:30","Стретчинг","yoga",50,"Мария","зал 2",15,"Глубокая растяжка после рабочего дня."]
+];
+const ZONES = [["gym","Тренажёрный зал","dumbbell"],["pool","Бассейн","wave"],["group","Групповая тренировка","people"]];
+function dayClasses(di){
+  const r = rnd("fit" + di), dow = fromIso(di).getDay();
+  return TPL.map((t, i) => ({id: di + "_" + i, time:t[0], n:t[1], type:t[2], dur:t[3], tr:t[4], hall:t[5], cap:t[6], txt:t[7], taken: Math.min(t[6], Math.floor(r() * (t[6] + 3)))}))
+    .filter((c, i) => !(dow === 0 && (i === 1 || i === 6)) && !(dow === 6 && i === 3));
+}
+const cls = id => { const [di, i] = id.split("_"); return dayClasses(di).find(c => c.id === id); };
+const S = () => K.s;
+const start = c => new Date(c.id.split("_")[0] + "T" + c.time);
+const mine = id => S().book.includes(id), waiting = id => S().wait.includes(id);
+const left = c => c.cap - c.taken - (mine(c.id) ? 1 : 0);
+const steps = () => S().steps[iso(today())] ?? (S().steps[iso(today())] = 2400 + Math.floor(rnd("st" + iso(today()))() * 4200));
+const kcal = () => Math.round(steps() * 0.067);
+const endDate = () => fromIso(S().end);
+const daysLeft = () => Math.max(0, Math.round((endDate() - today()) / 864e5));
+const frozen = () => S().freeze && fromIso(S().freeze) >= today();
+
+function home(){
+  const s = S(), st = steps(), pct = Math.min(1, st / s.goal), C = 2 * Math.PI * 54;
+  const total = 365, dl = daysLeft();
+  const up = s.book.map(cls).filter(c => c && start(c) > new Date()).sort((a, b) => start(a) - start(b)).slice(0, 3);
+  const d = new Date();
+  return `<div class="top"><div class="tt"><p class="hello">${DOWL[d.getDay()][0].toUpperCase() + DOWL[d.getDay()].slice(1)}, ${dmy(d)}</p><h1 class="h1">Привет, ${esc(s.name)}</h1></div><button class="ibtn" data-a="ntf" aria-label="Уведомления">${ic("bell")}${up.length ? '<span class="dot" style="border-color:var(--card)"></span>' : ""}</button></div>
+  <div class="member ${frozen() ? "frozen" : ""}"><small>Абонемент</small><h2>${s.plan}</h2><button class="qb" data-a="go" data-to="pass" aria-label="Открыть пропуск">${ic("qr")}</button>
+    <div class="bar"><i style="width:${Math.round((1 - dl / total) * 100)}%"></i></div>
+    <div class="row"><span>До ${dmy(endDate())} ${endDate().getFullYear()}</span><span>${frozen() ? "Заморожен до " + dmy(s.freeze) : "Осталось " + dl + " " + plural(dl, "день", "дня", "дней")}</span></div></div>
+  <div class="h2">Сегодня</div>
+  <div class="today">
+    <button class="ring" data-a="walk" aria-label="Добавить прогулку"><div class="in"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="54" fill="none" stroke="#2A2D34" stroke-width="11"/><circle cx="64" cy="64" r="54" fill="none" stroke="var(--acc)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg><div><b>${K.num(st)}</b><small>шагов</small></div></div><p>Цель ${K.num(s.goal)} · ＋ прогулка</p></button>
+    <div class="mini"><small>${ic("fire")} Калории</small><b>${kcal()} <span>ккал</span></b></div>
+    <button class="mini" id="pulse" data-a="pulse"><small>${ic("pulse")} Пульс · измерить</small><b>${s.pulse} <span>уд/мин</span></b></button>
+  </div>
+  <div class="h2">Ближайшие <button data-a="mine">Все</button></div>
+  <div class="list">${up.map(c => `<button class="item" data-a="cls" data-id="${c.id}"><span class="ic">${ic(c.type === "cardio" ? "bike" : c.type === "yoga" ? "leaf" : c.type === "box" ? "fire" : "dumbbell")}</span><span class="tx"><b>${esc(c.n)}</b><small>${relDay(c)}, ${c.time} · ${c.tr}</small></span><span class="going">Вы идёте</span></button>`).join("") || `<div class="card center"><b>Нет записей</b><p class="mut" style="margin:6px 0 12px">Выберите тренировку в расписании</p><button class="btn sm" data-a="go" data-to="schedule" style="margin:0 auto">Расписание</button></div>`}</div>`;
+}
+const relDay = c => { const di = c.id.split("_")[0]; return di === iso(today()) ? "Сегодня" : di === iso(addDays(today(), 1)) ? "Завтра" : DOW[fromIso(di).getDay()] + ", " + dmy(di); };
+K.on("walk", () => { S().steps[iso(today())] = steps() + 1500; K.save(); K.toast("Прогулка 15 минут: +1 500 шагов"); K.render(); });
+K.on("pulse", el => {
+  if (el.classList.contains("measuring")) return;
+  el.classList.add("measuring"); const b = el.querySelector("b"); let n = 0;
+  const t = setInterval(() => { b.innerHTML = (60 + Math.floor(Math.random() * 25)) + ' <span>уд/мин</span>'; if (++n > 12) { clearInterval(t); S().pulse = 66 + Math.floor(Math.random() * 12); K.save(); el.classList.remove("measuring"); b.innerHTML = S().pulse + ' <span>уд/мин</span>'; K.toast("Пульс в покое: " + S().pulse + " уд/мин"); } }, 160);
+});
+K.on("mine", () => { fType = "mine"; K.go("schedule"); });
+K.on("ntf", () => {
+  const up = S().book.map(cls).filter(c => c && start(c) > new Date()).sort((a, b) => start(a) - start(b));
+  K.sheet(`<h3>Уведомления</h3>${up.length ? up.map(c => `<div class="set"><div><b>${esc(c.n)}</b><small>${relDay(c)}, ${c.time} · ${c.hall} · напомним за час</small></div></div>`).join("") : "<p>Пока ничего нового.</p>"}<button class="btn ghost" data-a="close" style="margin-top:12px">Закрыть</button>`);
+});
+
+let fDay = null, fType = "all";
+function schedule(){
+  const days = Array.from({length:7}, (_, i) => addDays(today(), i));
+  if (!fDay) fDay = iso(dayClasses(iso(days[0])).some(c => start(c) > new Date()) ? days[0] : days[1]);
+  let list = dayClasses(fDay);
+  if (fType === "mine") list = days.flatMap(d => dayClasses(iso(d))).filter(c => mine(c.id) || waiting(c.id));
+  else if (fType !== "all") list = list.filter(c => c.type === fType);
+  return `<div class="top"><h1 class="h1">Расписание</h1><button class="ibtn" data-a="mine" aria-label="Мои записи">${ic("sliders")}</button></div>
+  ${fType === "mine" ? "" : `<div class="days">${days.map(d => `<button class="day ${iso(d) === fDay ? "on" : ""}" data-a="day" data-d="${iso(d)}"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b></button>`).join("")}</div>`}
+  <div class="chips">${TYPES.map(([k, n]) => `<button class="chip ${fType === k ? "on" : ""}" data-a="type" data-t="${k}">${n}</button>`).join("")}</div>
+  <div class="list">${list.map(c => clsRow(c, fType === "mine")).join("") || `<div class="empty"><b>${fType === "mine" ? "Вы пока никуда не записаны" : "Тренировок нет"}</b>${fType === "mine" ? "Выберите занятие во вкладке «Все»" : "Попробуйте другой день или направление"}</div>`}</div>`;
+}
+function clsRow(c, showDay){
+  const past = start(c) < new Date(), m = mine(c.id), w = waiting(c.id), l = left(c);
+  const bt = past ? `<span class="bt" style="opacity:.6">Прошло</span>` : m ? `<button class="bt on" data-a="book" data-id="${c.id}">Вы идёте</button>` : w ? `<button class="bt wait" data-a="book" data-id="${c.id}">В листе ожидания</button>` : l > 0 ? `<button class="bt" data-a="book" data-id="${c.id}">Записаться</button>` : `<button class="bt" data-a="book" data-id="${c.id}">Нет мест</button>`;
+  return `<div class="cls ${m ? "mine" : ""} ${past ? "past" : ""}"><div class="tm" data-a="cls" data-id="${c.id}"><b>${c.time}</b><small>${c.dur} мин</small></div><span class="ln"></span>
+  <div class="tx" data-a="cls" data-id="${c.id}"><b>${esc(c.n)}</b><small>${showDay ? relDay(c) + " · " : ""}${c.tr} · ${m ? c.hall : l > 0 ? l + " " + plural(l, "место", "места", "мест") : "мест нет"}</small></div>${bt}</div>`;
+}
+K.on("day", el => { fDay = el.dataset.d; K.render(); });
+K.on("type", el => { fType = el.dataset.t; K.render(); });
+K.on("cls", el => {
+  const c = cls(el.dataset.id), l = left(c), m = mine(c.id);
+  K.sheet(`<h3>${esc(c.n)}</h3><p>${relDay(c)}, ${c.time} · ${c.dur} мин</p><p style="color:var(--ink)">${esc(c.txt)}</p>
+  <div class="card kv" style="background:var(--soft);margin-bottom:14px"><div><span>Тренер</span><b>${c.tr}</b></div><div><span>Где</span><b>${c.hall}</b></div><div><span>Свободно</span><b>${l > 0 ? l + " из " + c.cap : "мест нет"}</b></div></div>
+  ${start(c) < new Date() ? '<button class="btn ghost" data-a="close">Занятие уже прошло</button>' : `<button class="btn" data-a="book" data-id="${c.id}">${m ? "Отменить запись" : l > 0 ? "Записаться" : waiting(c.id) ? "Выйти из листа ожидания" : "Встать в лист ожидания"}</button>`}`);
+});
+K.on("book", async el => {
+  const c = cls(el.dataset.id), s = S(); K.close();
+  if (mine(c.id)) {
+    if (!(await K.ask({title:"Отменить запись?", text:`${c.n}, ${relDay(c).toLowerCase()} в ${c.time}. Место освободится для листа ожидания.`, ok:"Отменить", cancel:"Оставить", danger:true}))) return;
+    s.book = s.book.filter(x => x !== c.id); K.save(); K.toast("Запись отменена"); K.render(); return;
+  }
+  if (waiting(c.id)) { s.wait = s.wait.filter(x => x !== c.id); K.save(); K.toast("Вы вышли из листа ожидания"); K.render(); return; }
+  if (frozen()) { K.toast("Абонемент заморожен — разморозьте его в профиле"); return; }
+  if (left(c) <= 0) { s.wait.push(c.id); K.save(); K.toast("Вы в листе ожидания — сообщим, если место освободится"); K.render(); return; }
+  const clash = s.book.map(cls).find(x => x && x.id.split("_")[0] === c.id.split("_")[0] && Math.abs(start(x) - start(c)) < Math.max(x.dur, c.dur) * 60000);
+  if (clash) { K.toast("В это время вы уже записаны на «" + clash.n + "»"); return; }
+  s.book.push(c.id); K.save(); K.toast("Вы записаны: " + c.n + ", " + c.time); K.render();
+});
+
+let qrT;
+function pass(){
+  const s = S();
+  return `<div class="top"><h1 class="h1">Пропуск</h1><button class="ibtn" data-a="checkin" aria-label="Отметить вход">${ic("check")}</button></div>
+  <div class="pass"><p>${frozen() ? "Абонемент заморожен — вход недоступен" : "Поднесите к сканеру на входе"}</p><div id="qr" style="${frozen() ? "opacity:.2" : ""}"></div><b>${esc(s.name)} ${esc(s.last)}</b><small>${s.plan.split(" · ")[0]} · до ${dmy(endDate())} ${endDate().getFullYear()}</small><div class="ref" id="qrRef"></div></div>
+  <button class="btn" style="margin-top:12px" data-a="checkin" ${frozen() ? "disabled" : ""}>${ic("qr")} Отметить вход (демо-сканер)</button>
+  <div class="h2">Последние визиты</div>
+  <div class="list">${s.visits.slice(0, 6).map(v => { const z = ZONES.find(z => z[0] === v.z); const d = new Date(v.at); return `<div class="item vis"><span class="ic">${ic(z[2])}</span><span class="tx"><b>${z[1]}</b><small>${dmy(d)} · ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}${v.dur ? " · " + (v.dur >= 60 ? Math.floor(v.dur / 60) + " ч " : "") + (v.dur % 60 ? v.dur % 60 + " мин" : "") : ""}</small></span></div>`; }).join("")}</div>`;
+}
+function drawQr(){
+  const box = K.$("#qr"); if (!box) return;
+  const slot = Math.floor(Date.now() / 30000), s = S();
+  const data = `PULSE|${s.card}|${s.name} ${s.last}|${s.end}|${slot}`;
+  if (window.qrcode) { const q = qrcode(0, "M"); q.addData(unescape(encodeURIComponent(data))); q.make(); box.innerHTML = q.createSvgTag({cellSize:4, margin:0, scalable:true}); }
+  else box.innerHTML = `<div style="display:grid;place-items:center;height:100%;border:2px dashed #ccc;border-radius:16px;color:#888;font-size:13px">QR не загрузился<br>№ ${s.card}</div>`;
+  const tick = () => { const left = 30 - Math.floor(Date.now() / 1000) % 30; const r = K.$("#qrRef"); if (r) r.textContent = `Карта № ${s.card} · код обновится через ${left} с`; if (left === 30) drawQr(); };
+  tick();
+}
+K.on("checkin", () => {
+  if (frozen()) { K.toast("Абонемент заморожен"); return; }
+  K.sheet(`<h3>Куда идёте?</h3><p>Демо: так приложение отмечает вход после сканирования QR на турникете.</p>${ZONES.map(z => `<button class="item" style="margin-bottom:8px;background:var(--soft)" data-a="zone" data-z="${z[0]}"><span class="ic">${ic(z[2])}</span><span class="tx"><b>${z[1]}</b></span></button>`).join("")}`);
+});
+K.on("zone", el => { S().visits.unshift({z:el.dataset.z, at:Date.now(), dur:0}); K.save(); K.close(); K.toast("Добро пожаловать! Вход отмечен"); K.render(); });
+
+function profile(){
+  const s = S(), wk = Array.from({length:7}, (_, i) => addDays(today(), i - 6));
+  const vMonth = s.visits.filter(v => { const d = new Date(v.at); return d.getMonth() === new Date().getMonth(); }).length;
+  return `<h1 class="h1" style="margin:6px 0 16px">Профиль</h1>
+  <div class="card" style="display:flex;gap:14px;align-items:center"><span style="width:60px;height:60px;border-radius:50%;background:var(--acc);color:#121407;display:grid;place-items:center;font-weight:800;font-size:20px">${esc((s.name[0] || "") + (s.last[0] || ""))}</span><div><b style="font-size:18px">${esc(s.name)} ${esc(s.last)}</b><br><small class="mut">Карта № ${s.card} · визитов в этом месяце: ${vMonth}</small></div></div>
+  <div class="h2">Шаги за неделю</div>
+  <div class="card"><div class="wk">${wk.map(d => { const v = d.getTime() === today().getTime() ? steps() : (s.steps[iso(d)] ?? 3000 + Math.floor(rnd("st" + iso(d))() * 7000)); return `<div><i><b style="height:${Math.min(100, Math.round(v / s.goal * 100))}%"></b></i><small>${DOW[d.getDay()]}</small></div>`; }).join("")}</div></div>
+  <div class="h2">Цель по шагам</div>
+  <div class="seg">${[6000, 8000, 10000, 12000].map(g => `<button class="${s.goal === g ? "on" : ""}" data-a="goal" data-g="${g}">${g / 1000} тыс</button>`).join("")}</div>
+  <div class="card" style="padding:4px 16px">
+    <div class="set"><div><b>Заморозка абонемента</b><small>${frozen() ? "До " + dmy(s.freeze) + ", срок продлён" : "Осталось " + s.freezeLeft + " " + plural(s.freezeLeft, "день", "дня", "дней") + " заморозки"}</small></div>${frozen() ? '<button class="btn ghost sm" data-a="unfreeze">Снять</button>' : '<button class="btn ghost sm" data-a="freeze">Заморозить</button>'}</div>
+    <div class="set"><div><b>Имя</b></div><input data-ch="name" value="${esc(s.name)}" style="width:150px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--soft);color:var(--ink);padding:0 10px" maxlength="20" aria-label="Имя"></div>
+    <div class="set"><div><b>Сбросить демо-данные</b><small>Записи, визиты, шаги</small></div><button class="btn ghost sm" data-a="reset">Сбросить</button></div>
+  </div>
+  <div class="demo-note">Демо-приложение PathCode. Шаги и пульс здесь имитируются; в настоящем приложении они берутся из Health Connect или браслета. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать приложение для клуба</a></div>`;
+}
+K.on("goal", el => { S().goal = +el.dataset.g; K.save(); K.render(); });
+K.on("freeze", () => {
+  const s = S(); if (!s.freezeLeft) { K.toast("Дни заморозки закончились"); return; }
+  K.sheet(`<h3>Заморозить абонемент</h3><p>Срок действия продлится на выбранное число дней. Доступно ${s.freezeLeft} ${plural(s.freezeLeft, "день", "дня", "дней")}.</p><div class="two">${[7, 14].filter(n => n <= s.freezeLeft).map(n => `<button class="btn" data-a="doFreeze" data-n="${n}">${n} дней</button>`).join("")}</div>`);
+});
+K.on("doFreeze", el => { const s = S(), n = +el.dataset.n; s.freeze = iso(addDays(today(), n - 1)); s.end = iso(addDays(endDate(), n)); s.freezeLeft -= n; s.frozenDays = n; K.save(); K.close(); K.toast(`Абонемент заморожен на ${n} дней`); K.render(); });
+K.on("unfreeze", () => { const s = S(); const used = Math.max(1, Math.round((today() - addDays(fromIso(s.freeze), -(s.frozenDays - 1))) / 864e5) + 1); const back = Math.max(0, s.frozenDays - used); s.end = iso(addDays(endDate(), -back)); s.freezeLeft += back; s.freeze = null; K.save(); K.toast("Заморозка снята"); K.render(); });
+K.onChange("name", el => { const v = el.value.trim(); if (v) { S().name = v; K.save(); K.toast("Сохранено"); } });
+K.on("reset", async () => { if (await K.ask({title:"Сбросить демо-данные?", text:"Вернём записи, визиты и шаги к исходным.", ok:"Сбросить", danger:true})) { K.reset(); fDay = null; fType = "all"; K.go("home", true); K.toast("Данные сброшены"); } });
+
+function defaults(){
+  const t = today(), now = new Date();
+  const first = now.getHours() < 17 ? iso(t) + "_4" : iso(addDays(t, 1)) + "_4";
+  const second = iso(addDays(t, 2)) + "_0";
+  const v = [{z:"gym", at: addDays(t, -1).getTime() + 19 * 36e5, dur:70}, {z:"pool", at: addDays(t, -3).getTime() + 8 * 36e5, dur:45}, {z:"gym", at: addDays(t, -5).getTime() + 20 * 36e5, dur:60}];
+  return {v:1, name:"Алексей", last:"Смирнов", card:"004218", plan:"Безлимит · 12 мес", end: iso(addDays(t, 61)), goal:8000, pulse:72, steps:{}, book:[first, second], wait:[], visits:v, freeze:null, freezeLeft:30, frozenDays:0};
+}
+K.app({
+  key: "pc-fit", title: "Пульс — фитнес-клуб", defaults,
+  side: {tag:"Концепт · Android", h1:"Приложение", h1b:"фитнес-клуба", text:"Расписание тренировок, запись в один клик, абонемент и пропуск прямо в телефоне.", feats:["Расписание и запись","QR-пропуск в клуб","Шаги и активность"]},
+  tabs: [{r:"home",l:"Главная",i:"home"},{r:"schedule",l:"Расписание",i:"cal"},{r:"pass",l:"Пропуск",i:"qr"},{r:"profile",l:"Профиль",i:"user"}],
+  start: "home", routes: {home, schedule, pass, profile},
+  mounted: {pass: () => { drawQr(); K.timer(() => { const r = K.$("#qrRef"); if (!r) return; const left = 30 - Math.floor(Date.now() / 1000) % 30; r.textContent = `Карта № ${S().card} · код обновится через ${left} с`; if (left === 30) drawQr(); }, 1000); }}
+});
+})();
+</script>
+</body>
+</html>
