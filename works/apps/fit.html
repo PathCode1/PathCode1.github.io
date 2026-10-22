@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="kit.css?v=2">
+<link rel="stylesheet" href="kit.css?v=3">
 <style>
 :root{--bg:#0E0F12;--card:#1A1C21;--ink:#F3F4F6;--mut:#8C919C;--line:#2A2D34;--soft:#24272D;--acc:#CDF23C;--acc-ink:#121407;--acc-soft:#2B3315;
   --side-acc:#CDF23C;--tab-on:#CDF23C;--tab-on-ink:#121407;--chip-on:#F3F4F6;--chip-on-ink:#121318;color-scheme:dark}
@@ -77,11 +77,24 @@
 .wk small{display:block;margin-top:6px;color:var(--mut);font-size:12px}
 .set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .set:last-child{border-bottom:0}.set small{display:block;color:var(--mut);font-size:13px}
+.view.enter .ring-p{animation:ring-d 1.2s .15s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ring-d{from{stroke-dashoffset:var(--c)}}
+.ring,.mini,.day,.cls,.bt{transition:transform .14s,background .2s,color .2s,border-color .25s}
+.ring:active,.mini:active,.day:active,.bt:active{transform:scale(.95)}
+.mini.measuring b{animation:blink .5s ease-in-out infinite alternate}
+@keyframes blink{to{opacity:.45}}
+.member .qb{transition:transform .2s}.member .qb:hover{transform:rotate(-8deg) scale(1.06)}
+#qr svg{animation:pc-pop .5s cubic-bezier(.3,1.4,.5,1)}
+.view.enter .wk i b,.view.soft .wk i b{transform-origin:bottom;animation:pc-h .8s cubic-bezier(.2,.8,.2,1) both}
+.wk div:nth-child(2) b{animation-delay:.05s}.wk div:nth-child(3) b{animation-delay:.1s}.wk div:nth-child(4) b{animation-delay:.15s}.wk div:nth-child(5) b{animation-delay:.2s}.wk div:nth-child(6) b{animation-delay:.25s}.wk div:nth-child(7) b{animation-delay:.3s}
+.view.enter .days .day{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
+.going{animation:pc-pulse 2.2s infinite;--pulse:rgba(205,242,60,.35)}
+.view.soft .cls{animation:pc-u .38s cubic-bezier(.2,.8,.2,1) both}
 </style>
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="kit.js?v=2"></script>
+<script src="kit.js?v=3"></script>
 <script>
 (() => {
 const {esc, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, DOWL, MON} = K;
@@ -120,19 +133,19 @@ function home(){
   const d = new Date();
   return `<div class="top"><div class="tt"><p class="hello">${DOWL[d.getDay()][0].toUpperCase() + DOWL[d.getDay()].slice(1)}, ${dmy(d)}</p><h1 class="h1">Привет, ${esc(s.name)}</h1></div><button class="ibtn" data-a="ntf" aria-label="Уведомления">${ic("bell")}${up.length ? '<span class="dot" style="border-color:var(--card)"></span>' : ""}</button></div>
   <div class="member ${frozen() ? "frozen" : ""}"><small>Абонемент</small><h2>${s.plan}</h2><button class="qb" data-a="go" data-to="pass" aria-label="Открыть пропуск">${ic("qr")}</button>
-    <div class="bar"><i style="width:${Math.round((1 - dl / total) * 100)}%"></i></div>
+    <div class="bar"><i class="grow-w" style="width:${Math.round((1 - dl / total) * 100)}%"></i></div>
     <div class="row"><span>До ${dmy(endDate())} ${endDate().getFullYear()}</span><span>${frozen() ? "Заморожен до " + dmy(s.freeze) : "Осталось " + dl + " " + plural(dl, "день", "дня", "дней")}</span></div></div>
   <div class="h2">Сегодня</div>
   <div class="today">
-    <button class="ring" data-a="walk" aria-label="Добавить прогулку"><div class="in"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="54" fill="none" stroke="#2A2D34" stroke-width="11"/><circle cx="64" cy="64" r="54" fill="none" stroke="var(--acc)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg><div><b>${K.num(st)}</b><small>шагов</small></div></div><p>Цель ${K.num(s.goal)} · ＋ прогулка</p></button>
-    <div class="mini"><small>${ic("fire")} Калории</small><b>${kcal()} <span>ккал</span></b></div>
+    <button class="ring" data-a="walk" aria-label="Добавить прогулку"><div class="in"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="54" fill="none" stroke="#2A2D34" stroke-width="11"/><circle class="ring-p" cx="64" cy="64" r="54" fill="none" stroke="var(--acc)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}" style="--c:${C}"/></svg><div><b data-count="${st}" data-fmt="num">${K.num(st)}</b><small>шагов</small></div></div><p>Цель ${K.num(s.goal)} · ＋ прогулка</p></button>
+    <div class="mini"><small>${ic("fire")} Калории</small><b><i data-count="${kcal()}" style="font-style:normal">${kcal()}</i> <span>ккал</span></b></div>
     <button class="mini" id="pulse" data-a="pulse"><small>${ic("pulse")} Пульс · измерить</small><b>${s.pulse} <span>уд/мин</span></b></button>
   </div>
   <div class="h2">Ближайшие <button data-a="mine">Все</button></div>
   <div class="list">${up.map(c => `<button class="item" data-a="cls" data-id="${c.id}"><span class="ic">${ic(c.type === "cardio" ? "bike" : c.type === "yoga" ? "leaf" : c.type === "box" ? "fire" : "dumbbell")}</span><span class="tx"><b>${esc(c.n)}</b><small>${relDay(c)}, ${c.time} · ${c.tr}</small></span><span class="going">Вы идёте</span></button>`).join("") || `<div class="card center"><b>Нет записей</b><p class="mut" style="margin:6px 0 12px">Выберите тренировку в расписании</p><button class="btn sm" data-a="go" data-to="schedule" style="margin:0 auto">Расписание</button></div>`}</div>`;
 }
 const relDay = c => { const di = c.id.split("_")[0]; return di === iso(today()) ? "Сегодня" : di === iso(addDays(today(), 1)) ? "Завтра" : DOW[fromIso(di).getDay()] + ", " + dmy(di); };
-K.on("walk", () => { S().steps[iso(today())] = steps() + 1500; K.save(); K.toast("Прогулка 15 минут: +1 500 шагов"); K.render(); });
+K.on("walk", () => { S().steps[iso(today())] = steps() + 1500; K.save(); K.toast("Прогулка 15 минут: +1 500 шагов"); K.render(); K.bump(".ring"); });
 K.on("pulse", el => {
   if (el.classList.contains("measuring")) return;
   el.classList.add("measuring"); const b = el.querySelector("b"); let n = 0;
@@ -162,8 +175,8 @@ function clsRow(c, showDay){
   return `<div class="cls ${m ? "mine" : ""} ${past ? "past" : ""}"><div class="tm" data-a="cls" data-id="${c.id}"><b>${c.time}</b><small>${c.dur} мин</small></div><span class="ln"></span>
   <div class="tx" data-a="cls" data-id="${c.id}"><b>${esc(c.n)}</b><small>${showDay ? relDay(c) + " · " : ""}${c.tr} · ${m ? c.hall : l > 0 ? l + " " + plural(l, "место", "места", "мест") : "мест нет"}</small></div>${bt}</div>`;
 }
-K.on("day", el => { fDay = el.dataset.d; K.render(); });
-K.on("type", el => { fType = el.dataset.t; K.render(); });
+K.on("day", el => { fDay = el.dataset.d; K.replay(); });
+K.on("type", el => { fType = el.dataset.t; K.replay(); });
 K.on("cls", el => {
   const c = cls(el.dataset.id), l = left(c), m = mine(c.id);
   K.sheet(`<h3>${esc(c.n)}</h3><p>${relDay(c)}, ${c.time} · ${c.dur} мин</p><p style="color:var(--ink)">${esc(c.txt)}</p>
@@ -181,7 +194,7 @@ K.on("book", async el => {
   if (left(c) <= 0) { s.wait.push(c.id); K.save(); K.toast("Вы в листе ожидания — сообщим, если место освободится"); K.render(); return; }
   const clash = s.book.map(cls).find(x => x && x.id.split("_")[0] === c.id.split("_")[0] && Math.abs(start(x) - start(c)) < Math.max(x.dur, c.dur) * 60000);
   if (clash) { K.toast("В это время вы уже записаны на «" + clash.n + "»"); return; }
-  s.book.push(c.id); K.save(); K.toast("Вы записаны: " + c.n + ", " + c.time); K.render();
+  s.book.push(c.id); K.save(); K.toast("Вы записаны: " + c.n + ", " + c.time); K.render(); K.bump(`.bt[data-id="${c.id}"]`);
 });
 
 let qrT;
@@ -224,7 +237,7 @@ function profile(){
   </div>
   <div class="demo-note">Демо-приложение PathCode. Шаги и пульс здесь имитируются; в настоящем приложении они берутся из Health Connect или браслета. <a href="https://t.me/BeauG0sse" target="_blank" rel="noopener">Заказать приложение для клуба</a></div>`;
 }
-K.on("goal", el => { S().goal = +el.dataset.g; K.save(); K.render(); });
+K.on("goal", el => { S().goal = +el.dataset.g; K.save(); K.replay(); });
 K.on("freeze", () => {
   const s = S(); if (!s.freezeLeft) { K.toast("Дни заморозки закончились"); return; }
   K.sheet(`<h3>Заморозить абонемент</h3><p>Срок действия продлится на выбранное число дней. Доступно ${s.freezeLeft} ${plural(s.freezeLeft, "день", "дня", "дней")}.</p><div class="two">${[7, 14].filter(n => n <= s.freezeLeft).map(n => `<button class="btn" data-a="doFreeze" data-n="${n}">${n} дней</button>`).join("")}</div>`);

@@ -132,4 +132,38 @@ a{color:inherit}
 .sheet .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
 .toast{position:absolute;left:50%;bottom:96px;z-index:30;transform:translate(-50%,16px);background:#14161D;color:#fff;font-size:14px;font-weight:500;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;width:max-content;max-width:calc(100% - 36px);text-align:center;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+/* ---------- анимации ---------- */
+@keyframes pc-f{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes pc-b{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+@keyframes pc-u{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pc-pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes pc-tab{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes pc-w{from{transform:scaleX(0)}}
+@keyframes pc-h{from{transform:scaleY(.04)}}
+@keyframes pc-draw{from{stroke-dashoffset:40}to{stroke-dashoffset:0}}
+@keyframes pc-bump{0%{transform:scale(1)}35%{transform:scale(1.07)}70%{transform:scale(.97)}100%{transform:scale(1)}}
+@keyframes pc-pulse{0%{box-shadow:0 0 0 0 var(--pulse,rgba(255,255,255,.45))}100%{box-shadow:0 0 0 18px transparent}}
+.view.enter>*:not(.dock):not(.cartbar):not(.fab){animation:pc-u .42s cubic-bezier(.2,.8,.2,1) both}
+.view.enter.d-fwd>*:not(.dock):not(.cartbar):not(.fab){animation-name:pc-f}
+.view.enter.d-back>*:not(.dock):not(.cartbar):not(.fab){animation-name:pc-b}
+.view.enter>*:nth-child(2){animation-delay:.03s!important}.view.enter>*:nth-child(3){animation-delay:.06s!important}.view.enter>*:nth-child(4){animation-delay:.09s!important}
+.view.enter>*:nth-child(5){animation-delay:.12s!important}.view.enter>*:nth-child(6){animation-delay:.15s!important}.view.enter>*:nth-child(n+7){animation-delay:.18s!important}
+.view.enter .list>*{animation:pc-u .45s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .list>*:nth-child(1){animation-delay:.1s}.view.enter .list>*:nth-child(2){animation-delay:.15s}.view.enter .list>*:nth-child(3){animation-delay:.2s}
+.view.enter .list>*:nth-child(4){animation-delay:.25s}.view.enter .list>*:nth-child(5){animation-delay:.3s}.view.enter .list>*:nth-child(n+6){animation-delay:.35s}
+.view.enter .dock{animation:pc-u .45s .12s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .pb i,.view.enter .grow-w{transform-origin:left;animation:pc-w .9s .2s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .grow-h{transform-origin:bottom;animation:pc-h .8s cubic-bezier(.2,.8,.2,1) both}
+.view.soft .list>*,.view.soft .grid>*{animation:pc-u .38s cubic-bezier(.2,.8,.2,1) both}
+.view.soft .list>*:nth-child(2),.view.soft .grid>*:nth-child(2){animation-delay:.04s}.view.soft .list>*:nth-child(3),.view.soft .grid>*:nth-child(3){animation-delay:.08s}
+.view.soft .list>*:nth-child(4),.view.soft .grid>*:nth-child(4){animation-delay:.12s}.view.soft .list>*:nth-child(n+5),.view.soft .grid>*:nth-child(n+5){animation-delay:.16s}
+.view.soft .pb i,.view.soft .grow-w{transform-origin:left;animation:pc-w .8s cubic-bezier(.2,.8,.2,1) both}
+.view.soft .grow-h{transform-origin:bottom;animation:pc-h .7s cubic-bezier(.2,.8,.2,1) both}
+.tab.on i{animation:pc-tab .4s cubic-bezier(.3,1.4,.5,1)}
+.item,.chip,.cat,.btn,.ibtn,.seg button,.tab{transition:transform .14s,background .2s,color .2s,box-shadow .2s}
+.item:active,.chip:active,.cat:active,.ibtn:active,.seg button:active{transform:scale(.96)}
+.seg button{transition:background .25s,color .25s,box-shadow .25s,transform .14s}
+.bump{animation:pc-bump .45s cubic-bezier(.3,1.4,.5,1)}
+.sheet-wrap.open .sheet>*{animation:pc-u .4s .08s cubic-bezier(.2,.8,.2,1) both}
+.sheet-wrap.open .sheet>.grab{animation:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="kit.css?v=2">
+<link rel="stylesheet" href="kit.css?v=3">
 <style>
 :root{--bg:#F4F4F8;--acc:#D9497A;--acc-soft:#FBE6EE;--soft:#E9E9F0;--side-acc:#EC7AA2;--gold:#E9A23B}
 .ava{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:17px;border:0;flex:none}
@@ -79,10 +79,21 @@
 .ntf:last-child{border-bottom:0}
 .ntf i{width:40px;height:40px;border-radius:12px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;flex:none}
 .ntf svg{width:19px;height:19px}
+.mst,.day,.slot{transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .14s}
+.mst:active,.day:active,.slot:not(:disabled):active{transform:scale(.95)}
+.promo .spark{animation:sp-tw 2.6s ease-in-out infinite}
+@keyframes sp-tw{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.15) rotate(12deg)}}
+.ibtn .dot{animation:pc-pulse 1.8s infinite;--pulse:rgba(217,73,122,.5)}
+.view.enter .okmark{animation:pc-pop .6s .1s cubic-bezier(.3,1.4,.5,1) both}
+.view.enter .okmark svg path{stroke-dasharray:40;animation:pc-draw .5s .5s ease-out both}
+.view.enter .cats .cat{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .cats .cat:nth-child(2){animation-delay:.05s}.view.enter .cats .cat:nth-child(3){animation-delay:.1s}.view.enter .cats .cat:nth-child(4){animation-delay:.15s}
+.view.enter .masters .mst,.view.enter .slots .slot{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .slots .slot:nth-child(3n+2){animation-delay:.04s}.view.enter .slots .slot:nth-child(3n){animation-delay:.08s}
 </style>
 </head>
 <body>
-<script src="kit.js?v=2"></script>
+<script src="kit.js?v=3"></script>
 <script>
 (() => {
 const {esc, rub, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON, MON1} = K;
@@ -160,7 +171,7 @@ function cat(id = "all"){
   <div class="list" id="svcList">${list.map(svcItem).join("") || '<div class="empty"><b>Ничего не нашлось</b>Попробуйте другое слово</div>'}</div>`;
 }
 K.onInput("q", el => { q = el.value; const id = K.args()[0] || "all"; const list = SVC.filter(x => (id === "all" || x.c === id) && x.n.toLowerCase().includes(q.toLowerCase())); K.$("#svcList").innerHTML = list.map(svcItem).join("") || '<div class="empty"><b>Ничего не нашлось</b>Попробуйте другое слово</div>'; });
-K.on("cat", el => K.go("cat/" + el.dataset.c, true));
+K.on("cat", el => { K._dir = "fade"; K.go("cat/" + el.dataset.c, true); });
 K.on("pick", el => { sel = {svc:+el.dataset.id, m:null, d:null, t:null, re:null}; K.go("book/" + el.dataset.id); });
 
 function book(id, re){
@@ -190,10 +201,10 @@ function book(id, re){
   ${freeCount(sel.m, sel.d, sel.re) ? "" : '<p class="mut center" style="margin-top:12px">На этот день мест нет — выберите другой</p>'}
   <div class="dock"><button class="btn dark" data-a="confirm" ${sel.t ? "" : "disabled"}>${sel.t ? (re ? "Перенести на " : "Записаться на ") + sel.t : "Выберите время"}</button></div>`;
 }
-K.on("selM", el => { sel.m = el.dataset.id; sel.t = null; if (!freeCount(sel.m, sel.d, sel.re)) sel.d = null; K.render(); });
-K.on("selD", el => { if (el.getAttribute("aria-disabled")) { K.toast("На этот день мест нет"); return; } sel.d = el.dataset.d; sel.t = null; K.render(); });
-K.on("selT", el => { sel.t = el.dataset.t; K.render(); });
-K.on("favS", el => { const id = +el.dataset.id, f = S().favS; const i = f.indexOf(id); i < 0 ? f.push(id) : f.splice(i, 1); K.save(); K.toast(i < 0 ? "Добавлено в избранное" : "Убрано из избранного"); K.render(); });
+K.on("selM", el => { sel.m = el.dataset.id; sel.t = null; if (!freeCount(sel.m, sel.d, sel.re)) sel.d = null; K.render(); K.bump(".mst.on"); K.bump(".slots"); });
+K.on("selD", el => { if (el.getAttribute("aria-disabled")) { K.toast("На этот день мест нет"); return; } sel.d = el.dataset.d; sel.t = null; K.render(); K.bump(".day.on"); K.bump(".slots"); });
+K.on("selT", el => { sel.t = el.dataset.t; K.render(); K.bump(".slot.on"); K.bump(".dock .btn"); });
+K.on("favS", el => { const id = +el.dataset.id, f = S().favS; const i = f.indexOf(id); i < 0 ? f.push(id) : f.splice(i, 1); K.save(); K.toast(i < 0 ? "Добавлено в избранное" : "Убрано из избранного"); K.render(); K.bump(".fav"); });
 K.on("confirm", () => {
   if (!sel.t || busy(sel.m, sel.d, sel.t, sel.re)) { K.toast("Это время уже занято"); sel.t = null; K.render(); return; }
   const x = svc(sel.svc);
@@ -243,7 +254,7 @@ function recCard(b, upcoming){
   <div class="kv"><div><span>Когда</span><b>${DOW[d.getDay()]}, ${dmy(d)} · ${b.time}</b></div><div><span>Стоимость</span><b>${rub(b.price)}</b></div></div>
   <div class="acts">${upcoming ? `<button class="btn ghost sm" data-a="move" data-id="${b.id}">Перенести</button><button class="btn ghost sm" data-a="cancel" data-id="${b.id}" style="color:var(--bad)">Отменить</button>` : `<button class="btn ghost sm" data-a="pick" data-id="${b.s}" style="grid-column:1/-1">Записаться снова</button>`}</div></div>`;
 }
-K.on("tabRec", el => { tabRec = el.dataset.t; K.render(); });
+K.on("tabRec", el => { tabRec = el.dataset.t; K.replay(); });
 K.on("cancel", async el => {
   const b = S().book.find(b => b.id === el.dataset.id);
   if (await K.ask({title:"Отменить запись?", text:`${svc(b.s).n}, ${dmy(b.date)} в ${b.time}. Мастер освободит это время для других клиентов.`, ok:"Отменить", cancel:"Оставить", danger:true})) { b.st = "off"; K.save(); K.toast("Запись отменена"); K.render(); }

@@ -66,8 +66,18 @@ const K = (() => {
   };
 
   let cfg, view, tabbar, sheetWrap, toastEl, curName = "", curArgs = [], timers = [];
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* счётчик: <b data-count="12345" data-fmt="rub|num">…</b> плавно набирает значение при входе на экран */
+  function countUp(el){
+    const to = +el.dataset.count, fmt = el.dataset.fmt === "rub" ? rub : num, t0 = performance.now(), d = 700;
+    const step = t => { const k = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(to * e); if (k < 1 && el.isConnected) requestAnimationFrame(step); };
+    el.textContent = fmt(0); requestAnimationFrame(step);
+  }
+  /* «отскок» элемента — для корзины, счётчиков и т.п. */
+  const bump = el => { if (!el || RM) return; el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); };
   const acts = {}, ins = {}, chs = {};
   const api = { $, esc, rub, num, ic, iso, fromIso, addDays, today, dmy, plural, rnd, dl, MON, MON1, DOW, DOWL, NB, s: null };
+  api.bump = sel => bump(typeof sel === "string" ? $(sel) : sel);
 
   api.save = () => { try { localStorage.setItem(cfg.key, JSON.stringify(api.s)); } catch (e) { } };
   api.reset = () => { try { localStorage.removeItem(cfg.key); } catch (e) { } api.s = cfg.defaults(); api.save(); };
@@ -77,12 +87,14 @@ const K = (() => {
   api.timer = (fn, ms) => { const t = setInterval(fn, ms); timers.push(t); return t; };
   api.later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
 
-  api.go = (path, replace) => { const h = "#/" + path; if (location.hash === h) { render(); return; } if (replace) location.replace(h); else { api._depth++; location.hash = h; } };
-  api.back = fallback => { if (api._depth > 0) { api._depth--; history.back(); } else api.go(fallback || cfg.start, true); };
+  api.go = (path, replace) => { const h = "#/" + path; if (location.hash === h) { render(); return; } api._dir = replace ? (api._dir || "fade") : "fwd"; if (replace) location.replace(h); else { api._depth++; location.hash = h; } };
+  api.back = fallback => { api._dir = "back"; if (api._depth > 0) { api._depth--; history.back(); } else api.go(fallback || cfg.start, true); };
   api._depth = 0;
   api.route = () => curName;
   api.args = () => curArgs;
   api.render = () => render(true);
+  /* перерисовать экран с анимацией появления (смена фильтра, периода, дня) */
+  api.replay = () => { render(true); if (RM) return; view.classList.remove("soft"); void view.offsetWidth; view.classList.add("soft"); clearTimeout(api._st); api._st = setTimeout(() => view.classList.remove("soft"), 1500); view.querySelectorAll("[data-count]").forEach(countUp); };
 
   api.toast = t => { toastEl.textContent = t; toastEl.classList.add("show"); clearTimeout(api._tt); api._tt = setTimeout(() => toastEl.classList.remove("show"), 2600); };
   api.sheet = html => { $(".sheet", sheetWrap).innerHTML = '<div class="grab"></div>' + html; sheetWrap.classList.add("open"); };
@@ -108,6 +120,12 @@ const K = (() => {
     view.classList.toggle("full", !!view.querySelector(".dock"));
     tabbar.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.r === name || (t.dataset.m || "").split(",").includes(name)));
     if (keep && !changed) view.scrollTop = top; else view.scrollTop = 0;
+    if (changed && !RM) {
+      view.classList.remove("enter", "d-fwd", "d-back", "d-fade"); void view.offsetWidth;
+      view.classList.add("enter", "d-" + (api._dir || "fade")); clearTimeout(api._et); api._et = setTimeout(() => view.classList.remove("enter"), 1600);
+      view.querySelectorAll("[data-count]").forEach(countUp);
+    }
+    api._dir = null;
     cfg.mounted && cfg.mounted[name] && cfg.mounted[name](...args);
   }
 
@@ -132,7 +150,7 @@ const K = (() => {
 </div>`;
     if (c.title) document.title = c.title;
     view = $("#view"); tabbar = $("#tabbar"); sheetWrap = $("#sheetWrap"); toastEl = $("#toast");
-    tabbar.addEventListener("click", e => { const t = e.target.closest(".tab"); if (t) { api._depth = 0; api.go(t.dataset.r, true); } });
+    tabbar.addEventListener("click", e => { const t = e.target.closest(".tab"); if (t) { api._depth = 0; api._dir = "fade"; api.go(t.dataset.r, true); } });
     document.addEventListener("click", e => {
       const el = e.target.closest("[data-a]"); if (!el) return;
       const fn = acts[el.dataset.a]; if (fn) { e.preventDefault(); fn(el, e); }

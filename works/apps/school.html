@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="kit.css?v=2">
+<link rel="stylesheet" href="kit.css?v=3">
 <style>
 :root{--bg:#F4F4F8;--acc:#6A4CF2;--acc-soft:#EEEAFE;--soft:#E9E9F1;--side-acc:#9A83FF;--chip-on:#111521}
 .cont{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:linear-gradient(135deg,#6A4CF2 0%,#8C6DFF 100%);display:flex;gap:12px;align-items:center;border:0;width:100%;text-align:left}
@@ -78,10 +78,25 @@
 .prof3 div{background:var(--card);border-radius:20px;padding:14px}.prof3 small{color:var(--mut);font-size:13px}.prof3 b{display:block;font-size:24px;margin-top:4px}
 .mat{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .mat:last-child{border-bottom:0}
+.cont{transition:transform .14s}.cont:active{transform:scale(.98)}
+.cont .play{animation:pc-pulse 2.2s infinite;--pulse:rgba(255,255,255,.55)}
+.player .pp.play{animation:pp-p 2.2s infinite}
+@keyframes pp-p{0%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}100%{box-shadow:0 0 0 22px rgba(255,255,255,0)}}
+.player .seek b{transition:width .25s linear}
+.tabs button{transition:color .2s,border-color .25s}
+.tabin{animation:pc-u .35s cubic-bezier(.2,.8,.2,1) both}
+.les{transition:background .2s,transform .14s}.les:active{transform:scale(.98)}
+.q label{transition:border-color .2s,background .2s,transform .14s}.q label:active{transform:scale(.98)}
+.q label.ok,.q label.bad{animation:pc-bump .4s}
+.view.enter .wk i.on{animation:pc-pop .45s cubic-bezier(.3,1.4,.5,1) both}
+.wk div:nth-child(2) i{animation-delay:.05s}.wk div:nth-child(3) i{animation-delay:.1s}.wk div:nth-child(4) i{animation-delay:.15s}.wk div:nth-child(5) i{animation-delay:.2s}.wk div:nth-child(6) i{animation-delay:.25s}.wk div:nth-child(7) i{animation-delay:.3s}
+.view.enter .stats>div{animation:pc-u .45s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .stats>div:nth-child(2){animation-delay:.06s}.view.enter .stats>div:nth-child(3){animation-delay:.12s}
+.sheet-wrap.open .sheet .center>div:first-child{animation:pc-pop .6s .15s cubic-bezier(.3,1.4,.5,1) both}
 </style>
 </head>
 <body>
-<script src="kit.js?v=2"></script>
+<script src="kit.js?v=3"></script>
 <script>
 (() => {
 const {esc, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON} = K;
@@ -163,7 +178,7 @@ function plTick(){
 }
 K.on("pp", () => { pl.play = !pl.play; const b = K.$("#pp"); b.classList.toggle("play", !pl.play); b.innerHTML = ic(pl.play ? "pause" : "play"); b.setAttribute("aria-label", pl.play ? "Пауза" : "Смотреть"); });
 K.on("seek", (el, e) => { const r = el.getBoundingClientRect(), [cid, n] = pl.key.split("/"), dur = DUR(cid, +n) * 60; pl.t = Math.max(0, Math.min(dur, (e.clientX - r.left) / r.width * dur)); plTick(); });
-K.on("ltab", el => { pl.tab = el.dataset.t; K.render(); });
+K.on("ltab", el => { pl.tab = el.dataset.t; K.render(); const n = K.$(".tabs").nextElementSibling; if (n) n.classList.add("tabin"); });
 K.on("mat", el => { const cid = el.dataset.c, n = +el.dataset.n, i = +el.dataset.i, t = C[cid].l[n - 1];
   const body = i === 0 ? `Конспект урока «${t}»\nКурс: ${C[cid].n}, урок ${n}\n\n1. Главная мысль урока.\n2. Разбор примеров.\n3. Практика: повторите упражнение из видео.\n\nДемо-материал онлайн-школы «Шаг» от PathCode.` : i === 1 ? `Чек-лист к уроку «${t}»\n[ ] Посмотрел урок\n[ ] Сделал практику\n[ ] Прошёл тест\n` : `Полезные ссылки к уроку «${t}»\n— примеры из урока\n— дополнительное чтение\n`;
   K.dl(`${cid}-urok-${n}-${["konspekt","chek-list","ssylki"][i]}.txt`, body); K.toast("Файл скачан"); });
@@ -192,7 +207,7 @@ K.on("qCheck", el => {
   const k = el.dataset.k, [cid, n] = k.split("/"), bank = C[cid].q, start = (+n * 2) % bank.length;
   if ([0, 1, 2].some(i => qa[i] === undefined)) { K.toast("Ответьте на все вопросы"); return; }
   qa.score = [0, 1, 2].filter(i => qa[i] === bank[(start + i) % bank.length][2]).length; qa.done = true;
-  S().quiz[k] = Math.max(S().quiz[k] ?? 0, qa.score); if (!S().act.includes(iso(today()))) S().act.push(iso(today())); K.save(); K.render();
+  S().quiz[k] = Math.max(S().quiz[k] ?? 0, qa.score); if (!S().act.includes(iso(today()))) S().act.push(iso(today())); K.save(); K.render(); K.bump(".card.center");
 });
 K.on("qRetry", () => { const k = qa._k; qa = {_k:k}; K.render(); });
 

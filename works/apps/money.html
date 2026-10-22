@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="kit.css?v=2">
+<link rel="stylesheet" href="kit.css?v=3">
 <style>
 :root{--bg:#F4F4F8;--acc:#5145E5;--acc-soft:#ECEAFD;--soft:#E9E9F1;--side-acc:#8F86FF;--chip-on:#111521}
 .rev{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:radial-gradient(260px 200px at 85% 0%,#4B44C9 0%,transparent 70%),linear-gradient(140deg,#24216B,#17154A)}
@@ -72,10 +72,20 @@
 .srch{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:0 14px;height:48px;margin-bottom:12px}
 .srch svg{width:19px;height:19px;color:var(--mut)}
 .srch input{flex:1;border:0;outline:0;background:none;height:100%;min-width:0}
+.view.enter .fab{animation:pc-pop .5s .35s cubic-bezier(.3,1.4,.5,1) both}
+.fab{transition:transform .2s}.fab:hover{transform:rotate(90deg)}.fab:active{transform:scale(.9)}
+.bars button i{transition:background .25s}
+.bars button span{animation:pc-pop .3s cubic-bezier(.3,1.4,.5,1)}
+.view.enter .donut svg,.view.soft .donut svg{animation:don .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes don{from{transform:rotate(-270deg) scale(.6);opacity:0}to{transform:rotate(-90deg)}}
+.view.enter .ops,.view.soft .ops{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
+.op{transition:background .2s}.op:active{background:var(--soft)}
+.cat{transition:border-color .2s,transform .14s}.cat:active{transform:scale(.94)}
+.view.enter .amt input{animation:pc-pop .45s .1s cubic-bezier(.3,1.4,.5,1) both}
 </style>
 </head>
 <body>
-<script src="kit.js?v=2"></script>
+<script src="kit.js?v=3"></script>
 <script>
 (() => {
 const {esc, rub, num, ic, iso, fromIso, addDays, today, dmy, plural, rnd, DOW, MON, MON1} = K;
@@ -142,16 +152,16 @@ function overview(){
   const cmax = cats.length ? cats[0][1] : 1;
   return `<div class="top"><div class="tt"><p class="hello">${esc(s.biz)}</p><h1 class="h1">Обзор</h1></div><button class="ibtn" data-a="go" data-to="reports" aria-label="Отчёты">${ic("cal")}</button></div>
   <div class="seg">${[["day","День"],["week","Неделя"],["month","Месяц"],["year","Год"]].map(([k, n]) => `<button class="${per===k?"on":""}" data-a="per" data-p="${k}">${n}</button>`).join("")}</div>
-  <div class="rev"><small>Выручка ${pr.lbl}</small><span class="sum">${rub(inc)}</span>
+  <div class="rev"><small>Выручка ${pr.lbl}</small><span class="sum" data-count="${inc}" data-fmt="rub">${rub(inc)}</span>
     ${dlt === null ? '<span class="delta na">Нет данных для сравнения</span>' : `<span class="delta ${dlt < 0 ? "dn" : ""}">${dlt < 0 ? "▼" : "▲"} ${Math.abs(dlt)}% к ${pr.plbl}</span>`}
-    <div class="two"><div><small>Расходы</small><b>${rub(out)}</b></div><div><small>Прибыль</small><b>${rub(inc - out)}</b></div></div></div>
+    <div class="two"><div><small>Расходы</small><b data-count="${out}" data-fmt="rub">${rub(out)}</b></div><div><small>Прибыль</small><b data-count="${inc - out}" data-fmt="rub">${rub(inc - out)}</b></div></div></div>
   <div class="h2">Выручка по ${per === "day" ? "часам" : per === "week" ? "дням" : per === "month" ? "неделям" : "месяцам"}</div>
-  <div class="chart"><div class="bars">${bk.map((b, i) => `<button class="${i===barSel?"on":""}" data-a="bar" data-i="${i}" aria-label="${b.l}: ${rub(b.v)}"><span>${rub(b.v)}</span><i style="height:${Math.max(4, Math.round(b.v / mx * 100))}%"></i></button>`).join("")}</div>
+  <div class="chart"><div class="bars">${bk.map((b, i) => `<button class="${i===barSel?"on":""}" data-a="bar" data-i="${i}" aria-label="${b.l}: ${rub(b.v)}"><span>${rub(b.v)}</span><i class="grow-h" style="height:${Math.max(4, Math.round(b.v / mx * 100))}%;animation-delay:${i * 0.05}s"></i></button>`).join("")}</div>
   <div class="lbls">${bk.map(b => `<span>${b.l}</span>`).join("")}</div></div>
   <div class="h2">Расходы <button data-a="go" data-to="reports">Отчёт</button></div>
-  <div class="card catbar">${cats.map(([k, v]) => `<div class="row"><span style="display:flex;gap:10px;align-items:center"><span class="tile" style="width:34px;height:34px;border-radius:10px;background:${CAT[k].b};color:${CAT[k].c}">${ic(CAT[k].i)}</span>${CAT[k].n}</span><b>${rub(v)}</b></div><i><b style="width:${Math.round(v / cmax * 100)}%;background:${CAT[k].c}"></b></i>`).join("") || '<p class="mut" style="margin:4px 0">Расходов за период нет</p>'}</div>`;
+  <div class="card catbar">${cats.map(([k, v]) => `<div class="row"><span style="display:flex;gap:10px;align-items:center"><span class="tile" style="width:34px;height:34px;border-radius:10px;background:${CAT[k].b};color:${CAT[k].c}">${ic(CAT[k].i)}</span>${CAT[k].n}</span><b>${rub(v)}</b></div><i><b class="grow-w" style="width:${Math.round(v / cmax * 100)}%;background:${CAT[k].c}"></b></i>`).join("") || '<p class="mut" style="margin:4px 0">Расходов за период нет</p>'}</div>`;
 }
-K.on("per", el => { per = el.dataset.p; barSel = null; K.render(); });
+K.on("per", el => { per = el.dataset.p; barSel = null; K.replay(); });
 K.on("bar", el => { barSel = +el.dataset.i; K.render(); });
 
 let flt = "all", q = "", showQ = false;
@@ -172,7 +182,7 @@ function opsScreen(){
   <button class="fab" data-a="go" data-to="new" aria-label="Новая операция">${ic("plus")}</button>`;
 }
 const opRow = o => `<button class="op" data-a="go" data-to="op/${o.id}"><span class="tile" style="background:${CAT[o.cat].b};color:${CAT[o.cat].c}">${ic(o.type === "in" && o.cat === "sales" ? (o.method === "cash" ? "cash" : o.method === "sbp" ? "sbp" : "card") : CAT[o.cat].i)}</span><span class="tx"><b>${esc(o.note || CAT[o.cat].n)}</b><small>${CAT[o.cat].n} · ${o.time}</small></span><span class="am ${o.type}">${o.type === "in" ? "+" : "−"}${rub(o.amt)}</span></button>`;
-K.on("flt", el => { flt = el.dataset.f; K.render(); });
+K.on("flt", el => { flt = el.dataset.f; K.replay(); });
 K.on("q", () => { showQ = !showQ; if (!showQ) q = ""; K.render(); if (showQ) setTimeout(() => K.$("[data-in=q]")?.focus(), 30); });
 K.onInput("q", el => { q = el.value; const pos = el.selectionStart; K.render(); const n = K.$("[data-in=q]"); n.focus(); n.setSelectionRange(pos, pos); });
 
@@ -193,7 +203,7 @@ function editor(id){
   <div class="dock"><button class="btn" data-a="esave">Сохранить</button></div>`;
 }
 K.on("etype", el => { ed.type = el.dataset.t; ed.cat = ed.type === "in" ? "sales" : "buy"; K.render(); });
-K.on("ecat", el => { ed.cat = el.dataset.c; K.render(); });
+K.on("ecat", el => { ed.cat = el.dataset.c; K.render(); K.bump(".cat.on"); });
 K.on("emeth", el => { ed.method = el.dataset.m; K.render(); });
 K.onInput("amt", el => { const d = el.value.replace(/[^\d]/g, "").slice(0, 9); ed.amt = d ? +d : ""; el.value = d ? num(+d).replace(/ /g, " ") : ""; });
 K.onInput("edate", el => { if (el.value) ed.date = el.value; });
@@ -226,7 +236,7 @@ function reports(){
   <button class="btn" style="margin-top:14px" data-a="csv" data-y="${m.getFullYear()}" data-m="${m.getMonth()}" ${ops.length ? "" : "disabled"}>${ic("download")} Скачать отчёт (CSV)</button>
   <p class="mut" style="font-size:13px;text-align:center;margin-top:10px">Файл открывается в Excel и Google Таблицах</p>`;
 }
-K.on("mon", el => { mOff += +el.dataset.d; K.render(); });
+K.on("mon", el => { mOff += +el.dataset.d; K.replay(); });
 K.on("csv", el => {
   const y = +el.dataset.y, m = +el.dataset.m, ops = inRange(new Date(y, m, 1), new Date(y, m + 1, 0)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const rows = [["Дата","Время","Тип","Категория","Способ","Сумма","Комментарий"], ...ops.map(o => [o.date, o.time, o.type === "in" ? "Доход" : "Расход", CAT[o.cat].n, METH[o.method], (o.type === "in" ? "" : "-") + o.amt, o.note])];

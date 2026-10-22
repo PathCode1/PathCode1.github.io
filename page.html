@@ -147,6 +147,29 @@ p{margin:0}
 .switch{display:inline-flex;padding:4px;background:var(--sunk);border-radius:999px;gap:4px;margin-bottom:28px}
 .switch button{border:0;background:transparent;padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted)}
 .switch button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(18,24,38,.12)}
+/* бегунок переключателя вкладок: переезжает под выбранную кнопку */
+.switch{position:relative}
+.switch button{position:relative;z-index:1;transition:color .25s}
+.sw-ind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:var(--surface);box-shadow:0 1px 3px rgba(18,24,38,.12),0 6px 16px -10px rgba(18,24,38,.35);transition:transform .45s cubic-bezier(.3,1.25,.4,1),width .45s cubic-bezier(.3,1.25,.4,1);pointer-events:none}
+.switch.js button[aria-selected="true"]{background:transparent;box-shadow:none}
+.switch.noanim .sw-ind{transition:none}
+.switch button:active{transform:scale(.96)}
+/* появление вкладки */
+@keyframes tp-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tp-card{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.tp-in{animation:tp-in .45s cubic-bezier(.2,.8,.2,1) both}
+.tp-in .app-card{animation:tp-card .5s cubic-bezier(.2,.8,.2,1) both}
+.tp-in .app-card:nth-child(2){animation-delay:.06s}.tp-in .app-card:nth-child(3){animation-delay:.12s}.tp-in .app-card:nth-child(4){animation-delay:.18s}.tp-in .app-card:nth-child(5){animation-delay:.24s}
+.tp-in .bot-list>*{animation:tp-card .45s cubic-bezier(.2,.8,.2,1) both}
+.tp-in .bot-list>*:nth-child(2){animation-delay:.05s}.tp-in .bot-list>*:nth-child(3){animation-delay:.1s}.tp-in .bot-list>*:nth-child(4){animation-delay:.15s}.tp-in .bot-list>*:nth-child(5){animation-delay:.2s}
+.tp-in .stage{animation:tp-card .55s .08s cubic-bezier(.2,.8,.2,1) both}
+.app-card img{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.app-card:hover img{transform:scale(1.04)}
+@keyframes ad-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.app-dlg[open]{animation:ad-in .35s cubic-bezier(.2,.8,.2,1)}
+.app-dlg[open]::backdrop{animation:tp-fade .3s ease}
+@keyframes tp-fade{from{opacity:0}}
+.ad-phone.swap{animation:ad-in .4s cubic-bezier(.2,.8,.2,1)}
 /* ---------- приложения ---------- */
 .apps-note{margin:0 0 18px;color:var(--muted);max-width:62ch}
 .apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
@@ -672,6 +695,7 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
       <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью. Приложения — рабочие демо: их можно открыть и пройти сценарий целиком.</p>
     </div>
     <div class="switch" role="tablist" aria-label="Тип работ">
+      <span class="sw-ind" aria-hidden="true"></span>
       <button role="tab" aria-selected="true" aria-controls="pBots" id="tBots">Telegram-боты</button>
       <button role="tab" aria-selected="false" aria-controls="pSites" id="tSites">Сайты</button>
       <button role="tab" aria-selected="false" aria-controls="pApps" id="tApps">Приложения</button>
@@ -955,7 +979,7 @@ const APPS=[["salon", "Онлайн-запись в салон красоты", 
 const adDlg=$("#appDlg");let adI=0;
 const AD_TRY={"salon": "Попробуйте: выберите услугу, мастера и время — запись появится во вкладке «Записи», её можно перенести или скачать в календарь.", "food": "Попробуйте: добавьте блюда, введите промокод <b>PATHCODE</b>, оформите заказ — и смотрите, как курьер едет на карте.", "fit": "Попробуйте: запишитесь на тренировку, откройте QR-пропуск и отметьте вход, заморозьте абонемент в профиле.", "money": "Попробуйте: переключите периоды, добавьте расход кнопкой «+» и скачайте отчёт за месяц в CSV.", "school": "Попробуйте: продолжите урок, перемотайте видео, пройдите тест — а после последнего урока курса получите диплом."};
 function adShow(i){adI=(i+APPS.length)%APPS.length;const [k,t,d,f]=APPS[adI],url="works/apps/"+k+".html";
-  $("#adFrame").src=url;$("#adFrame").title="Демо-приложение: "+t;$("#adOpen").href=url;
+  $("#adFrame").src=url;const ph=document.querySelector(".ad-phone");ph.classList.remove("swap");void ph.offsetWidth;ph.classList.add("swap");$("#adFrame").title="Демо-приложение: "+t;$("#adOpen").href=url;
   $("#adTitle").textContent=t;$("#adDesc").textContent=d;$("#adFeats").innerHTML=f.map(x=>"<li>"+x+"</li>").join("");$("#adTry").innerHTML=AD_TRY[k];}
 document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>{const k=APPS[+b.dataset.app][0];
   if(matchMedia("(max-width:600px)").matches){location.href="works/apps/"+k+".html";return}
@@ -966,7 +990,14 @@ $("#adClose").onclick=adEnd;
 adDlg.addEventListener("cancel",()=>{$("#adFrame").src="about:blank"});
 adDlg.addEventListener("click",e=>{if(e.target===adDlg)adEnd()});
 adDlg.addEventListener("keydown",e=>{if(e.target.tagName==="IFRAME")return;if(e.key==="ArrowLeft")adShow(adI-1);if(e.key==="ArrowRight")adShow(adI+1)});
-tabs.forEach(([t,p])=>t.onclick=()=>tabs.forEach(([t2,p2])=>{const on=t2===t;t2.setAttribute("aria-selected",on);p2.hidden=!on;}));
+const swEl=document.querySelector(".switch"),swInd=swEl.querySelector(".sw-ind");
+function swMove(){const b=swEl.querySelector('[aria-selected="true"]');if(!b)return;swInd.style.width=b.offsetWidth+"px";swInd.style.transform="translateX("+b.offsetLeft+"px)";}
+swEl.classList.add("js","noanim");swMove();requestAnimationFrame(()=>requestAnimationFrame(()=>swEl.classList.remove("noanim")));
+addEventListener("resize",()=>{swEl.classList.add("noanim");swMove();requestAnimationFrame(()=>swEl.classList.remove("noanim"))});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(swMove);
+tabs.forEach(([t,p])=>t.onclick=()=>{if(t.getAttribute("aria-selected")==="true")return;
+  tabs.forEach(([t2,p2])=>{const on=t2===t;t2.setAttribute("aria-selected",on);p2.hidden=!on;if(on){p2.classList.remove("tp-in");void p2.offsetWidth;p2.classList.add("tp-in");}});
+  swMove();t.scrollIntoView({block:"nearest",inline:"nearest"});});
 
 /* ---------- telegram bots ---------- */
 const PH={
