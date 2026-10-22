@@ -90,6 +90,14 @@
 .view.enter .cats .cat:nth-child(2){animation-delay:.05s}.view.enter .cats .cat:nth-child(3){animation-delay:.1s}.view.enter .cats .cat:nth-child(4){animation-delay:.15s}
 .view.enter .masters .mst,.view.enter .slots .slot{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
 .view.enter .slots .slot:nth-child(3n+2){animation-delay:.04s}.view.enter .slots .slot:nth-child(3n){animation-delay:.08s}
+.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mgrid .mst{min-width:0;width:100%}
+.fitem{padding:10px 6px 10px 14px}
+.fpick{display:flex;align-items:center;gap:14px;flex:1;min-width:0;border:0;background:none;padding:0;text-align:left;color:inherit;font:inherit}
+.fpick .go{color:var(--acc);font-weight:600;margin-top:4px}
+.fitem .tx b{white-space:normal;overflow:visible;line-height:1.25}
+.view.enter .mgrid .mst{animation:pc-u .4s cubic-bezier(.2,.8,.2,1) both}
+.view.enter .mgrid .mst:nth-child(2){animation-delay:.05s}.view.enter .mgrid .mst:nth-child(3){animation-delay:.1s}.view.enter .mgrid .mst:nth-child(4){animation-delay:.15s}
 </style>
 </head>
 <body>
@@ -264,9 +272,9 @@ function favs(){
   const s = S(), fs = s.favS.map(svc).filter(Boolean), fm = s.favM.map(mst).filter(Boolean);
   return `<h1 class="h1" style="margin:6px 0 16px">Избранное</h1>
   <div class="sec" style="margin-top:0">Мастера</div>
-  <div class="masters">${MST.map(m => `<button class="mst ${s.favM.includes(m.id)?"on":""}" data-a="favM" data-id="${m.id}"><span class="ava ${m.g}">${m.in}</span><b>${m.n}</b><small>${s.favM.includes(m.id) ? "♥ в избранном" : "♡ добавить"}</small></button>`).join("")}</div>
+  <div class="mgrid">${MST.map(m => `<button class="mst ${s.favM.includes(m.id)?"on":""}" data-a="favM" data-id="${m.id}"><span class="ava ${m.g}">${m.in}</span><b>${m.n}</b><small>${s.favM.includes(m.id) ? "♥ в избранном" : "♡ добавить"}</small></button>`).join("")}</div>
   <div class="sec">Услуги</div>
-  <div class="list">${fs.map(x => `<div class="item" style="padding-right:6px"><span class="ic">${ic(x.i)}</span><span class="tx"><b>${esc(x.n)}</b><small>${dur(x.d)} · ${rub(x.p)}</small></span><button class="btn sm" data-a="pick" data-id="${x.id}">Записаться</button><button class="fav" data-a="favS" data-id="${x.id}" aria-label="Убрать из избранного">${ic("heartf")}</button></div>`).join("") || '<div class="empty"><b>Пока пусто</b>Нажмите ♡ на странице услуги, чтобы сохранить её здесь</div>'}</div>`;
+  <div class="list">${fs.map(x => `<div class="item fitem"><button class="fpick" data-a="pick" data-id="${x.id}"><span class="ic">${ic(x.i)}</span><span class="tx"><b>${esc(x.n)}</b><small>${dur(x.d)} · ${rub(x.p)}</small><small class="go">Записаться →</small></span></button><button class="fav" data-a="favS" data-id="${x.id}" aria-label="Убрать из избранного">${ic("heartf")}</button></div>`).join("") || '<div class="empty"><b>Пока пусто</b>Нажмите ♡ на странице услуги, чтобы сохранить её здесь</div>'}</div>`;
 }
 K.on("favM", el => { const id = el.dataset.id, f = S().favM; const i = f.indexOf(id); i < 0 ? f.push(id) : f.splice(i, 1); K.save(); K.render(); });
 
