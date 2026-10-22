@@ -145,8 +145,7 @@ p{margin:0}
 
 /* works */
 .switch{display:inline-flex;padding:4px;background:var(--sunk);border-radius:999px;gap:4px;margin-bottom:28px}
-.switch button{border:0;background:transparent;padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted);white-space:nowrap}
-@media (max-width:420px){.switch{max-width:100%}.switch button{padding:9px 12px;font-size:14px}}
+.switch button{border:0;background:transparent;padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted)}
 .switch button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(18,24,38,.12)}
 .bots{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"list phone" "info phone";grid-template-rows:auto 1fr;gap:0 40px;align-items:start}
 .bot-list{grid-area:list}.bot-info{grid-area:info}.bots .phone{grid-area:phone}
@@ -247,14 +246,6 @@ p{margin:0}
 .credits ul{margin:10px 0 0;padding-left:18px;display:grid;gap:3px;columns:2}
 .credits a{color:var(--accent)}
 @media (max-width:700px){.credits ul{columns:1}}
-/* apps: три экрана приложения в ряд, на телефоне листаются свайпом */
-.apps-stage{padding:30px 22px 24px}
-.apps-row{display:grid;grid-template-columns:repeat(3,minmax(0,270px));gap:32px;justify-content:center;width:100%}
-.apps-row figure{margin:0}
-.apps-row img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 30px rgba(18,24,38,.26))}
-.apps-row figcaption{margin-top:14px;text-align:center;font-size:13.5px;font-weight:500;color:var(--muted)}
-@media (max-width:760px){.apps-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:0 4px 6px;justify-content:flex-start;overscroll-behavior-x:contain}
-  .apps-row figure{flex:0 0 70%;scroll-snap-align:center}}
 @media (max-width:640px){.stage{padding:10px;border-radius:16px}.dev{margin-left:0}.b-view{height:500px}.b-view.live{height:560px}}
 
 /* mock sites */
@@ -647,12 +638,11 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Демо-работы</span><h2>Можно потрогать прямо здесь</h2></div>
-      <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью. В «Приложениях» — экраны Android-приложений.</p>
+      <p>Боты работают в симуляторе: нажимайте кнопки, как в настоящем Telegram. Сайты можно полистать в превью или открыть целиком: у каждого своя страница с работающими формами, корзиной и записью.</p>
     </div>
     <div class="switch" role="tablist" aria-label="Тип работ">
       <button role="tab" aria-selected="true" aria-controls="pBots" id="tBots">Telegram-боты</button>
       <button role="tab" aria-selected="false" aria-controls="pSites" id="tSites">Сайты</button>
-      <button role="tab" aria-selected="false" aria-controls="pApps" id="tApps">Приложения</button>
     </div>
 
     <div id="pBots" role="tabpanel" aria-labelledby="tBots">
@@ -687,12 +677,6 @@ footer span:last-child{font-family:var(--f-mono);font-size:13px}
         </div>
       </div>
       <p class="site-cap" id="siteCap"></p>
-    </div>
-
-    <div id="pApps" role="tabpanel" aria-labelledby="tApps" hidden>
-      <div class="site-tabs"><div id="appTabs" style="display:contents"></div></div>
-      <div class="stage apps-stage"><div class="apps-row" id="appRow"></div></div>
-      <p class="site-cap" id="appCap"></p>
     </div>
     <details class="credits"><summary>Фото в демо: авторы и лицензии</summary><ul><li><a href="https://www.flickr.com/photos/12651126@N05/2333257753" target="_blank" rel="noopener">Fire</a>, Michael Budde, CC BY-SA 2.0</li><li><a href="https://www.flickr.com/photos/77742560@N06/29486941184" target="_blank" rel="noopener">Another Georgian favourite, the Khinkali</a>, shankar s., CC BY 2.0</li><li><a href="https://www.rawpixel.com/image/5908908/image-public-domain-summer-food" target="_blank" rel="noopener">Free grilling meat skewers photo</a>, автор не указан, CC0</li><li><a href="https://www.flickr.com/photos/10579374@N05/5602170315" target="_blank" rel="noopener">Khachapuri</a>, salvagekat, CC BY-SA 2.0</li><li><a href="https://www.flickr.com/photos/39976636@N03/11070828595" target="_blank" rel="noopener">Chipped tooth repair today. #dentist</a>, AFresh1, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/52215361@N02/7884456250" target="_blank" rel="noopener">Homa Manicure</a>, Lelê Breveglieri, CC BY 2.0</li><li><a href="https://commons.wikimedia.org/w/index.php?curid=113443523" target="_blank" rel="noopener">Car repair shop</a>, Martin Vorel, CC BY-SA 4.0</li><li><a href="https://www.flickr.com/photos/42982698@N00/9163072760" target="_blank" rel="noopener">That is a sad brake rotor.</a>, cjmartin, CC BY 2.0</li><li><a href="https://www.rawpixel.com/image/5905295/photo-image-flower-public-domain-plant" target="_blank" rel="noopener">Free pink rose bouquet image</a>, автор не указан, CC0</li><li><a href="https://www.flickr.com/photos/45880014@N03/7099106625" target="_blank" rel="noopener">Pink Rose Bouquet</a>, Kurozumi, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/24742305@N00/3065229481" target="_blank" rel="noopener">Thanksgiving Bouquet - Orange</a>, John-Morgan, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/53133240@N00/112651128" target="_blank" rel="noopener">tulips dark background</a>, Muffet, CC BY 2.0</li><li><a href="https://www.flickr.com/photos/62938898@N00/6918197938" target="_blank" rel="noopener">Lisianthus (sorting out)</a>, Tatters ✾, CC BY-SA 2.0</li></ul></details>
   </div>
@@ -912,7 +896,7 @@ function showTech(g,name){const t=TECH.find(x=>x[1]===name);
 renderStack();
 
 /* ---------- works tabs ---------- */
-const tabs=[[$("#tBots"),$("#pBots")],[$("#tSites"),$("#pSites")],[$("#tApps"),$("#pApps")]];
+const tabs=[[$("#tBots"),$("#pBots")],[$("#tSites"),$("#pSites")]];
 tabs.forEach(([t,p])=>t.onclick=()=>tabs.forEach(([t2,p2])=>{const on=t2===t;t2.setAttribute("aria-selected",on);p2.hidden=!on;}));
 
 /* ---------- telegram bots ---------- */
@@ -1230,7 +1214,7 @@ addEventListener("message",e=>{if(e.data&&e.data.demo==="ready")frameOk=true});
 function renderSite(){
   const s=SITES.find(x=>x.id===siteSel);
   $("#siteTabs").innerHTML=SITES.map(x=>`<button class="site-tab" type="button" data-id="${x.id}" aria-pressed="${x.id===siteSel}" style="--c:${x.c}"><i></i>${esc(x.tab)}</button>`).join("");
-  document.querySelectorAll("#siteTabs .site-tab").forEach(b=>b.onclick=()=>{siteSel=b.dataset.id;renderSite()});
+  document.querySelectorAll(".site-tab").forEach(b=>b.onclick=()=>{siteSel=b.dataset.id;renderSite()});
   $("#bUrl").textContent="https://"+s.url;$("#bOpen").href="works/"+s.id+".html";
   const v=$("#bView");v.classList.add("live");
   v.innerHTML=`<iframe class="b-frame" src="works/${s.id}.html" title="Демо-сайт ${esc(s.name)}"></iframe><div class="b-fallback" hidden>${siteHTML(s)}</div>`;
@@ -1243,34 +1227,6 @@ document.querySelectorAll(".dev button").forEach(b=>b.onclick=()=>{
   $("#browser").classList.toggle("mob",b.dataset.dev==="mob");
 });
 renderSite();
-
-const APPS=[
-{id:"salon",tab:"Запись в салон",c:"#D6457A",name:"Онлайн-запись в салон красоты",
- cap:"Клиент сам выбирает услугу, мастера и свободное окно, за 2 часа до визита приходит напоминание. Светлая тема с глубоким винным баннером.",
- scr:["Главная","Выбор времени","Запись подтверждена"]},
-{id:"food",tab:"Доставка еды",c:"#FF6B2C",name:"Доставка для кафе",
- cap:"Меню, корзина и курьер на карте: заказы идут напрямую в кафе, без комиссии агрегаторов. Оплата картой и СБП.",
- scr:["Меню","Корзина","Курьер в пути"]},
-{id:"fit",tab:"Фитнес-клуб",c:"#9CC414",name:"Приложение фитнес-клуба",
- cap:"Абонемент, расписание с записью в один клик и QR-пропуск на входе. Тёмная тема с салатовым акцентом.",
- scr:["Главная","Расписание","QR-пропуск"]},
-{id:"money",tab:"Учёт финансов",c:"#5046E5",name:"Учёт доходов и расходов",
- cap:"Выручка, траты и прибыль за любой период, операции по категориям, расход вносится за пару касаний. Для кафе, магазинов и мастерских.",
- scr:["Обзор","Операции","Новая операция"]},
-{id:"school",tab:"Онлайн-школа",c:"#6D4AFF",name:"Приложение онлайн-школы",
- cap:"Курсы с прогрессом, видеоуроки с материалами и заданиями, дипломы в профиле.",
- scr:["Главная","Урок","Профиль"]}
-];
-let appSel="salon";
-function renderApp(){
-  const a=APPS.find(x=>x.id===appSel);
-  $("#appTabs").innerHTML=APPS.map(x=>`<button class="site-tab" type="button" data-app="${x.id}" aria-pressed="${x.id===appSel}" style="--c:${x.c}"><i></i>${esc(x.tab)}</button>`).join("");
-  document.querySelectorAll("#appTabs .site-tab").forEach(b=>b.onclick=()=>{appSel=b.dataset.app;renderApp()});
-  $("#appRow").innerHTML=a.scr.map((t,i)=>`<figure><img src="img/app-${a.id}-${i+1}.webp" width="600" height="1263" alt="${esc(a.name)}: экран «${esc(t)}»" loading="lazy" decoding="async"><figcaption>${esc(t)}</figcaption></figure>`).join("");
-  $("#appRow").scrollLeft=0;
-  $("#appCap").textContent=a.name+". "+a.cap+" Концепт интерфейса, названия вымышленные.";
-}
-renderApp();
 
 /* ---------- copy helpers ---------- */
 async function copyText(text,msgEl,ok){
@@ -1422,7 +1378,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return
   setTimeout(()=>t.classList.remove("fx-r","fx-v"),1600);
 }),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
 const groups=new Map();
-$$(".sec-head>div,.sec-head>p,.dirs,.groups,.switch,#pBots,#pSites,#pApps,.svc-row,.svc-foot,.step,.guar,.contact h2,.contact .sub,.lnk,.copy-row,.brief").forEach(e=>{
+$$(".sec-head>div,.sec-head>p,.dirs,.groups,.switch,#pBots,#pSites,.svc-row,.svc-foot,.step,.guar,.contact h2,.contact .sub,.lnk,.copy-row,.brief").forEach(e=>{
   if(e.parentNode.classList.contains("car"))return;
   const p=e.parentNode,k=groups.get(p)||0;groups.set(p,k+1);e.classList.add("fx-r");e.style.setProperty("--d",k%6);io.observe(e)});
 
