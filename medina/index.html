@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Покорми меня</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800;900&family=Manrope:wght@400;600;800&family=Caveat:wght@600;700&family=PT+Mono&display=swap">
+<style>
+/* Ресторан «У тебя»: она — шеф, я — единственный голодный гость. Клубничное молоко, вишня, сливочное масло. */
+:root{
+  --bg:#FCE7EB;
+  --surface:#FFF7F8;
+  --ink:#3A1A16;
+  --muted:#8C5953;
+  --cherry:#CF1F3A;
+  --butter:#FFD15C;
+  --line:#EFC2CA;
+  --on-cherry:#FFF7F8;
+  --shadow:0 1px 0 rgba(58,26,22,.06),0 12px 30px -18px rgba(150,30,50,.45);
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-hand:"Caveat","Comic Sans MS",cursive;
+  --f-mono:"PT Mono",ui-monospace,"Consolas",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1C0F11;--surface:#29171A;--ink:#FBE4E8;--muted:#C99BA2;--cherry:#FF5069;
+    --butter:#FFD15C;--line:#45272C;--on-cherry:#1C0F11;
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1C0F11;--surface:#29171A;--ink:#FBE4E8;--muted:#C99BA2;--cherry:#FF5069;
+  --butter:#FFD15C;--line:#45272C;--on-cherry:#1C0F11;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.full{padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.02}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--butter);outline-offset:3px;border-radius:12px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cherry)}
+.hand{font-family:var(--f-hand);font-weight:700;color:var(--cherry)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:48px 40px;display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center}
+.hero-text{display:flex;flex-direction:column;gap:22px;min-width:0}
+.hero h1{font-weight:900;font-size:clamp(2.3rem,6.6vw,5.2rem);letter-spacing:-.03em;color:var(--ink)}
+.hero h1 em{font-style:normal;color:var(--cherry);display:block}
+.hero h1 .please{display:block;font-family:var(--f-hand);font-weight:700;letter-spacing:0;color:var(--cherry);font-size:.72em;line-height:1.1;margin-top:.12em;transform:rotate(-3deg);transform-origin:left}
+.lead{font-size:1.15rem;max-width:34ch;color:var(--ink)}
+.lead b{color:var(--cherry)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{border:0;border-radius:999px;padding:14px 26px;font-weight:800;font-size:1rem;transition:transform .15s ease,background .15s}
+.btn-main{background:var(--cherry);color:var(--on-cherry)}
+.btn-main:hover{transform:translateY(-2px) rotate(-1deg)}
+.btn-ghost{background:transparent;border:2px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--cherry)}
+
+.guest{background:var(--surface);border:2px solid var(--line);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow);position:relative}
+.guest-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.guest-top .hand{font-size:1.5rem}
+.table-no{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.face-box{position:relative;display:grid;place-items:center}
+.face-box{min-height:200px}
+.big-pct{font-family:var(--f-display);font-weight:900;font-size:clamp(5.5rem,14vw,8.5rem);line-height:1;letter-spacing:-.05em;color:var(--cherry);font-variant-numeric:tabular-nums;display:flex;align-items:flex-start}
+.big-pct small{font-size:.38em;margin-top:.25em;margin-left:.05em;letter-spacing:0}
+#face.growl{animation:growl .5s ease 2}
+@keyframes growl{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg) translateX(-3px)}75%{transform:rotate(4deg) translateX(3px)}}
+.bubble{position:absolute;top:4%;right:2%;background:var(--ink);color:var(--bg);font-family:var(--f-hand);font-size:1.5rem;padding:4px 14px;border-radius:16px 16px 16px 4px;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;pointer-events:none}
+.bubble.show{opacity:1;transform:none}
+.meter-label{display:flex;justify-content:space-between;font-weight:800;font-size:.9rem}
+.meter-label span:last-child{font-variant-numeric:tabular-nums;color:var(--cherry)}
+.meter{height:18px;border-radius:999px;background:var(--bg);border:2px solid var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:8%;background:repeating-linear-gradient(-45deg,var(--cherry) 0 10px,color-mix(in srgb,var(--cherry) 80%,var(--butter)) 10px 20px);border-radius:999px}
+.status{font-size:.95rem;color:var(--muted)}
+.status b{color:var(--ink)}
+
+/* ---------- ribbon ---------- */
+.ribbon{background:var(--cherry);color:var(--on-cherry);overflow:hidden;white-space:nowrap;padding-block:12px;font-family:var(--f-display);font-weight:800;font-size:1.05rem;letter-spacing:.02em}
+.ribbon-track{display:inline-flex;gap:36px;animation:roll 28s linear infinite}
+.ribbon-track span::after{content:"✦";margin-left:36px;opacity:.7}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* ---------- sections ---------- */
+section{padding-block:64px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+.sec-head .hand{font-size:1.6rem;transform:rotate(-3deg)}
+
+/* reasons */
+.reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px 36px}
+.reason{display:flex;flex-direction:column;gap:8px;max-width:38ch}
+.reason h3{font-size:1.25rem;font-weight:800}
+.reason .hand{font-size:1.35rem}
+
+/* dodge */
+.dodge-card{background:var(--surface);border:2px solid var(--line);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+.dodge-card h2{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800}
+.arena{position:relative;height:200px;border-radius:20px;background:var(--bg);border:2px dashed var(--line);overflow:hidden}
+.arena .btn{position:absolute;top:50%;transform:translate(-50%,-50%)}
+#yes{left:35%;transition:transform .25s;z-index:2}
+#no{left:68%;transition:left .22s ease,top .22s ease,transform .22s ease;background:var(--surface)}
+.dodge-msg{font-family:var(--f-hand);font-size:1.6rem;color:var(--cherry);min-height:1.6em}
+
+footer{padding-block:40px 56px;border-top:2px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--muted);font-size:.9rem}
+footer .hand{font-size:1.4rem}
+
+/* overlay */
+.full{position:fixed;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(4px);z-index:30}
+.full-card{background:var(--surface);border:2px solid var(--cherry);border-radius:28px;padding:32px;max-width:440px;text-align:center;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.full-card h2{font-size:2rem;font-weight:900;color:var(--cherry)}
+#hearts{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;padding-block:28px 32px;gap:28px}
+  section{padding-block:48px}
+}
+/* стартовые страницы */
+html.locked,html.locked body{overflow:hidden}
+.intro{position:fixed;inset:0;z-index:35;background:var(--bg);display:grid;place-items:center;overflow:hidden;
+  padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  transition:opacity .5s ease}
+.intro.leaving{opacity:0;pointer-events:none}
+.intro-step{width:100%;max-width:620px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.intro-step h1{font-weight:900;font-size:clamp(2.2rem,8vw,4.4rem);letter-spacing:-.03em}
+.intro-step h1 em,.intro-step h2 em{font-style:normal;color:var(--cherry)}
+.intro-step h2{font-weight:800;font-size:clamp(1.8rem,6.4vw,3.2rem);letter-spacing:-.02em}
+.intro-step p{font-size:1.2rem;max-width:30ch}
+.intro-step .hand{font-size:1.6rem;min-height:1.3em}
+.intro-page{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);letter-spacing:.08em}
+.intro-btns{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:12px;max-width:100%}
+.intro-btns .btn{padding:15px 28px;font-size:1.05rem;white-space:nowrap}
+@media (max-width:520px){
+  .intro-btns{gap:8px}
+  .intro-btns .btn{padding:13px clamp(10px,3.5vw,16px);font-size:clamp(.8rem,3.9vw,.95rem)}
+}
+#runaway{background:var(--surface)}
+#runaway.loose{position:fixed;z-index:36;margin:0;transition:left .18s ease,top .18s ease}
+
+/* телефон */
+@media (max-width:520px){
+  .hero{padding-block:20px 28px;gap:22px}
+  .hero-text{gap:16px}
+  .lead{font-size:1.05rem}
+  .cta-row .btn{width:100%;text-align:center;padding-block:16px;font-size:1.05rem}
+  .guest{padding:18px;border-radius:22px;gap:12px}
+  .face-box{min-height:0;padding-block:6px}
+  .bubble{font-size:1.3rem;top:0;right:0}
+  .ribbon{font-size:.9rem;padding-block:10px}
+  section{padding-block:40px}
+  .sec-head{margin-bottom:20px}
+  .sec-head .hand{font-size:1.4rem}
+  .reasons{gap:22px}
+  .dodge-card{padding:20px;border-radius:22px;gap:14px}
+  .arena{height:250px}
+  #yes{left:50%;top:32%}
+  #no{left:50%;top:74%}
+  .dodge-msg{font-size:1.45rem}
+  .full-card{padding:24px}
+  .full-card h2{font-size:1.7rem}
+  .full-card .btn{width:100%}
+  footer{flex-direction:column;padding-block:28px 40px}
+}
+@media (hover:none){
+  .btn-main:hover,.btn-ghost:hover{transform:none;border-color:var(--line)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <div class="intro-step" id="step1">
+    <span class="intro-page">1 / 5</span>
+    <h1>Привет, <em>Медина</em></h1>
+    <p>Этот сайт посвящён тебе. И частично мне.</p>
+    <div class="intro-btns">
+      <button class="btn btn-main" id="okBtn" type="button">Ладно...</button>
+    </div>
+  </div>
+  <div class="intro-step" id="step2" hidden>
+    <span class="intro-page">2 / 5</span>
+    <h2>Блин, чё ты так холодно отвечаешь?</h2>
+    <span class="hand" id="fleeMsg" aria-live="polite"></span>
+    <div class="intro-btns">
+      <button class="btn btn-main" id="sorryBtn" type="button">Извини, пожалуйста</button>
+      <button class="btn btn-ghost" id="runaway" type="button">Потому что хочу</button>
+    </div>
+  </div>
+  <div class="intro-step" id="step3" hidden>
+    <span class="intro-page">3 / 5</span>
+    <h2>Ладно, так уж и быть</h2>
+    <div class="intro-btns">
+      <button class="btn btn-main" type="button" data-next="step4">Ураа</button>
+    </div>
+  </div>
+  <div class="intro-step" id="step4" hidden>
+    <span class="intro-page">4 / 5</span>
+    <h2>Если честно, таких красивых девушек я ещё <em>не видел</em></h2>
+    <div class="intro-btns">
+      <button class="btn btn-main" type="button" data-next="step5">Спасиибо, это мило</button>
+    </div>
+  </div>
+  <div class="intro-step" id="step5" hidden>
+    <span class="intro-page">5 / 5</span>
+    <h2>Перейдём к самому важному</h2>
+    <div class="intro-btns">
+      <button class="btn btn-main" type="button" data-next="site">И что же это?</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Ресторан «У тебя» · столик на одного</span>
+      <h1><em>Медина,</em> прокорми меня <span class="please">пожалуйста</span></h1>
+      <p class="lead">Я голодный, а вкуснее тебя не готовит никто. Спаси <b id="hisName">своего мужчину</b> от голода.</p>
+      <div class="cta-row">
+        <a class="btn btn-main" href="#answer" style="text-decoration:none">Ответить</a>
+      </div>
+    </div>
+
+    <aside class="guest" aria-label="Состояние гостя">
+      <div class="guest-top">
+        <span class="hand">гость ждёт</span>
+        <span class="table-no">стол №1 · 19:30</span>
+      </div>
+      <div class="face-box">
+        <div id="face" class="big-pct" aria-hidden="true"><span id="bigPct">8</span><small>%</small></div>
+        <div class="bubble" id="bubble">урррр…</div>
+      </div>
+      <div>
+        <div class="meter-label"><span>Сытость</span><span id="pct">8%</span></div>
+        <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8" id="meter"><i id="fill"></i></div>
+      </div>
+      <p class="status">Состояние: <b id="state">урчит животом и смотрит на тебя</b></p>
+    </aside>
+  </header>
+</div>
+
+<div class="ribbon" aria-hidden="true">
+  <div class="ribbon-track">
+    <span>Шеф дня — ты</span><span>Гость голоден</span><span>Стол накрыт, тарелка пустая</span><span>Без тебя — только доширак</span><span>Работаем круглосуточно, если ты не устала</span>
+    <span>Шеф дня — ты</span><span>Гость голоден</span><span>Стол накрыт, тарелка пустая</span><span>Без тебя — только доширак</span><span>Работаем круглосуточно, если ты не устала</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="sec-head">
+      <h2>Почему именно ты</h2>
+      <span class="hand">мнение гостя</span>
+    </div>
+    <div class="reasons">
+      <div class="reason">
+        <h3>У тебя вкуснее</h3>
+        <p>Я пробовал рестораны. Там дорого, долго, а порции маленькие.</p>
+      </div>
+      <div class="reason">
+        <h3>Ты знаешь, что я ем</h3>
+        <p>Без лука, побольше сыра, и чтобы хлеб к супу. Ни один официант столько обо мне не знает.</p>
+      </div>
+      <div class="reason">
+        <h3>Сытый я лучше</h3>
+        <p>Накормленный, я добрый, мою посуду и не ною.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="answer">
+    <div class="dodge-card">
+      <span class="eyebrow">Главный вопрос</span>
+      <h2>Ты меня покормишь?</h2>
+      <div class="arena" id="arena">
+        <button class="btn btn-main" id="yes" type="button">Покормлю</button>
+        <button class="btn btn-ghost" id="no" type="button">Не буду</button>
+      </div>
+      <p class="dodge-msg" id="dodgeMsg" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Сделано на пустой желудок</span>
+    <span class="hand" id="sign">твой голодный</span>
+  </footer>
+</div>
+
+<div class="full" id="full" hidden>
+  <div class="full-card">
+    <h2>Я сыт!</h2>
+    <p>Спасибо, шеф. Это было лучшее, что я ел.</p>
+    <button class="btn btn-main" id="fullClose" type="button">Пожалуйста</button>
+  </div>
+</div>
+<canvas id="hearts" aria-hidden="true"></canvas>
+
+<script>
+// Поменяй имена здесь
+const HIS_NAME = "Умара";      // в родительном падеже: «спаси Умара»
+const SIGN = "твой голодный Умар";
+
+const $ = id => document.getElementById(id);
+$("hisName").textContent = HIS_NAME;
+$("sign").textContent = SIGN;
+
+const STATES = [
+  [20, "урчит животом и смотрит на тебя"],
+  [40, "уже не урчит, но всё ещё грустно вздыхает"],
+  [60, "оживился и улыбается"],
+  [80, "счастлив, просит добавки"],
+  [100, "почти сыт, место только под десерт"],
+  [101, "сыт и доволен"],
+];
+
+let sat = 8;
+
+function render() {
+  const s = Math.round(sat);
+  $("pct").textContent = s + "%";
+  $("bigPct").textContent = s;
+  $("fill").style.width = s + "%";
+  $("meter").setAttribute("aria-valuenow", s);
+  $("state").textContent = STATES.find(([max]) => s < max)[1];
+}
+
+// наесться: шкала плавно доезжает до 100%
+let feeding = false;
+function feed() {
+  if (feeding || sat >= 100) { $("full").hidden = false; burstCenter(); return; }
+  feeding = true;
+  const from = sat, start = performance.now(), dur = reduce ? 0 : 1600;
+  const step = now => {
+    const p = dur ? Math.min(1, (now - start) / dur) : 1;
+    sat = from + (100 - from) * (1 - Math.pow(1 - p, 3));
+    render();
+    if (p < 1) return requestAnimationFrame(step);
+    feeding = false;
+    $("full").hidden = false;
+    burstCenter();
+  };
+  requestAnimationFrame(step);
+}
+
+// урчание
+setInterval(() => {
+  if (sat >= 40) return;
+  const f = $("face"), b = $("bubble");
+  f.classList.remove("growl"); void f.offsetWidth; f.classList.add("growl");
+  b.classList.add("show");
+  setTimeout(() => b.classList.remove("show"), 1600);
+}, 6000);
+
+// убегающая кнопка
+const NO_LINES = ["Точно?", "Подумай ещё", "Я же голодный…", "Ну пожа-а-алуйста", "Кнопка не согласна", "Смотри, какая большая «Покормлю»", "Сдавайся"];
+let tries = 0, lastDodge = 0;
+function dodge(e) {
+  if (e) e.preventDefault();
+  // на телефоне касание даёт и pointerdown, и click — считаем один раз
+  const t = performance.now();
+  if (t - lastDodge < 400) return;
+  lastDodge = t;
+  const arena = $("arena"), no = $("no");
+  const aw = arena.clientWidth, ah = arena.clientHeight;
+  const bw = no.offsetWidth, bh = no.offsetHeight;
+  const x = bw / 2 + 8 + Math.random() * Math.max(0, aw - bw - 16);
+  const y = bh / 2 + 8 + Math.random() * Math.max(0, ah - bh - 16);
+  no.style.left = x + "px";
+  no.style.top = y + "px";
+  tries++;
+  $("dodgeMsg").textContent = NO_LINES[Math.min(tries - 1, NO_LINES.length - 1)];
+  // «Покормлю» растёт, но не шире поля
+  const yes = $("yes");
+  const fit = (aw - 24) / yes.offsetWidth;
+  const scale = Math.min(1 + tries * 0.12, 1.8, fit);
+  yes.style.transform = `translate(-50%,-50%) scale(${scale})`;
+}
+$("no").addEventListener("pointerenter", e => { if (e.pointerType === "mouse") dodge(); });
+$("no").addEventListener("pointerdown", dodge);
+$("no").addEventListener("click", dodge);
+$("yes").addEventListener("click", e => {
+  $("dodgeMsg").textContent = "Ура! Я знал. Жду у двери с ложкой";
+  burst(e.currentTarget, 24);
+  // показать шкалу: на телефоне она ниже заголовка
+  document.querySelector(".guest").scrollIntoView({block: "center", behavior: reduce ? "auto" : "smooth"});
+  setTimeout(feed, reduce ? 0 : 600);
+});
+$("fullClose").addEventListener("click", () => { $("full").hidden = true; });
+
+// стартовые страницы
+document.documentElement.classList.add("locked");
+function showStep(from, to) {
+  from.closest(".intro-step").hidden = true;
+  $(to).hidden = false;
+  const first = $(to).querySelector(".btn");
+  if (first) first.focus({preventScroll: true});
+}
+$("okBtn").addEventListener("click", e => showStep(e.currentTarget, "step2"));
+$("sorryBtn").addEventListener("click", e => {
+  burst(e.currentTarget, 30);
+  showStep(e.currentTarget, "step3");
+});
+document.querySelectorAll("[data-next]").forEach(b => b.addEventListener("click", e => {
+  const next = b.dataset.next;
+  if (next === "site") return openSite(e);
+  burst(b, 16);
+  showStep(b, next);
+}));
+function openSite(e) {
+  burst(e.currentTarget, 30);
+  const intro = $("intro");
+  intro.classList.add("leaving");
+  setTimeout(() => {
+    intro.hidden = true;
+    document.documentElement.classList.remove("locked");
+    scrollTo(0, 0);
+  }, reduce ? 0 : 500);
+}
+
+// «Потому что хочу» — нажать нельзя, убегает по всему экрану
+const FLEE_LINES = ["Не-а", "Эта кнопка сломалась", "Так не пойдёт", "Попробуй другую", "Ну скажи «извини»", "Я жду"];
+let flees = 0, lastFlee = 0;
+function flee(e) {
+  if (e && e.cancelable) e.preventDefault();
+  const t = performance.now();
+  if (t - lastFlee < 250) return;
+  lastFlee = t;
+  const b = $("runaway"), r = b.getBoundingClientRect();
+  if (!b.classList.contains("loose")) {
+    b.style.left = r.left + "px"; b.style.top = r.top + "px";
+    b.classList.add("loose");
+    void b.offsetWidth;
+  }
+  const pad = 16, s = $("sorryBtn").getBoundingClientRect();
+  const maxX = Math.max(pad, innerWidth - r.width - pad), maxY = Math.max(pad, innerHeight - r.height - pad);
+  let x = pad, y = pad;
+  for (let i = 0; i < 30; i++) {
+    x = pad + Math.random() * (maxX - pad);
+    y = pad + Math.random() * (maxY - pad);
+    const far = Math.hypot(x - r.left, y - r.top) > 140;
+    const overSorry = x < s.right + 12 && x + r.width > s.left - 12 && y < s.bottom + 12 && y + r.height > s.top - 12;
+    if (far && !overSorry) break;
+  }
+  b.style.left = x + "px"; b.style.top = y + "px";
+  $("fleeMsg").textContent = FLEE_LINES[flees++ % FLEE_LINES.length];
+}
+const rb = $("runaway");
+rb.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") flee(); });
+rb.addEventListener("pointerdown", flee);
+rb.addEventListener("touchstart", flee, {passive: false});
+rb.addEventListener("click", flee);
+rb.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") flee(e); });
+// мышь подходит близко — кнопка уже уходит
+addEventListener("pointermove", e => {
+  if (e.pointerType !== "mouse" || $("step2").hidden || $("intro").hidden) return;
+  const r = rb.getBoundingClientRect();
+  const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right);
+  const dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+  if (Math.hypot(dx, dy) < 40) flee();
+});
+
+// конфетти
+const cv = $("hearts"), ctx = cv.getContext("2d");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let parts = [], raf = 0;
+function size() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+function piece(p, a) {
+  ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = p.c; ctx.translate(p.x, p.y);
+  ctx.rotate(p.rot); ctx.scale(p.s, p.s * Math.cos(p.rot * 2));
+  ctx.fillRect(-4, -2, 8, 4);
+  ctx.restore();
+}
+function spawn(x, y, n) {
+  if (reduce) return;
+  const css = getComputedStyle(document.documentElement);
+  const colors = [css.getPropertyValue("--cherry").trim(), css.getPropertyValue("--butter").trim(), "#FF8FA3"];
+  const dpr = devicePixelRatio;
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 5;
+    parts.push({x:x*dpr, y:y*dpr, vx:Math.cos(a)*v*dpr, vy:(Math.sin(a)*v - 4)*dpr, s:(0.8 + Math.random()*0.8)*dpr, c:colors[i % 3], life:1, rot:Math.random()*Math.PI, vr:(Math.random() - .5) * .3});
+  }
+  if (!raf) raf = requestAnimationFrame(tick);
+}
+function tick() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  parts = parts.filter(p => p.life > 0);
+  for (const p of parts) {
+    p.x += p.vx; p.y += p.vy; p.vy += .18 * devicePixelRatio; p.life -= .012; p.rot += p.vr;
+    piece(p, Math.max(0, p.life));
+  }
+  raf = parts.length ? requestAnimationFrame(tick) : 0;
+  if (!raf) ctx.clearRect(0, 0, cv.width, cv.height);
+}
+function burst(el, n) { const r = el.getBoundingClientRect(); spawn(r.left + r.width/2, r.top + r.height/2, n); }
+function burstCenter() { for (let i = 0; i < 4; i++) setTimeout(() => spawn(innerWidth * (.2 + Math.random()*.6), innerHeight * .4, 40), i * 250); }
+
+render();
+</script>
+</body>
+</html>
